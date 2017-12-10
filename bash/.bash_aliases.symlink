@@ -1,0 +1,4 @@
+alias ..='cd ..'
+alias cp='rsync -avz --progress'
+alias l='ls'
+alias ll='ls -lah'

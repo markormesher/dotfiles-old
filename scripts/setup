@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+if [ ! -d "$HOME/dotfiles" ]; then
+	echo "$HOME/dotfiles does not exist"
+	exit 1
+fi
+
+cd "$HOME/dotfiles"
+
+echo "Running setup files"
+find $(pwd) -iname "*.setup" | while read file; do
+	echo "  $file"
+	sh "$file"
+done
