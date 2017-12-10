@@ -1,0 +1,7 @@
+:set tabstop=4
+:set shiftwidth=4
+
+call plug#begin()
+Plug 'tpope/vim-sensible'
+Plug 'pangloss/vim-javascript'
+call plug#end()

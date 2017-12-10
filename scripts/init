@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ ! -d "$HOME/dotfiles" ]; then
+	echo "$HOME/dotfiles does not exist"
+	exit 1
+fi
+
+cd "$HOME/dotfiles"
+
+echo "Setting up symlinks"
+find $(pwd) -iname "*.symlink" | while read file; do
+	link="$HOME/"$(basename "$file" | sed 's/.symlink//')
+	real="$file"
+	rm "$link" 2> /dev/null
+	ln -s "$real" "$link"
+	echo "  $link -> $real"
+done
+
+echo "export PATH=\"./bin:/usr/local/bin:/usr/local/sbin:$HOME/dotfiles/bin:$PATH"\" > "bootstrap"
+
+echo "Adding source scripts to bootstrapper"
+find $(pwd) -iname "*.source" | while read file; do
+	echo "source \"$file\"" >> "bootstrap"
+	echo "  $file"
+done
