@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [ ! -d "$HOME/dotfiles" ]; then
+	echo "$HOME/dotfiles does not exist"
+	exit 1
+fi
+
+cd "$HOME/dotfiles"
+git pull
+dot-sync
