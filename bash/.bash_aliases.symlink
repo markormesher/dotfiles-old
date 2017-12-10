@@ -2,3 +2,6 @@ alias ..='cd ..'
 alias cp='rsync -avz --progress'
 alias l='ls'
 alias ll='ls -lah'
+
+# Put a nice header on the terminal each time it is cleared
+alias clear='clear; echo; seq 1 $(tput cols) | gshuf | spark | lolcat; echo'
