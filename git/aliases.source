@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+alias add='git add'
 alias commit='git commit'
 alias pull='git pull'
 alias push='git push'
