@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+alias commit='git commit'
+alias pull='git pull'
+alias push='git push'
