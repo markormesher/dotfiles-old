@@ -2,7 +2,7 @@ source "$HOME/.bash_aliases"
 source "$HOME/dotfiles/bootstrap"
 
 # Enable colours
-if [ "$OSTYPE" == *"darwin"* ]; then
+if [[ "$OSTYPE" == *"darwin"* ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=GxFxCxDxBxegedabagaced
 else

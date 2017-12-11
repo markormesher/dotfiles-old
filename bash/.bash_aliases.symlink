@@ -4,7 +4,7 @@ alias l='ls'
 alias ll='ls -lah'
 
 # Fix MacOS packages names for *nix style
-if [ "$OSTYPE" == *"darwin"* ]; then
+if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias shuf='gshuf'
 fi
 
