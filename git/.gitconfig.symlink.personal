@@ -1,0 +1,8 @@
+[user]
+	name = Mark Ormesher
+	email = me@markormesher.co.uk
+[core]
+	autocrlf = input
+	safecrlf = false
+[push]
+	default = simple
