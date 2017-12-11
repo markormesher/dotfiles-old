@@ -3,5 +3,10 @@ alias cp='rsync -avz --progress'
 alias l='ls'
 alias ll='ls -lah'
 
+# Fix MacOS packages names for *nix style
+if [ "$OSTYPE" == *"darwin"* ]; then
+	alias shuf='gshuf'
+fi
+
 # Put a nice header on the terminal each time it is cleared
-alias clear='clear; echo; seq 1 $(tput cols) | gshuf | spark | lolcat; echo'
+alias clear='clear; echo; seq 1 $(tput cols) | shuf | spark | lolcat; echo'
