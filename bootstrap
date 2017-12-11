@@ -1,7 +1,0 @@
-export PATH="./bin:/usr/local/bin:/usr/local/sbin:/Users/mormesher/dotfiles/bin:/Users/mormesher/.nvm/versions/node/v8.9.1/bin:./bin:/usr/local/bin:/usr/local/sbin:/Users/mormesher/dotfiles/bin:./bin:/usr/local/bin:/usr/local/sbin:/Users/mormesher/dotfiles/bin:/Users/mormesher/.sdkman/candidates/kotlin/current/bin:/Users/mormesher/.sdkman/candidates/gradle/current/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/Cellar/hadoop/2.8.1/bin:/usr/local/Cellar/hadoop/2.8.1/sbin:/usr/local/Cellar/hadoop/2.8.1/bin:/usr/local/Cellar/hadoop/2.8.1/sbin:/usr/local/Cellar/hadoop/2.8.1/bin:/usr/local/Cellar/hadoop/2.8.1/sbin:/usr/local/Cellar/hadoop/2.8.1/bin:/usr/local/Cellar/hadoop/2.8.1/sbin"
-source "/Users/mormesher/dotfiles/git/aliases.source"
-source "/Users/mormesher/dotfiles/git/git-completion.sh.source"
-source "/Users/mormesher/dotfiles/hadoop/hadoop.source"
-source "/Users/mormesher/dotfiles/node/node-options.source"
-source "/Users/mormesher/dotfiles/node/node-version-manager.source"
-source "/Users/mormesher/dotfiles/sdk/sdk-manager.source"
