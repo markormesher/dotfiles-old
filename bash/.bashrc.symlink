@@ -2,8 +2,7 @@ source "$HOME/.bash_aliases"
 source "$HOME/dotfiles/bootstrap"
 
 # Enable colours
-export CLICOLOR=1
-export LSCOLORS=ExFxCxDxBxegedabagacad
+alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'

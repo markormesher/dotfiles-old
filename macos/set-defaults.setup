@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [ "$OSTYPE" != *"darwin"* ]; then
+	exit 0
+fi
+
 # Inspired by and based upon https://github.com/mathiasbynens/dotfiles/blob/master/.macos
 
 sudo -v
