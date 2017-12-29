@@ -6,7 +6,7 @@ if [ "$flavour" = "work" ]; then
 elif [ "$flavour" = "personal" ]; then
     filterfiles='grep -v .work'
 else
-    echo "Usage: dot-sync [personal|work]"
+    echo "Usage: dot-setup [personal|work]"
     exit 1
 fi
 
@@ -20,5 +20,5 @@ cd "$HOME/dotfiles"
 echo "Running setup files"
 find $(pwd) -iname "*.setup*" | $filterfiles | while read file; do
 	echo "  $file"
-	sh "$file"
+	bash "$file"
 done
