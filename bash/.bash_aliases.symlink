@@ -3,7 +3,14 @@ alias cp='rsync -avz --progress'
 alias l='ls'
 alias ll='ls -lah'
 
-# Fix MacOS packages names for *nix style
+# Linux specific:
+if [[ "$OSTYPE" == *"linux"* ]]; then
+	if command -v apt > /dev/null; then
+		alias apt='sudo apt'
+	fi
+fi
+
+# MacOS specific:
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias shuf='gshuf'
 fi
