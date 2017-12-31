@@ -1,6 +1,9 @@
 source "$HOME/.bash_aliases"
 source "$HOME/dotfiles/bootstrap"
 
+# Interactive shells only
+[[ $- == *i* ]] || return
+
 # Enable colours
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	export CLICOLOR=1
