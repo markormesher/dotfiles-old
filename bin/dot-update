@@ -7,4 +7,3 @@ fi
 
 cd "$HOME/dotfiles"
 git pull
-dot-sync
