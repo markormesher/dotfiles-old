@@ -15,6 +15,3 @@ fi
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias shuf='gshuf'
 fi
-
-# Put a nice header on the terminal each time it is cleared
-alias clear='clear; echo; seq 1 $(tput cols) | shuf | spark | lolcat; echo'
