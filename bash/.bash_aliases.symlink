@@ -1,9 +1,3 @@
-alias ..='cd ..'
-alias cp='rsync -avz --progress'
-alias l='ls'
-alias ll='ls -lah'
-alias gpg='gpg2'
-
 # Linux specific:
 if [[ "$OSTYPE" == *"linux"* ]]; then
 	if command -v apt > /dev/null; then
@@ -15,3 +9,17 @@ fi
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias shuf='gshuf'
 fi
+
+# Change 'ls' to directories-first
+if [[ "$OSTYPE" == *"darwin"* ]]; then
+	alias ls='gls --color=auto -h --group-directories-first'
+else
+	alias ls='ls --color=auto -h --group-directories-first'
+fi
+
+alias ..='cd ..'
+alias cp='rsync -avz --progress'
+alias l='ls'
+alias ll='ls -lah'
+alias grep='grep --color=auto'
+alias gpg='gpg2'

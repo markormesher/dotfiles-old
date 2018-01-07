@@ -8,8 +8,6 @@ source "$HOME/dotfiles/bootstrap"
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=GxFxCxDxBxegedabagaced
-else
-	alias ls='ls --color=auto'
 fi
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
