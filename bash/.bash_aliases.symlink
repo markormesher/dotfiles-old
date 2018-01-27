@@ -8,6 +8,9 @@ fi
 # MacOS specific:
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias shuf='gshuf'
+	alias head='ghead'
+	alias tail='gtail'
+	alias split='gsplit'
 fi
 
 # Change 'ls' to directories-first
