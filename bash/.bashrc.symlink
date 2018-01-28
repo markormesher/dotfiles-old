@@ -38,6 +38,13 @@ TXT_YELLOW="`tput setaf 3`"
 TXT_MAGENTA="`tput setaf 5`"
 TXT_CYAN="`tput setaf 6`"
 TXT_RESET="`tput sgr0`"
+function git_info_for_prompt() {
+	if git rev-parse 2> /dev/null; then
+		echo -ne "[ ${TXT_YELLOW}⌥ $(git rev-parse --abbrev-ref HEAD 2> /dev/null)${TXT_RESET} ]"
+	else
+		echo -ne ""
+	fi
+}
 function custom_prompt() {
 	if [ "$USER" = "root" ]; then
 		local user_and_host="[ ${TXT_RED}${TXT_BOLD}\u${TXT_RESET}${TXT_GREEN}${TXT_BOLD}@\h${TXT_RESET} ]"
@@ -47,12 +54,7 @@ function custom_prompt() {
 
 	local cwd="[ ${TXT_CYAN}\w${TXT_RESET} ]"
 
-	local branch=""
-	if git rev-parse 2> /dev/null; then
-		branch="[ ${TXT_YELLOW}⌥ $(git rev-parse --abbrev-ref HEAD 2> /dev/null)${TXT_RESET} ]"
-	fi
-
 	local prompt="$ "
-	export PS1="\n┌─${user_and_host}${cwd}${branch}\n└───$prompt"
+	export PS1="\n┌─${user_and_host}${cwd}\$(git_info_for_prompt)\n└───$prompt"
 }
 custom_prompt
