@@ -1,2 +1,2 @@
-export SDKMAN_DIR="/Users/mormesher/.sdkman"
-[[ -s "/Users/mormesher/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/mormesher/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="~/.sdkman"
+[[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "~/.sdkman/bin/sdkman-init.sh"
