@@ -7,4 +7,5 @@ call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
+Plug 'vim-airline/vim-airline'
 call plug#end()

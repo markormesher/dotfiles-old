@@ -32,21 +32,26 @@ shopt -s checkwinsize
 # Custom prompt
 TXT_BOLD="`tput bold`"
 TXT_BLACK="`tput setaf 0`"
-BG_GREEN="`tput setab 2`"
-BG_YELLOW="`tput setab 3`"
-BG_CYAN="`tput setab 6`"
+TXT_RED="`tput setaf 1`"
+TXT_GREEN="`tput setaf 2`"
+TXT_YELLOW="`tput setaf 3`"
+TXT_MAGENTA="`tput setaf 5`"
+TXT_CYAN="`tput setaf 6`"
 TXT_RESET="`tput sgr0`"
-git_branch_for_prompt() {
-	if git rev-parse 2> /dev/null; then
-		echo -ne "${BG_YELLOW}${TXT_BLACK} `git rev-parse --abbrev-ref HEAD 2> /dev/null` ${TXT_RESET}"
-	else
-		echo -ne ""
-	fi
-}
 function custom_prompt() {
-	local user_and_host="${BG_GREEN}${TXT_BLACK}${TXT_BOLD} \u@\h ${TXT_RESET}"
-	local cwd="${BG_CYAN}${TXT_BLACK} \w ${TXT_RESET}"
-	local prompt="\n$ "
-	export PS1="\n$user_and_host$cwd\$(git_branch_for_prompt)$prompt"
+	local user_and_host="[ ${TXT_GREEN}${TXT_BOLD}\u@\h${TXT_RESET} ]"
+
+	local cwd="[ ${TXT_CYAN}\w${TXT_RESET} ]"
+
+	local branch=""
+	if git rev-parse 2> /dev/null; then
+		branch="[ ${TXT_YELLOW}⌥ $(git rev-parse --abbrev-ref HEAD 2> /dev/null)${TXT_RESET} ]"
+	fi
+
+	local prompt="$ "
+	if [ "$USER" = "root" ]; then
+		prompt="${TXT_RED}\$${TXT_RESET} "
+	fi
+	export PS1="\n┌─${user_and_host}${cwd}${branch}\n└───$prompt"
 }
 custom_prompt
