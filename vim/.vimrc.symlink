@@ -8,4 +8,5 @@ Plug 'tpope/vim-sensible'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'vim-airline/vim-airline'
+Plug 'ntpeters/vim-better-whitespace'
 call plug#end()
