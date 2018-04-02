@@ -18,5 +18,5 @@ if [ ! $inUse = 0 ]; then
 fi
 
 # do the backup
-docker run -it -v $volume:/volume -v /tmp:/backup alpine tar -czf /backup/$volume.tgz -C /volume ./
+docker run -it -v $volume:/volume -v /tmp:/backup alpine tar -czf - -C /volume ./
 echo "/tmp/$volume.tgz"
