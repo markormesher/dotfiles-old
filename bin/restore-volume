@@ -18,4 +18,4 @@ if [ ! $inUse = 0 ]; then
 fi
 
 # do the restore
-cat /dev/stdin | docker run -i -v $volume:/volume alpine sh -c "rm -rf /volume/* /volume/..?* /volume/.[!.]* ; tar -C /volume/ -xzf -"
+cat /dev/stdin | docker run -i -v $volume:/volume alpine sh -c "rm -rf /volume/* /volume/..?* /volume/.[!.]* ; tar -C /volume/ -xf -"
