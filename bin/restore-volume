@@ -1,0 +1,36 @@
+#! /usr/bin/env bash
+
+volume="$1"
+file="$2"
+
+# check whether volume exists
+doesExist=$(docker volume ls -f "name=$volume" --format "{{ .Name }}" | grep "^$volume\$" | wc -l)
+if [ ! $doesExist = 1 ]; then
+	echo "ERROR: Volume $volume does not exist"
+	exit 1
+fi
+
+# check whether volume is in use
+inUse=$(docker ps -f "volume=$volume" --format "{{ .Names }}" | wc -l)
+if [ ! $inUse = 0 ]; then
+	echo "ERROR: Volume is connected to $inUse running container(s):"
+	docker ps -f "volume=$volume" --format "{{ .Names }}"
+	exit 1
+fi
+
+# check whether file exists
+if [ ! -f "$file" ]; then
+	echo "ERROR: File $file does not exist"
+	exit 1
+fi
+
+# make sure file is in /tmp
+dirname=$(dirname "$file")
+basename=$(basename "$file")
+if [ ! "$dirname" = "/tmp" ]; then
+	echo "ERROR: File $file must be in /tmp"
+	exit 1
+fi
+
+# do the restore
+docker run -it -v $volume:/volume -v /tmp:/backup alpine sh -c "rm -rf /volume/* /volume/..?* /volume/.[!.]* ; tar -C /volume/ -xzf /backup/$basename"
