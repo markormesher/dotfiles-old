@@ -58,3 +58,6 @@ function custom_prompt() {
 	export PS1="\n┌─${user_and_host}${cwd}\$(git_info_for_prompt)\n└───$prompt"
 }
 custom_prompt
+
+# Path entries
+export PATH=$PATH:/usr/local/bin
