@@ -11,6 +11,7 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias head='ghead'
 	alias tail='gtail'
 	alias split='gsplit'
+	alias tar='gtar'
 fi
 
 # Change 'ls' to directories-first
@@ -26,5 +27,7 @@ alias l='ls'
 alias ll='ls -lah'
 alias grep='grep --color=auto'
 alias gpg='gpg2'
+
+alias yml2json="ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))'"
 
 command -v docker-compose &>/dev/null && alias dc='docker-compose'
