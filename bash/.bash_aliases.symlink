@@ -12,6 +12,7 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias tail='gtail'
 	alias split='gsplit'
 	alias tar='gtar'
+	alias sed='gsed'
 fi
 
 # Change 'ls' to directories-first
