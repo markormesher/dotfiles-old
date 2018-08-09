@@ -59,5 +59,10 @@ function custom_prompt() {
 }
 custom_prompt
 
+# Better tab completion
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+	. $(brew --prefix)/etc/bash_completion
+fi
+
 # Path entries
 export PATH=$PATH:/usr/local/bin
