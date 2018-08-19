@@ -22,6 +22,7 @@ find $(pwd) -iname "*.symlink*" | $filterfiles | while read file; do
 	link="$HOME/"$(echo "$file" | sed "s|^$(pwd)||" | cut -d '/' -f 3- | sed -E 's/\.symlink.*//')
 	real="$file"
 	rm "$link" 2> /dev/null
+	mkdir -p "$(dirname $link)"
 	ln -s "$real" "$link"
 	echo "  $link -> $real"
 done
