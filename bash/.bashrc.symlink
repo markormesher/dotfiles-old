@@ -40,7 +40,8 @@ TXT_CYAN="`tput setaf 6`"
 TXT_RESET="`tput sgr0`"
 function git_info_for_prompt() {
 	if git rev-parse 2> /dev/null; then
-		echo -ne "[ ${TXT_YELLOW}⌥ $(git rev-parse --abbrev-ref HEAD 2> /dev/null)${TXT_RESET} ]"
+		branch_colour=$(git config user.email | grep markormesher > /dev/null 2>&1  && echo -n $TXT_YELLOW || echo -n $TXT_RED)
+		echo -ne "[ ${branch_colour}⌥ $(git rev-parse --abbrev-ref HEAD 2> /dev/null)${TXT_RESET} ]"
 	else
 		echo -ne ""
 	fi
