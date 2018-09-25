@@ -46,6 +46,9 @@ function git_info_for_prompt() {
 		echo -ne ""
 	fi
 }
+function shortened_dir() {
+	dirs +0 | awk -F '/' '{ for(i=1;i<NF;i++) { printf(substr($i, 0, 1)); printf "/" }; printf $NF }'
+}
 function custom_prompt() {
 	if [ "$USER" = "root" ]; then
 		local user_and_host="[ ${TXT_RED}${TXT_BOLD}\u${TXT_RESET}${TXT_GREEN}${TXT_BOLD}@\h${TXT_RESET} ]"
@@ -53,7 +56,7 @@ function custom_prompt() {
 		local user_and_host="[ ${TXT_GREEN}${TXT_BOLD}\u@\h${TXT_RESET} ]"
 	fi
 
-	local cwd="[ ${TXT_CYAN}\w${TXT_RESET} ]"
+	local cwd="[ ${TXT_CYAN}\$(shortened_dir)${TXT_RESET} ]"
 
 	local prompt="$ "
 	export PS1="\n┌─${user_and_host}${cwd}\$(git_info_for_prompt)\n└───$prompt"
