@@ -4,14 +4,11 @@ source "$HOME/dotfiles/bootstrap"
 # Interactive shells only
 [[ $- == *i* ]] || return
 
-# Enable colours
+# Enable colours (see also .bash_aliases)
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=GxFxCxDxBxegedabagaced
 fi
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 
 # Don't put duplicate lines or lines starting with space in the history
 HISTCONTROL=ignoreboth
@@ -64,7 +61,7 @@ function custom_prompt() {
 custom_prompt
 
 # Better tab completion
-if command -v brew && [ -f $(brew --prefix)/etc/bash_completion ]; then
+if command -v brew > /dev/null && [ -f $(brew --prefix)/etc/bash_completion ]; then
 	. $(brew --prefix)/etc/bash_completion
 fi
 

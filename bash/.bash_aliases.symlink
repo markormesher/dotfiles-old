@@ -5,8 +5,14 @@ if [[ "$OSTYPE" == *"linux"* ]]; then
 	fi
 fi
 
+# Enable colours
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
 # MacOS specific:
 if [[ "$OSTYPE" == *"darwin"* ]]; then
+	# Use GNU versions
 	alias shuf='gshuf'
 	alias head='ghead'
 	alias tail='gtail'
@@ -14,6 +20,11 @@ if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias tar='gtar'
 	alias sed='gsed'
 	alias du='gdu'
+	alias df='gdf'
+	alias date='gdate'
+	alias ggrep='ggrep --color=auto'
+	alias gfgrep='gfgrep --color=auto'
+	alias gegrep='gegrep --color=auto'
 fi
 
 # Change 'ls' to directories-first
@@ -27,9 +38,6 @@ alias ..='cd ..'
 alias cp='rsync -avz --progress'
 alias l='ls'
 alias ll='ls -lah'
-alias grep='grep --color=auto'
 alias gpg='gpg2'
-
-alias yml2json="ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))'"
 
 command -v docker-compose &>/dev/null && alias dc='docker-compose'
