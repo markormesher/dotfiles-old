@@ -27,10 +27,12 @@ find $(pwd) -iname "*.symlink*" | $filterfiles | while read file; do
 	echo "  $link -> $real"
 done
 
-echo "export PATH=\"./bin:/usr/local/bin:/usr/local/sbin:$HOME/dotfiles/bin:$PATH"\" > "bootstrap"
+newpath="/bin:/usr/local/bin:/usr/local/sbin:$HOME/dotfiles/bin:$PATH"
+newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"$newpath")"
+echo "PATH=\"$newpath\"" > "bootstrap"
 
 echo "Adding source scripts to bootstrapper"
-find $(pwd) -iname "*.source*" | $filterfiles | while read file; do
+find $(pwd) -iname "*.source*" | sort | $filterfiles | while read file; do
 	echo "source \"$file\"" >> "bootstrap"
 	echo "  $file"
 done
