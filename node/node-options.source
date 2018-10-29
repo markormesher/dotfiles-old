@@ -1,1 +1,5 @@
 export NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# Upper- and lower-case because of inconsistencies between tools :(
+export npm_execpath=yarn
+export NPM_EXECPATH=yarn
