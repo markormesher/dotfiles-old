@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ "$OSTYPE" != *"darwin"* ]]; then
+	exit 0
+fi
+
+# replace GNU utils with the real deal
+brew install coreutils findutils gnu-tar gnu-sed gawk

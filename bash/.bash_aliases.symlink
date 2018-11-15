@@ -13,12 +13,14 @@ alias egrep='egrep --color=auto'
 # MacOS specific:
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	# Use GNU versions
+	alias find='gfind'
 	alias shuf='gshuf'
 	alias head='ghead'
 	alias tail='gtail'
 	alias split='gsplit'
 	alias tar='gtar'
 	alias sed='gsed'
+	alias awk='gawk'
 	alias du='gdu'
 	alias df='gdf'
 	alias date='gdate'
