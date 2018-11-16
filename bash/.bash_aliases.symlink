@@ -1,45 +1,46 @@
 # Linux specific:
 if [[ "$OSTYPE" == *"linux"* ]]; then
-	if command -v apt > /dev/null; then
+	if command -v apt &> /dev/null; then
 		alias apt='sudo apt'
 	fi
 fi
 
-# Enable colours
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
 # MacOS specific:
 if [[ "$OSTYPE" == *"darwin"* ]]; then
-	# Use GNU versions
-	alias find='gfind'
-	alias shuf='gshuf'
-	alias head='ghead'
-	alias tail='gtail'
-	alias split='gsplit'
-	alias tar='gtar'
-	alias sed='gsed'
 	alias awk='gawk'
-	alias du='gdu'
-	alias df='gdf'
 	alias date='gdate'
-	alias ggrep='ggrep --color=auto'
-	alias gfgrep='gfgrep --color=auto'
-	alias gegrep='gegrep --color=auto'
+	alias df='gdf'
+	alias du='gdu'
+	alias find='gfind'
+	alias head='ghead'
+	alias sed='gsed'
+	alias shuf='gshuf'
+	alias split='gsplit'
+	alias tail='gtail'
+	alias tar='gtar'
 fi
 
 # Change 'ls' to directories-first
 if [[ "$OSTYPE" == *"darwin"* ]]; then
+	alias l='gls --color=auto -h --group-directories-first'
 	alias ls='gls --color=auto -h --group-directories-first'
+	alias ll='gls -la --color=auto -h --group-directories-first'
 else
 	alias ls='ls --color=auto -h --group-directories-first'
+	alias ls='ls --color=auto -h --group-directories-first'
+	alias ls='ls -la --color=auto -h --group-directories-first'
+fi
+
+# Colour all the things
+if [[ "$OSTYPE" == *"darwin"* ]]; then
+	alias grep='ggrep --color=auto'
+	alias egrep='gegrep --color=auto'
+else
+	alias grep='grep --color=auto'
+	alias egrep='egrep --color=auto'
 fi
 
 alias ..='cd ..'
 alias cp='rsync -avz --progress'
-alias l='ls'
-alias ll='ls -lah'
-alias gpg='gpg2'
 
 command -v docker-compose &>/dev/null && alias dc='docker-compose'

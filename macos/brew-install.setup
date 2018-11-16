@@ -4,5 +4,13 @@ if [[ "$OSTYPE" != *"darwin"* ]]; then
 	exit 0
 fi
 
+if ! command -v brew > /dev/null; then
+	echo "ERROR: brew is not installed"
+	exit 0
+fi
+
 # replace GNU utils with the real deal
 brew install coreutils findutils gnu-tar gnu-sed gawk
+
+# common utils
+brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop gnupg

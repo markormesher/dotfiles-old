@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if ! command -v git-lfs &> /dev/null; then
+    echo "ERROR: git-lfs is not installed"
+    exit 0
+fi
+
+git lfs install
