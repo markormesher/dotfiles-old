@@ -1,0 +1,64 @@
+# remap prefix from C-b to C-a
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# reload config file
+bind r source-file ~/.tmux.conf\; display-message "Config reloaded"
+
+# split panes using h and v
+unbind '"'
+unbind %
+bind h split-window -h
+bind v split-window -v
+
+# switch panes using M-arrows without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# resize panes using M-S-arrows without prefix
+bind -n M-S-Left resize-pane -L
+bind -n M-S-Right resize-pane -R
+bind -n M-S-Up resize-pane -U
+bind -n M-S-Down resize-pane -D
+
+# enable mouse mode
+set -g mouse on
+
+# number windows and panels from 1
+set -g base-index 1
+setw -g pane-base-index 1
+
+# auto rename and renumber windows
+setw -g automatic-rename on
+set -g renumber-windows on
+
+# set inactive/active window styles
+set -g window-style "bg=#202020"
+set -g window-active-style "bg=#000000"
+
+# set active/inactive pane border
+set -g pane-border-bg "#202020"
+set -g pane-border-fg "#303030"
+set -g pane-active-border-bg "#202020"
+set -g pane-active-border-fg "#00ff00"
+
+# customise the status bar
+set -g status-position top
+set -g status-interval 1
+set -g status-style "fg=#555555,bg=#111111"
+set -g status-justify left
+
+set -g status-left-length 256
+set -g status-right-length 256
+set -g status-left "#{?client_prefix, ⚡️ ,}[#S] "
+set -g status-right "#(~/dotfiles/tmux/status-right.sh)"
+
+setw -g window-status-format "[#I: #W]"
+setw -g window-status-current-format "[#I: #W]"
+setw -g window-status-style ""
+setw -g window-status-current-style "fg=#ffffff"
+
+set -g message-style "fg=#000000,bg=#00ff00"

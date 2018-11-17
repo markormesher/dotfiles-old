@@ -13,4 +13,4 @@ fi
 brew install coreutils findutils gnu-tar gnu-sed gawk
 
 # common utils
-brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop gnupg
+brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop gnupg tmux

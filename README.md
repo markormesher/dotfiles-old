@@ -6,4 +6,4 @@ Inspired by https://github.com/holman/dotfiles.
 
 --
 
-TODO: Auto-install things (nvm, sdkman, brew, vim-plug)
+TODO: Auto-install things (nvm, sdkman, brew, vim-plug, tmux)
