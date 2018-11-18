@@ -9,8 +9,8 @@ bind r source-file ~/.tmux.conf\; display-message "Config reloaded"
 # split panes using h and v
 unbind '"'
 unbind %
-bind h split-window -h
-bind v split-window -v
+bind h split-window -h -c "#{pane_current_path}"
+bind v split-window -v -c "#{pane_current_path}"
 
 # switch panes using M-arrows without prefix
 bind -n M-Left select-pane -L
