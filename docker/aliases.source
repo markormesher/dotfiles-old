@@ -1,0 +1,8 @@
+# Docker
+alias dk='docker'
+alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
+alias dkl='docker logs'
+alias dklf='docker logs -f'
+
+# Docker Compose
+command -v docker-compose &>/dev/null && alias dc='docker-compose'
