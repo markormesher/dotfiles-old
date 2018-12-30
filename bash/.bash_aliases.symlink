@@ -35,9 +35,11 @@ fi
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias grep='ggrep --color=auto'
 	alias egrep='gegrep --color=auto'
+	command -v colordiff &>/dev/null && alias diff='colordiff'
 else
 	alias grep='grep --color=auto'
 	alias egrep='egrep --color=auto'
+	alias diff='diff --color'
 fi
 
 alias ..='cd ..'
