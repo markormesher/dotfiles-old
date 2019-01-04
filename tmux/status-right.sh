@@ -9,11 +9,8 @@ TXT_MAGENTA="`tput setaf 5`"
 TXT_CYAN="`tput setaf 6`"
 TXT_RESET="`tput sgr0`"
 
-user=$(whoami)
 host=$(hostname)
-
 batt_percent=$(pmset -g batt | grep '%' | awk '{ print $3 }' | sed 's/;//')
-
-time=$(date +"%F %H:%M")
+time=$(date +"%F %H:%M:%S")
 
 echo -n "[${host}] [${batt_percent}] [${time}] "

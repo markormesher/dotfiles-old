@@ -16,4 +16,4 @@ brew upgrade
 brew install coreutils findutils gnu-tar gnu-sed gawk
 
 # common utils
-brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop gnupg tmux colordiff
+brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop gnupg tmux colordiff bash-completion
