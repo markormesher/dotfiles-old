@@ -12,8 +12,3 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 call plug#end()
-
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
