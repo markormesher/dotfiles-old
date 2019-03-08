@@ -44,3 +44,5 @@ fi
 
 alias ..='cd ..'
 alias cp='rsync -avz --progress'
+
+alias diff='diff -W $(( $(tput cols) - 2 ))'
