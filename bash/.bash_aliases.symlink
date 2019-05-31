@@ -44,3 +44,4 @@ fi
 
 alias ..='cd ..'
 alias cp='rsync -avz --progress'
+alias sum="paste -sd+ - | bc"
