@@ -1,6 +1,7 @@
 [user]
 	name = Mark Ormesher
 	email = mormesher@palantir.com
+	signingkey = DE308192D728C145
 [core]
 	autocrlf = input
 	safecrlf = false
@@ -11,3 +12,5 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[commit]
+	gpgsign = true

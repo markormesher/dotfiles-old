@@ -70,4 +70,4 @@ if command -v brew > /dev/null && [ -f $(brew --prefix)/etc/bash_completion ]; t
 fi
 
 # Path entries
-export PATH=$PATH:/usr/local/bin
+export PATH=/usr/local/bin:$PATH
