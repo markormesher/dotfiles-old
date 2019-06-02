@@ -35,12 +35,13 @@ fi
 if [[ "$OSTYPE" == *"darwin"* ]]; then
 	alias grep='ggrep --color=auto'
 	alias egrep='gegrep --color=auto'
-	command -v colordiff &>/dev/null && alias diff='colordiff'
+	command -v colordiff &>/dev/null && alias diff='colordiff -W$(( $(tput cols) - 2 ))'
 else
 	alias grep='grep --color=auto'
 	alias egrep='egrep --color=auto'
-	alias diff='diff --color'
+	alias diff='diff --color -W $(( $(tput cols) - 2 ))'
 fi
 
 alias ..='cd ..'
 alias cp='rsync -avz --progress'
+alias sum="paste -sd+ - | bc"
