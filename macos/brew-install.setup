@@ -16,4 +16,11 @@ brew upgrade
 brew install coreutils findutils gnu-tar gnu-sed gawk
 
 # common utils
-brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop gnupg tmux colordiff bash-completion
+brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git-lfs htop tmux colordiff bash-completion
+
+# gnupg
+brew upgrade gnupg
+brew link --overwrite gnupig
+brew install pinentry-mac
+sed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
+echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
