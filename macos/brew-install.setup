@@ -20,7 +20,7 @@ brew install ranger rename unrar gzip p7zip nmap netcat watch wget jq go git git
 
 # gnupg
 brew upgrade gnupg
-brew link --overwrite gnupig
+brew link --overwrite gnupg
 brew install pinentry-mac
-sed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
+gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
 echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
