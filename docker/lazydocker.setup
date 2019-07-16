@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-docker build -t lazydocker https://github.com/jesseduffield/lazydocker.git
