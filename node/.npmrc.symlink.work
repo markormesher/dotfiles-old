@@ -1,0 +1,2 @@
+packagelock=false
+cafile=/etc/ssl/certs/palantir-ca-bundle.crt

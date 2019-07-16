@@ -44,10 +44,8 @@ set -g window-style "bg=#202020"
 set -g window-active-style "bg=#000000"
 
 # set active/inactive pane border
-set -g pane-border-bg "#202020"
-set -g pane-border-fg "#303030"
-set -g pane-active-border-bg "#202020"
-set -g pane-active-border-fg "#00ff00"
+set -g pane-border-style "bg=#202020,fg=#303030"
+set -g pane-active-border-style "bg=#202020,fg=#00ff00"
 
 # customise the status bar
 set -g status-position top
