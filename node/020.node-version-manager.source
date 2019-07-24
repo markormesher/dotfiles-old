@@ -1,3 +1,7 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Upper- and lower-case because of inconsistencies between tools :(
+export npm_execpath="${HOME}/.nvm/versions/node/$(nvm current)/bin/yarn"
+export NPM_EXECPATH="${HOME}/.nvm/versions/node/$(nvm current)/bin/yarn"
