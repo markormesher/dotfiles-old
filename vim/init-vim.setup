@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if ! command -v nvim > /dev/null; then
+	echo "ERROR: NVim is not installed"
+	exit 0
+fi
+
+confpath="${HOME}/.config/nvim"
+
+mkdir -p "${confpath}"
+
+cat > "${confpath}/init.vim" <<EOF
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &packpath = &runtimepath
+source ~/.vimrc
+EOF

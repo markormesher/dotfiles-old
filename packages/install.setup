@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "$OSTYPE" == *"linux"* ]]; then
+	echo "Running on some kind of Linux"
+
+	os_release_name="$(cat /etc/os-release | grep '^NAME=')"
+	if [[ "${os_release_name}" == *"CentOS"* ]]; then
+		echo "Running on CentOS"
+		echo "Checking for apt..."
+		if ! command -v yum > /dev/null; then
+			echo "ERROR: yum is not installed"
+			exit 1
+		fi
+		os="centos"
+	elif [[ "${os_release_name}" == *"Ubuntu"* ]]; then
+		echo "Running on Ubuntu"
+		echo "Checking for apt..."
+		if ! command -v apt > /dev/null; then
+			echo "ERROR: apt is not installed"
+			exit 1
+		fi
+		os="ubuntu"
+	else
+		echo "ERROR: running on Linix, but not CentOS or Ubuntu"
+		exit 1
+	fi
+
+	echo "Checking for sudo..."
+	if ! command -v sudo > /dev/null; then
+		echo "ERROR: sudo is not installed"
+		exit 1
+	fi
+
+	echo "Elevating to root..."
+	sudo -v
+elif [[ "${OSTYPE}" == *"darwin"* ]]; then
+	echo "Running on MacOS"
+	echo "Checking for brew..."
+	if ! command -v brew > /dev/null; then
+		echo "ERROR: brew is not installed"
+		exit 1
+	fi
+	os="macos"
+else
+	echo "ERROR: couldn't detect OS"
+	exit 1
+fi
+
+case "${os}" in
+	"centos")
+		echo "Installing epel-release..."
+		sudo yum -y -q install epel-release
+		echo "Running yum update..."
+		sudo yum -y -q update
+		echo "Running yum upgrade..."
+		sudo yum -y -q upgrade
+		;;
+
+	"ubuntu")
+		echo "Running apt update..."
+		sudo apt -qq -y update
+		echo "Running apt upgrade..."
+		sudo apt -qq -y upgrade
+		;;
+
+	"macos")
+		echo "Running brew update..."
+		brew update
+		echo "Running brew upgrade..."
+		brew upgrade
+		;;
+esac
+
+common_packages=(
+	# git
+	git
+	git-lfs
+
+	# network tools
+	nmap
+	wget
+
+	# terminal tools
+	htop
+	tmux
+
+	# compression
+	gzip
+
+	# better vim
+	neovim
+
+	# misc utils
+	colordiff
+	jq
+
+	# gnupg
+	gnupg
+)
+
+centos_packages=(
+	# terminal tools
+	which
+)
+
+ubuntu_packages=(
+	# network tools
+	netcat
+)
+
+brew_packages=(
+	# network tools
+	netcat
+)
+
+brew_cask_packages=(
+
+)
+
+if [[ "${os}" == "centos" ]]; then
+	for item in "${common_packages[@]}" "${centos_packages[@]}"; do
+		echo "Installing ${item}..."
+		rpm -q "${item}" > /dev/null 2>&1 || sudo yum -y -q install "${item}"
+	done
+fi
+
+if [[ "${os}" == "ubuntu" ]]; then
+	for item in "${common_packages[@]}" "${ubuntu_packages[@]}"; do
+		echo "Installing ${item}..."
+		dpkg -s "${item}" > /dev/null 2>&1 || sudo apt -y -qq install "${item}"
+	done
+fi
+
+if [[ "${os}" == "macos" ]]; then
+	for item in "${common_packages[@]}" "${brew_packages[@]}"; do
+		echo "Installing ${item}..."
+		brew info "${item}" | grep --quiet 'Not installed' && brew install "${item}"
+	done
+	for item in "${brew_cask_packages[@]}"; do
+		echo "Installing ${item}..."
+		brew cask info "${item}" | grep --quiet 'Not installed' && brew cask install "${item}"
+	done
+fi
+
+echo "DONE: all installed"

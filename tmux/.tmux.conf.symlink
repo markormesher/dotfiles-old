@@ -10,6 +10,9 @@ bind r source-file ~/.tmux.conf\; display-message "Config reloaded"
 set-window-option -g xterm-keys on
 set -g default-terminal "xterm-256color"
 
+# relay Esc without delay
+set -sg escape-time 0
+
 # split panes using h and v
 unbind '"'
 unbind %

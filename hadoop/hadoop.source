@@ -1,4 +1,0 @@
-export HADOOP_HOME="/usr/local/Cellar/hadoop/2.8.1"
-export PATH="$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin"
-alias hstart="/usr/local/Cellar/hadoop/2.8.1/sbin/start-dfs.sh;/usr/local/Cellar/hadoop/2.8.1/sbin/start-yarn.sh"
-alias hstop="/usr/local/Cellar/hadoop/2.8.1/sbin/stop-yarn.sh;/usr/local/Cellar/hadoop/2.8.1/sbin/stop-dfs.sh"

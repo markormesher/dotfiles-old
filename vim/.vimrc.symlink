@@ -1,14 +1,69 @@
+" custome leader key
+:let mapleader=","
+
+" indentation
 :set tabstop=4
 :set shiftwidth=4
-
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
+" buffer settings
+:set hidden " hide buffers when abandoned
+
 call plug#begin()
-Plug 'tpope/vim-sensible'
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
+
+" file tree
+Plug 'scrooloose/nerdtree'
+
+" commenting
+Plug 'tpope/vim-commentary'
+
+" auto-pairing for quotes, brackets, etc
+Plug 'jiangmiao/auto-pairs'
+
+" display along the bottom
 Plug 'vim-airline/vim-airline'
+
+" whitespace highlighting
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
+
+" fzf search
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+
+" syntax highlighting
+Plug 'othree/yajs' " JS
+Plug 'mxw/vim-jsx' " JSX
+Plug 'leafgarland/typescript-vim' " TS
+Plug 'ianks/vim-tsx' " TSX
+
+" completion via deoplete
+if has('nvim')
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
+endif
+let g:deoplete#enable_at_startup = 1
+
+" linting via lang-server-protocol
+Plug 'dense-analysis/ale'
+
 call plug#end()
+
+" NERDTree settings
+let NERDTreeShowHidden=1 " always show dot files
+let NERDTreeQuitOnOpen=1 " quit NERDTree after opening a file
+map <Leader>m :NERDTreeToggle<CR> " toggle NERDTree
+map <Leader>n :NERDTreeFind<CR> " open the current file in NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif " close vim if the only window left is NERDTreei
+
+" formatters
+au FileType javascript setlocal formatprg=prettier
+au FileType javascript.jsx setlocal formatprg=prettier
+au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+au FileType html setlocal formatprg=js-beautify\ --type\ html
+au FileType scss setlocal formatprg=prettier\ --parser\ css
+au FileType css setlocal formatprg=prettier\ --parser\ css
+
+" ALE linting settings
+let g:ale_linters = {
+\ 'javascript': ['eslint', 'prettier'],
+\ 'typescript': ['eslint', 'prettier']
+\ }

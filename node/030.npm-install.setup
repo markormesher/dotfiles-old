@@ -1,1 +1,11 @@
-npm install -g http-server
+npm i -g \
+	http-server \
+	typescript \
+	prettier \
+	eslint \
+	@typescript-eslint/parser \
+	@typescript-eslint/typescript-estree \
+	@typescript-eslint/eslint-plugin \
+	javascript-typescript-langserver \
+	js-beautify \
+	fd-find
