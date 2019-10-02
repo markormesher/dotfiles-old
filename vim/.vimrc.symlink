@@ -10,6 +10,9 @@
 " buffer settings
 :set hidden " hide buffers when abandoned
 
+" file type settings
+autocmd BufRead,BufNewFile *.json set filetype=jsonc
+
 " formatters
 au FileType javascript setlocal formatprg=prettier
 au FileType javascript.jsx setlocal formatprg=prettier
@@ -20,14 +23,18 @@ au FileType css setlocal formatprg=prettier\ --parser\ css
 
 call plug#begin()
 
-" file tree
+" vim interface
 Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
 
-" commenting
+" fzf file search
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+
+" generic typing/coding assistance
 Plug 'tpope/vim-commentary'
-
-" auto-pairing for quotes, brackets, etc
 Plug 'jiangmiao/auto-pairs'
+Plug 'ntpeters/vim-better-whitespace'
 
 " TS language support
 Plug 'leafgarland/typescript-vim'
@@ -36,23 +43,10 @@ Plug 'ianks/vim-tsx'
 " auto-complete and language server support
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
 
-" display along the bottom
-Plug 'vim-airline/vim-airline'
-
-" whitespace highlighting
-Plug 'ntpeters/vim-better-whitespace'
-
-" fzf search
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
-
 " colour scheme
 Plug 'cocopon/iceberg.vim' " main colour scheme
 
 call plug#end()
-
-" FZF file finder settings
-map <Leader>, :FZF<CR>
 
 " NERDTree settings
 let NERDTreeShowHidden=1 " always show dot files
@@ -61,15 +55,27 @@ map <Leader>m :NERDTreeToggle<CR>
 map <Leader>n :NERDTreeFind<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif " close vim if the only window left is NERDTree
 
+" FZF file finder settings
+map <Leader>, :FZF<CR>
+
 " coc settings (more settings in ~/.config/nvim/coc-settings.json)
-let g:coc_global_extensions = ['coc-tsserver', 'coc-html', 'coc-css', 'coc-json', 'coc-eslint', 'coc-prettier']
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+let g:coc_global_extensions = [
+\ 'coc-tsserver',
+\ 'coc-html',
+\ 'coc-css',
+\ 'coc-json',
+\ 'coc-yaml',
+\ 'coc-eslint',
+\ 'coc-prettier'
+\ ]
+nmap <silent> g[ <Plug>(coc-diagnostic-prev)
+nmap <silent> g] <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
+map <leader>f :CocFix<CR>
 
 " default colour scheme
 colorscheme iceberg
@@ -78,12 +84,15 @@ colorscheme iceberg
 highlight CocErrorSign ctermfg=DarkRed
 highlight CocErrorVirtualText ctermfg=DarkRed
 highlight CocErrorHighlight cterm=underline
+
 highlight CocWarningSign ctermfg=DarkYellow
 highlight CocWarningVirtualText ctermfg=DarkYellow
 highlight CocWarningHighlight cterm=underline
+
 highlight CocInfoSign ctermfg=Cyan
 highlight CocInfoVirtualText ctermfg=Cyan
 highlight CocInfoHighlight cterm=underline
+
 highlight CocHintSign ctermfg=Cyan
 highlight CocHintVirtualText ctermfg=Cyan
 highlight CocInfoHighlight cterm=underline
