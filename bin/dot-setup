@@ -260,21 +260,12 @@ npm install -g \
 	@typescript-eslint/eslint-plugin \
 	javascript-typescript-langserver \
 	js-beautify \
-	fd-find
+	fd-find \
+	neovim
 
 # set up git lfs
 print_info "Setting up Git LFS..."
 git lfs install
-
-# set up vim/nvim
-print_info "Setting up init.vim..."
-nvim_conf_path="${HOME}/.config/nvim"
-mkdir -p "${nvim_conf_path}"
-cat > "${nvim_conf_path}/init.vim" <<EOF
-set runtimepath^=~/.vim runtimepath+=~/.vim/after
-let &packpath = &runtimepath
-source ~/.vimrc
-EOF
 
 # set up gnupg
 if [[ "${os}" == "macos" ]]; then

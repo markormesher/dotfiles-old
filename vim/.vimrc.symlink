@@ -1,13 +1,22 @@
-" custome leader key
+" custom leader key
 :let mapleader=","
 
 " indentation
-:set tabstop=4
-:set shiftwidth=4
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+:set expandtab
+:set tabstop=2
+:set softtabstop=2
+:set shiftwidth=2
 
 " buffer settings
 :set hidden " hide buffers when abandoned
+
+" formatters
+au FileType javascript setlocal formatprg=prettier
+au FileType javascript.jsx setlocal formatprg=prettier
+au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+au FileType html setlocal formatprg=js-beautify\ --type\ html
+au FileType scss setlocal formatprg=prettier\ --parser\ css
+au FileType css setlocal formatprg=prettier\ --parser\ css
 
 call plug#begin()
 
@@ -20,6 +29,13 @@ Plug 'tpope/vim-commentary'
 " auto-pairing for quotes, brackets, etc
 Plug 'jiangmiao/auto-pairs'
 
+" TS language support
+Plug 'leafgarland/typescript-vim'
+Plug 'ianks/vim-tsx'
+
+" auto-complete and language server support
+Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
+
 " display along the bottom
 Plug 'vim-airline/vim-airline'
 
@@ -30,40 +46,44 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
-" syntax highlighting
-Plug 'othree/yajs' " JS
-Plug 'mxw/vim-jsx' " JSX
-Plug 'leafgarland/typescript-vim' " TS
-Plug 'ianks/vim-tsx' " TSX
-
-" completion via deoplete
-if has('nvim')
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
-endif
-let g:deoplete#enable_at_startup = 1
-
-" linting via lang-server-protocol
-Plug 'dense-analysis/ale'
+" colour scheme
+Plug 'cocopon/iceberg.vim' " main colour scheme
 
 call plug#end()
+
+" FZF file finder settings
+map <Leader>, :FZF<CR>
 
 " NERDTree settings
 let NERDTreeShowHidden=1 " always show dot files
 let NERDTreeQuitOnOpen=1 " quit NERDTree after opening a file
-map <Leader>m :NERDTreeToggle<CR> " toggle NERDTree
-map <Leader>n :NERDTreeFind<CR> " open the current file in NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif " close vim if the only window left is NERDTreei
+map <Leader>m :NERDTreeToggle<CR>
+map <Leader>n :NERDTreeFind<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif " close vim if the only window left is NERDTree
 
-" formatters
-au FileType javascript setlocal formatprg=prettier
-au FileType javascript.jsx setlocal formatprg=prettier
-au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
-au FileType html setlocal formatprg=js-beautify\ --type\ html
-au FileType scss setlocal formatprg=prettier\ --parser\ css
-au FileType css setlocal formatprg=prettier\ --parser\ css
+" coc settings (more settings in ~/.config/nvim/coc-settings.json)
+let g:coc_global_extensions = ['coc-tsserver', 'coc-html', 'coc-css', 'coc-json', 'coc-eslint', 'coc-prettier']
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
 
-" ALE linting settings
-let g:ale_linters = {
-\ 'javascript': ['eslint', 'prettier'],
-\ 'typescript': ['eslint', 'prettier']
-\ }
+" default colour scheme
+colorscheme iceberg
+
+" colour scheme overrides
+highlight CocErrorSign ctermfg=DarkRed
+highlight CocErrorVirtualText ctermfg=DarkRed
+highlight CocErrorHighlight cterm=underline
+highlight CocWarningSign ctermfg=DarkYellow
+highlight CocWarningVirtualText ctermfg=DarkYellow
+highlight CocWarningHighlight cterm=underline
+highlight CocInfoSign ctermfg=Cyan
+highlight CocInfoVirtualText ctermfg=Cyan
+highlight CocInfoHighlight cterm=underline
+highlight CocHintSign ctermfg=Cyan
+highlight CocHintVirtualText ctermfg=Cyan
+highlight CocInfoHighlight cterm=underline

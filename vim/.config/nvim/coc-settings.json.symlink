@@ -1,0 +1,36 @@
+{
+  "suggest.noselect": false,
+  "suggest.enablePreview": true,
+
+  "diagnostic.messageTarget": "echo",
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.messageDelay": 0,
+  "diagnostic.refreshOnInsertMode": true,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": "  ►  ",
+
+  "diagnostic.errorSign": "==",
+  "diagnostic.warningSign": "++",
+  "diagnostic.infoSign": "--",
+  "diagnostic.hintSign": "--",
+
+  // eslint
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // ts behaviour
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.quoteStyle": "double",
+
+  // turn off typescript rules that are handled by eslint
+  "typescript.showUnused": false,
+
+  // formatting rules to stop coc from fighting with prettier
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true
+}
