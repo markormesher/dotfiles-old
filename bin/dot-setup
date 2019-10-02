@@ -163,6 +163,8 @@ case "${os}" in
 		;;
 
 	"ubuntu")
+    print_info "Adding repositories..."
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
 		print_info "Running apt update..."
 		sudo apt -qq -y update
 		print_info "Running apt upgrade..."
