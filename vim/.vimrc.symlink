@@ -26,6 +26,7 @@ call plug#begin()
 " vim interface
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
+Plug 'kshenoy/vim-signature'
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -34,6 +35,7 @@ Plug 'junegunn/fzf.vim'
 " generic typing/coding assistance
 Plug 'tpope/vim-commentary'
 Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
 Plug 'ntpeters/vim-better-whitespace'
 
 " TS language support
@@ -43,7 +45,7 @@ Plug 'ianks/vim-tsx'
 " auto-complete and language server support
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
 
-" colour scheme
+" colour schemes
 Plug 'cocopon/iceberg.vim' " main colour scheme
 
 call plug#end()
@@ -57,6 +59,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " FZF file finder settings
 map <Leader>, :FZF<CR>
+
+" closetag settings
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.tsx'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.tsx'
 
 " coc settings (more settings in ~/.config/nvim/coc-settings.json)
 let g:coc_global_extensions = [
