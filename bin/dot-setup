@@ -193,6 +193,7 @@ common_packages=(
   # terminal tools
   htop
   tmux
+  tldr
 
   # compression
   gzip
