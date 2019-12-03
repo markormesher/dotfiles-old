@@ -195,6 +195,9 @@ common_packages=(
   tmux
   tldr
 
+  # photo tools
+  exiftool
+
   # compression
   gzip
 
