@@ -189,6 +189,7 @@ common_packages=(
   # network tools
   nmap
   wget
+  curl
 
   # terminal tools
   htop
@@ -215,6 +216,9 @@ common_packages=(
 centos_packages=(
   # terminal tools
   which
+
+  # package tools
+  yum-utils
 )
 
 ubuntu_packages=(
@@ -255,6 +259,46 @@ if [[ "${os}" == "macos" ]]; then
   done
 fi
 
+# clean up packages
+
+case "${os}" in
+  "centos")
+    print_info "Running yum remove \$(package-cleanup --leaves)..."
+    sudo yum -y -q $(package-cleanup --leaves)
+    ;;
+
+  "ubuntu")
+    print_info "Running apt autoremove..."
+    sudo apt -qq -y autoremove
+    print_info "Running apt autoclean..."
+    sudo apt -qq -y autoclean
+    ;;
+
+  "macos")
+    print_info "Running brew cleanup..."
+    brew cleanup
+    ;;
+esac
+
+# install Node Version Manager and Node versions
+print_info "Installing Node Version Manager..."
+if [ -d "$HOME/.nvm" ]; then
+  export NVM_DIR="$HOME/.nvm" && \. "$NVM_DIR/nvm.sh"
+else
+  export NVM_DIR="$HOME/.nvm" && (
+    git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
+    cd "$NVM_DIR"
+    git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))
+  ) && \. "$NVM_DIR/nvm.sh"
+fi
+
+print_info "Installing Node versions"
+nvm install 8
+nvm install 10
+nvm install 12
+nvm use 10
+nvm alias default 10
+
 # install global NPM packages
 print_info "Installing global NPM packages..."
 npm install -g \
@@ -273,6 +317,11 @@ npm install -g \
 print_info "Setting up Git LFS..."
 git lfs install
 
+# set up vim-plug
+print_info "Setting up vim-plug..."
+curl -qfLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+vim +PlugUpgrade +PlugInstall +PlugUpdate +qall
+
 # set up gnupg
 if [[ "${os}" == "macos" ]]; then
   print_info "Setting up GNUPG..."
@@ -280,3 +329,5 @@ if [[ "${os}" == "macos" ]]; then
   gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
   echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
 fi
+
+print_info "Done!"
