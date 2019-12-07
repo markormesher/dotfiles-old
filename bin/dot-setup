@@ -214,6 +214,9 @@ common_packages=(
 )
 
 centos_packages=(
+  # network tools
+  net-tools
+
   # terminal tools
   which
 
@@ -223,7 +226,11 @@ centos_packages=(
 
 ubuntu_packages=(
   # network tools
+  net-tools
   netcat
+
+  # ui tweaking
+  gnome-tweak-tool
 )
 
 brew_packages=(

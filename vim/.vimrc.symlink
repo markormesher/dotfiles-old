@@ -34,7 +34,6 @@ Plug 'junegunn/fzf.vim'
 
 " generic typing/coding assistance
 Plug 'tpope/vim-commentary'
-Plug 'tmsvg/pear-tree'
 Plug 'alvan/vim-closetag'
 Plug 'ntpeters/vim-better-whitespace'
 
@@ -59,11 +58,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " FZF file finder settings
 map <Leader>, :FZF<CR>
-
-" pear-tree settings
-let g:pear_tree_smart_openers = 1
-let g:pear_tree_smart_closers = 1
-let g:pear_tree_smart_backspace = 1
 
 " closetag settings
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.tsx'
