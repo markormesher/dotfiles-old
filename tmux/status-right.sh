@@ -10,7 +10,6 @@ TXT_CYAN="`tput setaf 6`"
 TXT_RESET="`tput sgr0`"
 
 host=$(hostname)
-batt_percent=$(pmset -g batt | grep '%' | awk '{ print $3 }' | sed 's/;//')
 time=$(date +"%F %H:%M:%S")
 
-echo -n "[${host}] [${batt_percent}] [${time}] "
+echo -n "[${host}] [${time}] "

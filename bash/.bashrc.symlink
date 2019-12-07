@@ -44,7 +44,7 @@ function git_info_for_prompt() {
 	fi
 }
 function shortened_dir() {
-	dirs +0 | awk -F '/' '{ for(i=1;i<NF;i++) { printf(substr($i, 0, 1)); printf "/" }; printf $NF }'
+	dirs +0 | awk -F '/' '{ for(i=1;i<NF;i++) { printf(substr($i, 1, 1)); printf "/" }; printf $NF }'
 }
 function custom_touchbar() {
 	command -v it2setkeylabel > /dev/null || exit 0
