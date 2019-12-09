@@ -222,6 +222,10 @@ centos_packages=(
 
   # package tools
   yum-utils
+
+  # file systems
+  exfat-fuse
+  exfat-utils
 )
 
 ubuntu_packages=(
@@ -231,6 +235,10 @@ ubuntu_packages=(
 
   # ui tweaking
   gnome-tweak-tool
+
+  # file systems
+  exfat-fuse
+  exfat-utils
 )
 
 brew_packages=(
