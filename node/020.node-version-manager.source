@@ -1,9 +1,16 @@
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
 
-alias node='unalias node ; unalias npm ; unalias yarn ; nvm use default ; node $@'
-alias npm='unalias node ; unalias npm ; unalias yarn ; nvm use default ; npm $@'
-alias yarn='unalias node ; unalias npm ; unalias yarn ; nvm use default ; yarn $@'
+function initnode {
+  unalias node > /dev/null 2>&1
+  unalias npm > /dev/null 2>&1
+  unalias yarn > /dev/null 2>&1
+  nvm use default
+}
+
+alias node='initnode ; node $@'
+alias npm='initnode ; npm $@'
+alias yarn='initnode ; yarn $@'
 
 # Upper- and lower-case because of inconsistencies between tools :(
 export npm_execpath="${HOME}/.nvm/versions/node/$(nvm current)/bin/yarn"
