@@ -343,11 +343,13 @@ else
 fi
 
 print_info "Installing Node versions"
+set +u
 nvm install 8
 nvm install 10
 nvm install 12
 nvm use 10
 nvm alias default 10
+set -u
 
 # install global NPM packages
 print_info "Installing global NPM packages..."
