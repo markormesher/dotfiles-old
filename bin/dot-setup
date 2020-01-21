@@ -258,7 +258,7 @@ ubuntu_packages=(
   exfat-utils
 
   # fonts
-  font-lato
+  fonts-lato
 )
 
 brew_packages=(
