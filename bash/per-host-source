@@ -2,8 +2,9 @@ hostname=$(hostname -f)
 
 function start_or_attach_tmux {
   if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]]; then
-    echo "Starting tmux session, hold on..."
-    tmux new-session -A -s main
+    :
+    # echo "Starting tmux session, hold on..."
+    # tmux new-session -A -s main
   fi
 }
 
