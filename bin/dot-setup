@@ -12,7 +12,12 @@ function print_error {
 # sanity-check: is dotfiles in the right place?
 
 if [ ! -d "$HOME/dotfiles" ]; then
-  echo "$HOME/dotfiles does not exist"
+  print_error "$HOME/dotfiles does not exist"
+  exit 1
+fi
+
+if ! grep -q 'dotfiles/bootstrap' "$HOME/.bashrc"; then
+  print_error "Looks like dot-sync has not been run yet"
   exit 1
 fi
 
@@ -219,6 +224,9 @@ ubuntu_packages=(
 
   # fonts
   fonts-lato
+
+  # syncthing
+  syncthing
 )
 
 brew_packages=(
@@ -361,6 +369,12 @@ if [[ "${os}" == "macos" ]]; then
   brew unlink gnupg && brew link --overwrite gnupg
   gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
   echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+fi
+
+# set up syncthing
+if [[ "${os}" == "ubuntu" ]] && [[ "${USER}" != "root" ]]; then
+  sudo systemctl enable "syncthing@${USER}.service"
+  sudo systemctl start "syncthing@${USER}.service"
 fi
 
 print_info "Done!"
