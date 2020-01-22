@@ -185,8 +185,6 @@ common_packages=(
 
   # compression
   gzip
-  zip
-  unzip
 
   # better vim
   neovim
