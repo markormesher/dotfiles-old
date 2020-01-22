@@ -23,6 +23,10 @@ au FileType css setlocal formatprg=prettier\ --parser\ css
 
 call plug#begin()
 
+" misc vim programs
+Plug 'vimwiki/vimwiki'
+Plug 'SirVer/ultisnips'
+
 " vim interface
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
@@ -49,6 +53,19 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() }
 Plug 'cocopon/iceberg.vim' " main colour scheme
 
 call plug#end()
+
+" vimwiki settings
+let g:vimwiki_global_ext = 0
+let g:vimwiki_auto_header = 1
+let g:vimwiki_list = [{
+\ 'path': '~/vimwiki/',
+\ 'syntax': 'markdown',
+\ 'ext': '.md',
+\ 'auto_diary_index': 1
+\ }]
+
+" ultisnips settings
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "custom_snippets"]
 
 " NERDTree settings
 let NERDTreeShowHidden=1 " always show dot files

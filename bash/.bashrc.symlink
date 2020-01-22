@@ -68,5 +68,7 @@ fi
 # Path entries
 export PATH=/usr/local/bin:$PATH
 
-# the SDKMAN installer script looks for the string 'sdkman-init.sh';
-# if it finds it, it won't touch this file
+# the SDKMAN installer script looks for the string 'sdkman-init.sh'; if it finds it, it won't touch this file
+
+# intentionally placed at the bottom of the file, after everything else has happened
+source "$HOME/dotfiles/bash/per-host-source"

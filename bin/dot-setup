@@ -35,15 +35,7 @@ print_info "Detecting environment"
 
 if [[ "$OSTYPE" == *"linux"* ]]; then
   os_release_name="$(cat /etc/os-release | grep '^NAME=')"
-  if [[ "${os_release_name}" == *"CentOS"* ]]; then
-    print_info "Running on CentOS"
-    print_info "Checking for yum..."
-    if ! command -v yum > /dev/null; then
-      print_error "yum is not installed"
-      exit 1
-    fi
-    os="centos"
-  elif [[ "${os_release_name}" == *"Ubuntu"* ]]; then
+  if [[ "${os_release_name}" == *"Ubuntu"* ]]; then
     print_info "Running on Ubuntu"
     print_info "Checking for apt..."
     if ! command -v apt > /dev/null; then
@@ -52,7 +44,7 @@ if [[ "$OSTYPE" == *"linux"* ]]; then
     fi
     os="ubuntu"
   else
-    print_error "Running on Linix, but not CentOS or Ubuntu"
+    print_error "Running on Linix, but not Ubuntu"
     exit 1
   fi
 elif [[ "${OSTYPE}" == *"darwin"* ]]; then
@@ -73,9 +65,6 @@ fi
 print_info "Setting OS defaults..."
 
 case "${os}" in
-  "centos")
-    ;;
-
   "ubuntu")
     ;;
 
@@ -153,15 +142,6 @@ esac
 # update package registries
 
 case "${os}" in
-  "centos")
-    print_info "Installing epel-release..."
-    sudo yum -y -q install epel-release
-    print_info "Running yum update..."
-    sudo yum -y -q update
-    print_info "Running yum upgrade..."
-    sudo yum -y -q upgrade
-    ;;
-
   "ubuntu")
     print_info "Adding repositories..."
     sudo add-apt-repository -y ppa:neovim-ppa/stable
@@ -196,7 +176,6 @@ common_packages=(
   # terminal tools
   htop
   tmux
-  tldr
   pv
 
   # photo and video tools
@@ -206,6 +185,8 @@ common_packages=(
 
   # compression
   gzip
+  zip
+  unzip
 
   # better vim
   neovim
@@ -216,27 +197,6 @@ common_packages=(
 
   # gnupg
   gnupg
-)
-
-centos_packages=(
-  # network tools
-  net-tools
-
-  # terminal tools
-  which
-
-  # compression
-  xz
-
-  # package tools
-  yum-utils
-
-  # file systems
-  exfat-fuse
-  exfat-utils
-
-  # fonts
-  lato-fonts
 )
 
 ubuntu_packages=(
@@ -278,13 +238,6 @@ brew_cask_packages=(
   fonts-lato
 )
 
-if [[ "${os}" == "centos" ]]; then
-  for item in "${common_packages[@]}" "${centos_packages[@]}"; do
-    print_info "Installing ${item}..."
-    rpm -q "${item}" > /dev/null 2>&1 || sudo yum -y -q install "${item}"
-  done
-fi
-
 if [[ "${os}" == "ubuntu" ]]; then
   for item in "${common_packages[@]}" "${ubuntu_packages[@]}"; do
     print_info "Installing ${item}..."
@@ -310,11 +263,6 @@ fi
 # clean up packages
 
 case "${os}" in
-  "centos")
-    print_info "Running yum remove \$(package-cleanup --leaves)..."
-    sudo yum -y -q $(package-cleanup --leaves)
-    ;;
-
   "ubuntu")
     print_info "Running apt autoremove..."
     sudo apt -qq -y autoremove
@@ -368,22 +316,22 @@ npm install -g \
 
 # install docker
 print_info "Installing docker and related tools..."
-if [[ "${os}" == "ubuntu" ]] || [[ "${os}" == "centos" ]]; then
+if [[ "${os}" == "ubuntu" ]]; then
   # docker
   if ! command -v docker > /dev/null; then
     docker_installer=$(mktemp)
-    curl -fsSL "https://get.docker.com" > $docker_installer
-    sh $docker_installer
+    curl -fsSL "https://get.docker.com" -o $docker_installer
+    sudo sh $docker_installer
     rm $docker_installer
-    systemctl enable docker
-    systemctl start docker
-    usermod -aG docker $USER
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    sudo usermod -aG docker $USER
   fi
 
   # docker compose
   if ! command -v docker-compose > /dev/null; then
-    curl -fsSL "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    sudo curl -fsSL "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
   fi
 fi
 
@@ -393,11 +341,10 @@ if command -v sdk > /dev/null; then
   print_info "SDKMAN is already installed"
 else
   sdkman_installer=$(mktemp)
-  curl -fsSL "https://get.sdkman.io" > $sdkman_installer
+  curl -fsSL "https://get.sdkman.io" -o $sdkman_installer
   sh $sdkman_installer
   rm $sdkman_installer
 fi
-
 
 # set up git lfs
 print_info "Setting up Git LFS..."
@@ -405,7 +352,7 @@ git lfs install
 
 # set up vim-plug
 print_info "Setting up vim-plug..."
-curl -qfLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -qfL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
 vim +PlugUpgrade +PlugInstall +PlugUpdate +qall
 
 # set up gnupg

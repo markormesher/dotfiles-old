@@ -8,7 +8,7 @@ bind r source-file ~/.tmux.conf\; display-message "Config reloaded"
 
 # xterm
 set-window-option -g xterm-keys on
-set -g default-terminal "xterm-256color"
+set -g default-terminal "tmux-256color"
 
 # relay Esc without delay
 set -sg escape-time 0
@@ -43,8 +43,8 @@ setw -g automatic-rename on
 set -g renumber-windows on
 
 # set inactive/active window styles
-set -g window-style "bg=#202020"
-set -g window-active-style "bg=#000000"
+set -g window-style "bg=#202020,fg=#dddddd"
+set -g window-active-style "bg=#000000,fg=#ffffff"
 
 # set active/inactive pane border
 set -g pane-border-style "bg=#202020,fg=#303030"
