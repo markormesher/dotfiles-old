@@ -21,6 +21,7 @@ jobs:
       - image: circleci/buildpack-deps:bionic
     steps:
       - checkout
+      - run: *debug-info
       - run: *run-sync
       - run: *run-setup
 
@@ -30,6 +31,7 @@ jobs:
       - image: circleci/buildpack-deps:disco
     steps:
       - checkout
+      - run: *debug-info
       - run: *run-sync
       - run: *run-setup
 
