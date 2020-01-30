@@ -337,8 +337,10 @@ if [[ "${os}" == "ubuntu" ]]; then
     curl -fsSL "https://get.docker.com" -o $docker_installer
     sudo sh $docker_installer
     rm $docker_installer
-    sudo systemctl enable docker
-    sudo systemctl start docker
+    if [[ -d /run/systemd/system ]]; then
+      sudo systemctl enable docker
+      sudo systemctl start docker
+    fi
     sudo usermod -aG docker $USER
   fi
 
@@ -380,8 +382,10 @@ fi
 # set up syncthing
 user="$(whoami)"
 if [[ "${os}" == "ubuntu" ]] && [[ "${user}" != "root" ]]; then
-  sudo systemctl enable "syncthing@${user}.service"
-  sudo systemctl start "syncthing@${user}.service"
+  if [[ -d /run/systemd/system ]]; then
+    sudo systemctl enable "syncthing@${user}.service"
+    sudo systemctl start "syncthing@${user}.service"
+  fi
 fi
 
 print_info "Done!"
