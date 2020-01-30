@@ -14,8 +14,8 @@ echo "pwd"
 pwd
 
 echo
-echo "lsb_release -a"
-lsb_release -a
+echo "cat /etc/os-release"
+cat /etc/os-release
 
 echo
 echo "ls -la"
