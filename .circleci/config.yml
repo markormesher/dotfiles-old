@@ -1,5 +1,13 @@
 version: 2
 
+aliases:
+  - &run-sync
+    name: Run Sync
+    command: ./bin/dot-sync personal
+  - &run-setup
+    name: Run Setup
+    command: ./bin/dot-setup
+
 defaults: &defaults
   working_directory: ~/dotfiles
 
@@ -10,12 +18,8 @@ jobs:
       - image: circleci/buildpack-deps:bionic
     steps:
       - checkout
-      - run:
-          name: Run sync
-          command: ./bin/dot-sync personal
-      - run:
-          name: Run setup
-          command: ./bin/dot-setup
+      - run: *run-sync
+      - run: *run-setup
 
 workflows:
   version: 2
