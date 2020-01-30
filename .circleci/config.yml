@@ -11,14 +11,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Debug
-          command: pwd; ls -l; whoami; sudo -l
-      - run:
           name: Run sync
-          command: ./bin/dot-sync personal
+          command: bash ./bin/dot-sync personal
       - run:
           name: Run setup
-          command: ./bin/dot-setup
+          command: bash ./bin/dot-setup
 
 workflows:
   version: 2
