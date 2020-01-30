@@ -15,10 +15,10 @@ jobs:
           command: pwd; ls -l; whoami; sudo -l
       - run:
           name: Run sync
-          command: sudo ./bin/dot-sync personal
+          command: ./bin/dot-sync personal
       - run:
           name: Run setup
-          command: sudo ./bin/dot-setup
+          command: ./bin/dot-setup
 
 workflows:
   version: 2
