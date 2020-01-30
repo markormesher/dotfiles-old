@@ -1,0 +1,21 @@
+version: 2
+
+defaults: &defaults
+  working_directory: ~/dotfiles
+
+jobs:
+  setup-ubuntu-18.04:
+    <<: *defaults
+    docker:
+      - image: circleci/ubuntu:18.04
+    steps:
+      - checkout
+      - run:
+          name: Run setup
+          command: sudo ./bin/dot-setup
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - setup-ubuntu-18.04
