@@ -12,10 +12,10 @@ jobs:
       - checkout
       - run:
           name: Run sync
-          command: bash ./bin/dot-sync personal
+          command: ./bin/dot-sync personal
       - run:
           name: Run setup
-          command: bash ./bin/dot-setup
+          command: ./bin/dot-setup
 
 workflows:
   version: 2

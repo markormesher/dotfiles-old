@@ -356,7 +356,7 @@ if command -v sdk > /dev/null; then
 else
   sdkman_installer=$(mktemp)
   curl -fsSL "https://get.sdkman.io" -o $sdkman_installer
-  sh $sdkman_installer
+  bash $sdkman_installer
   rm $sdkman_installer
 fi
 
