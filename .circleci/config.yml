@@ -11,6 +11,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Run sync
+          command: sudo ./bin/dot-sync personal
+      - run:
           name: Run setup
           command: sudo ./bin/dot-setup
 
