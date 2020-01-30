@@ -1,6 +1,9 @@
 version: 2
 
 aliases:
+  - &debug-info
+    name: Debug Info
+    command: ./.circleci/debug-info.sh
   - &run-sync
     name: Run Sync
     command: ./bin/dot-sync personal
@@ -21,8 +24,18 @@ jobs:
       - run: *run-sync
       - run: *run-setup
 
+  setup-ubuntu-19.04:
+    <<: *defaults
+    docker:
+      - image: circleci/buildpack-deps:disco
+    steps:
+      - checkout
+      - run: *run-sync
+      - run: *run-setup
+
 workflows:
   version: 2
   test:
     jobs:
       - setup-ubuntu-18.04
+      - setup-ubuntu-19.04
