@@ -103,7 +103,7 @@ nmap <Leader>gt :<C-u>CocList outline<cr>
 map <leader>f :CocFix<CR>
 
 " default colour scheme
-colorscheme iceberg
+:silent! colorscheme iceberg
 
 " colour scheme overrides
 highlight CocErrorSign ctermfg=DarkRed
