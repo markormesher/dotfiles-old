@@ -378,9 +378,10 @@ if [[ "${os}" == "macos" ]]; then
 fi
 
 # set up syncthing
-if [[ "${os}" == "ubuntu" ]] && [[ "$(whoami)" != "root" ]]; then
-  sudo systemctl enable "syncthing@${USER}.service"
-  sudo systemctl start "syncthing@${USER}.service"
+user="$(whoami)"
+if [[ "${os}" == "ubuntu" ]] && [[ "${user}" != "root" ]]; then
+  sudo systemctl enable "syncthing@${user}.service"
+  sudo systemctl start "syncthing@${user}.service"
 fi
 
 print_info "Done!"
