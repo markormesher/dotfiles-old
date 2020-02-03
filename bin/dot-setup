@@ -152,6 +152,12 @@ case "${os}" in
     if ! apt-cache search --names-only '^neovim$' | grep neovim > /dev/null; then
       sudo add-apt-repository -y ppa:neovim-ppa/stable
     fi
+    if ! apt-key adv --list-public-keys 2> /dev/null | grep syncthing > /dev/null; then
+      curl -s https://syncthing.net/release-key.txt | sudo apt-key add - > /dev/null
+    fi
+    if [ ! -d /etc/apt/sources.list.d/syncthing.list ]; then
+      echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list > /dev/null
+    fi
     if ! find /etc/apt/ -name *.list | xargs cat | grep '^[[:space:]]*deb' | grep universe > /dev/null; then
       sudo add-apt-repository -y universe
     fi
