@@ -26,6 +26,7 @@ call plug#begin()
 " misc vim programs
 Plug 'vimwiki/vimwiki'
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " vim interface
 Plug 'scrooloose/nerdtree'
@@ -57,6 +58,7 @@ call plug#end()
 " vimwiki settings
 let g:vimwiki_global_ext = 0
 let g:vimwiki_auto_header = 1
+let g:vimwiki_table_mappings = 0
 let g:vimwiki_list = [{
 \ 'path': '~/vimwiki/',
 \ 'syntax': 'markdown',
@@ -65,7 +67,10 @@ let g:vimwiki_list = [{
 \ }]
 
 " ultisnips settings
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "custom_snippets"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " NERDTree settings
 let NERDTreeShowHidden=1 " always show dot files
@@ -124,8 +129,12 @@ highlight CocInfoHighlight cterm=underline
 
 augroup BgHighlight
   autocmd!
+  autocmd BufWinEnter * set relativenumber
   autocmd WinEnter * set relativenumber
+  autocmd BufWinEnter * set cul
   autocmd WinEnter * set cul
+  autocmd BufWinLeave * set norelativenumber
   autocmd WinLeave * set norelativenumber
+  autocmd BufWinLeave * set nocul
   autocmd WinLeave * set nocul
 augroup END
