@@ -25,8 +25,11 @@ call plug#begin()
 
 " misc vim programs
 Plug 'vimwiki/vimwiki'
+
+" snippets and skeletons
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'pgilad/vim-skeletons'
 
 " vim interface
 Plug 'scrooloose/nerdtree'
@@ -66,11 +69,13 @@ let g:vimwiki_list = [{
 \ 'auto_diary_index': 1
 \ }]
 
-" ultisnips settings
+" snippets and skeletons settings
 let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let skeletons#autoRegister = 1
+let skeletons#skeletonsDir = "~/dotfiles/vim/skeletons"
 
 " NERDTree settings
 let NERDTreeShowHidden=1 " always show dot files
