@@ -1,0 +1,2 @@
+# fixes GPG key passphrase entry on remote sessions
+export GPG_TTY=$(tty)
