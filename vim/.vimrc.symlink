@@ -54,7 +54,7 @@ Plug 'ianks/vim-tsx'
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
 
 " colour schemes
-Plug 'cocopon/iceberg.vim' " main colour scheme
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 call plug#end()
 
@@ -112,8 +112,9 @@ nmap <leader>rn <Plug>(coc-rename)
 nmap <Leader>gt :<C-u>CocList outline<cr>
 map <leader>f :CocFix<CR>
 
-" default colour scheme
-:silent! colorscheme iceberg
+" colour scheme + edits
+let g:dracula_colorterm = 0
+:silent! colorscheme dracula
 
 " colour scheme overrides
 highlight CocErrorSign ctermfg=DarkRed
