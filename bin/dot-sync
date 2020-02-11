@@ -59,12 +59,6 @@ find $(pwd) -iname "*.symlink*" | $filterfiles | while read file; do
 done
 
 print_info "Setting up \$PATH"
-newpath="/bin:/usr/local/bin:/usr/local/sbin:$HOME/dotfiles/bin:$PATH"
-newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"$newpath")"
+newpath="/bin:/usr/local/bin:/usr/local/sbin:${HOME}/dotfiles/bin:${PATH}"
+newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"${newpath}")"
 echo "export PATH=${newpath}" >> "bootstrap"
-
-print_info "[OLD] Adding source scripts to bootstrapper"
-find $(pwd) -iname "*.source*" | sort | $filterfiles | while read file; do
-  echo "source \"$file\"" >> "bootstrap"
-  echo "  $file"
-done

@@ -1,0 +1,3 @@
+# dot-tags os=macos
+
+source "${HOME}/.iterm2-shell-integration.sh"

@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-ITERM2_INTEGRATION_FILE="$HOME/.iterm2_shell_integration.bash"
-[[ -f $ITERM2_INTEGRATION_FILE ]] && source $ITERM2_INTEGRATION_FILE
