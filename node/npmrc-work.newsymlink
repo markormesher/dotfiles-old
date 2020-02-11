@@ -1,5 +1,5 @@
 # dot-link-to {HOME}/.npmrc
-# dot-tags flavour=work
+# dot-tags profile=work
 
 packagelock=false
 cafile=/etc/ssl/certs/palantir-ca-bundle.crt

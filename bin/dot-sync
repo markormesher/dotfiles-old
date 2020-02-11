@@ -11,10 +11,10 @@ cd "${HOME}/dotfiles"
 source bin/common-functions.sh
 
 # temp for old functionality
-if host_has_tag "flavour=work"; then
+if host_has_tag "profile=work"; then
   filterfiles='grep -v .personal'
 fi
-if host_has_tag "flavour=personal"; then
+if host_has_tag "profile=personal"; then
   filterfiles='grep -v .work'
 fi
 # end temp for old functionality
@@ -36,7 +36,7 @@ find "${HOME}/dotfiles" -iname "*.newsymlink" | while read file; do
   fi
 
   sandbox_file="${HOME}/dotfiles/.sandbox/$(cat "${file}" | md5sum | cut -d ' ' -f 1)"
-  cat "${file}" | grep -v " dot-link-to " | grep -v " dot-tag " > "${sandbox_file}"
+  cat "${file}" | grep -v " dot-link-to " | grep -v " dot-tags " > "${sandbox_file}"
 
   rm "${link}" 2> /dev/null || :
   mkdir -p "$(dirname "${link}")"
