@@ -19,9 +19,8 @@ cat /etc/os-release
 
 echo
 echo "ls -la"
-ls -laR
+ls -la
 
 echo
 echo "get-host-tags"
-ls -l ./bin/get-host-tags
 ./bin/get-host-tags
