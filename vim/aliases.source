@@ -1,3 +1,4 @@
 alias v="initnode ; nvim"
 alias vim="initnode ; nvim"
 alias vw="initnode ; nvim +VimwikiIndex"
+alias vd="initnode ; nvim +VimwikiMakeDiaryNote"
