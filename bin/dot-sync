@@ -15,7 +15,7 @@ mkdir -p .sandbox
 rm -rf .sandbox/*
 
 print_info "Setting up symlinks"
-find "${HOME}/dotfiles" -iname "*.newsymlink" | while read file; do
+find "${HOME}/dotfiles" -iname "*.symlink" | while read file; do
   if ! file_matches_host_tags "${file}"; then
     continue
   fi
@@ -37,7 +37,7 @@ done
 
 print_info "Adding source scripts to bootstrapper"
 echo "" > .bootstrap
-find "${HOME}/dotfiles" -iname "*.newsource" | while read file; do
+find "${HOME}/dotfiles" -iname "*.source" | while read file; do
   if ! file_matches_host_tags "${file}"; then
     continue
   fi
