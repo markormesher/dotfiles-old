@@ -1,3 +1,5 @@
+# dot-link-to {HOME}/.config/nvim/UltiSnips.symlink/sh.snippets
+
 snippet func "Bash function" b
 function ${1:function_name} {
   ${2:# body}

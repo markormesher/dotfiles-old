@@ -10,15 +10,6 @@ fi
 cd "${HOME}/dotfiles"
 source bin/common-functions.sh
 
-# temp for old functionality
-if host_has_tag "profile=work"; then
-  filterfiles='grep -v .personal'
-fi
-if host_has_tag "profile=personal"; then
-  filterfiles='grep -v .work'
-fi
-# end temp for old functionality
-
 print_info "Clearing old sandbox directory"
 mkdir -p .sandbox
 rm -rf .sandbox/*
@@ -53,16 +44,6 @@ find "${HOME}/dotfiles" -iname "*.newsource" | while read file; do
 
   echo "source \"${file}\"" >> .bootstrap
   print_info "${file}"
-done
-
-echo "[OLD] Setting up symlinks"
-find $(pwd) -iname "*.symlink*" | $filterfiles | while read file; do
-  link="$HOME/"$(echo "$file" | sed "s|^$(pwd)||" | cut -d '/' -f 3- | sed -E 's/\.symlink.*//')
-  real="$file"
-  rm "$link" 2> /dev/null
-  mkdir -p "$(dirname "${link}")"
-  ln -s "$real" "$link"
-  echo "  $link -> $real"
 done
 
 print_info "Setting up \$PATH"
