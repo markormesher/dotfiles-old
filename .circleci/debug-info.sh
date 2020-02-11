@@ -14,16 +14,12 @@ echo "pwd"
 pwd
 
 echo
-echo "tree"
-tree
-
-echo
 echo "cat /etc/os-release"
 cat /etc/os-release
 
 echo
 echo "ls -la"
-ls -la
+ls -laR
 
 echo
 echo "get-host-tags"
