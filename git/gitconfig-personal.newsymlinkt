@@ -1,3 +1,6 @@
+# dot-link-to {HOME}/.gitconfig
+# dot-tags flavour=personal
+
 [user]
 	name = Mark Ormesher
 	email = me@markormesher.co.uk

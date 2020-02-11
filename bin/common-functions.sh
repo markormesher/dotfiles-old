@@ -33,7 +33,7 @@ function host_has_tag {
 
 function file_matches_host_tags {
   file="${1}"
-  tags=$(cat "${file}" | (grep "# dot-tags" || :) | cut -d ' ' -f 3-)
+  tags=$(cat "${file}" | (grep " dot-tags " || :) | cut -d ' ' -f 3-)
   for tag in ${tags}; do
     if ! host_has_tag "${tag}"; then
       return 1

@@ -25,7 +25,7 @@ find "${HOME}/dotfiles" -iname "*.newsymlink" | while read file; do
     continue
   fi
 
-  link=$(cat "${file}" | (grep "# dot-link-to" || :) | cut -d ' ' -f 3 | sed "s#{HOME}#${HOME}#g")
+  link=$(cat "${file}" | (grep " dot-link-to" || :) | cut -d ' ' -f 3 | sed "s#{HOME}#${HOME}#g")
   if [ -z "${link}" ]; then
     print_error "No 'dot-link-to' found for ${file}"
     exit 1

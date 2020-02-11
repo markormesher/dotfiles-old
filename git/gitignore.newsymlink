@@ -1,0 +1,5 @@
+# dot-link-to {HOME}/.gitignore
+
+.DS_Store
+*~
+*.swp

@@ -1,3 +1,6 @@
+# dot-link-to {HOME}/.gitconfig
+# dot-tags flavour=work
+
 [user]
 	name = Mark Ormesher
 	email = mormesher@palantir.com
