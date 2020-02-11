@@ -4,9 +4,12 @@ aliases:
   - &debug-info
     name: Debug Info
     command: ./.circleci/debug-info.sh
+  - &init-host-tags
+    name: Init Host Tags
+    command: echo "" > .host-tags
   - &run-sync
     name: Run Sync
-    command: ./bin/dot-sync personal
+    command: ./bin/dot-sync
   - &run-setup
     name: Run Setup
     command: ./bin/dot-setup
@@ -22,6 +25,7 @@ jobs:
     steps:
       - checkout
       - run: *debug-info
+      - run: *init-host-tags
       - run: *run-sync
       - run: *run-setup
 
@@ -32,6 +36,7 @@ jobs:
     steps:
       - checkout
       - run: *debug-info
+      - run: *init-host-tags
       - run: *run-sync
       - run: *run-setup
 
