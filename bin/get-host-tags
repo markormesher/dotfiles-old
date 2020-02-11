@@ -11,7 +11,7 @@ cd "${HOME}/dotfiles"
 source "bin/common-functions.sh"
 
 # tags from .host-tags
-cat "${HOME}/dotfiles/.host-tags" | grep -v -e '^#.*' | grep -v -e '^\s*$'
+cat "${HOME}/dotfiles/.host-tags" | (grep -v -e '^#.*' || :) | grep -v -e '^\s*$'
 
 # figure out the OS
 if [[ "${OSTYPE}" == *"linux"* ]]; then
