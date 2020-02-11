@@ -1,7 +1,7 @@
 # dot-link-to {HOME}/.bashrc
 
 source "${HOME}/.bash_aliases"
-source "${HOME}/dotfiles/bootstrap"
+source "${HOME}/dotfiles/.bootstrap"
 
 # Interactive shells only
 [[ $- == *i* ]] || return

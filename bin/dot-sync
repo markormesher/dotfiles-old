@@ -8,7 +8,7 @@ if [ ! -d "${HOME}/dotfiles" ]; then
 fi
 
 cd "${HOME}/dotfiles"
-source "bin/common-functions.sh"
+source bin/common-functions.sh
 
 # temp for old functionality
 if host_has_tag "flavour=work"; then
@@ -18,6 +18,10 @@ if host_has_tag "flavour=personal"; then
   filterfiles='grep -v .work'
 fi
 # end temp for old functionality
+
+print_info "Clearing old sandbox directory"
+mkdir -p .sandbox
+rm -rf .sandbox/*
 
 print_info "Setting up symlinks"
 find "${HOME}/dotfiles" -iname "*.newsymlink" | while read file; do
@@ -31,20 +35,23 @@ find "${HOME}/dotfiles" -iname "*.newsymlink" | while read file; do
     exit 1
   fi
 
+  sandbox_file="${HOME}/dotfiles/.sandbox/$(cat "${file}" | md5sum | cut -d ' ' -f 1)"
+  cat "${file}" | grep -v " dot-link-to " | grep -v " dot-tag " > "${sandbox_file}"
+
   rm "${link}" 2> /dev/null || :
   mkdir -p "$(dirname "${link}")"
-  ln -s "${file}" "${link}"
-  print_info "${link} -> ${file}"
+  ln -s "${sandbox_file}" "${link}"
+  print_info "${link} -> ${sandbox_file}"
 done
 
 print_info "Adding source scripts to bootstrapper"
-echo "" > "bootstrap"
+echo "" > .bootstrap
 find "${HOME}/dotfiles" -iname "*.newsource" | while read file; do
   if ! file_matches_host_tags "${file}"; then
     continue
   fi
 
-  echo "source \"${file}\"" >> "bootstrap"
+  echo "source \"${file}\"" >> .bootstrap
   print_info "${file}"
 done
 
@@ -53,7 +60,7 @@ find $(pwd) -iname "*.symlink*" | $filterfiles | while read file; do
   link="$HOME/"$(echo "$file" | sed "s|^$(pwd)||" | cut -d '/' -f 3- | sed -E 's/\.symlink.*//')
   real="$file"
   rm "$link" 2> /dev/null
-  mkdir -p "$(dirname $link)"
+  mkdir -p "$(dirname "${link}")"
   ln -s "$real" "$link"
   echo "  $link -> $real"
 done
@@ -61,4 +68,4 @@ done
 print_info "Setting up \$PATH"
 newpath="/bin:/usr/local/bin:/usr/local/sbin:${HOME}/dotfiles/bin:${PATH}"
 newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"${newpath}")"
-echo "export PATH=${newpath}" >> "bootstrap"
+echo "export PATH=${newpath}" >> .bootstrap
