@@ -10,7 +10,7 @@ fi
 cd "${HOME}/dotfiles"
 source "bin/common-functions.sh"
 
-if ! grep -q 'dotfiles/bootstrap' "$HOME/.bashrc"; then
+if ! grep -q 'dotfiles/.bootstrap' "$HOME/.bashrc"; then
   print_error "Looks like dot-sync has not been run yet"
   exit 1
 fi

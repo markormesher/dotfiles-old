@@ -1,12 +1,12 @@
 version: 2
 
 aliases:
-  - &debug-info
-    name: Debug Info
-    command: ./.circleci/debug-info.sh
   - &init-host-tags
     name: Init Host Tags
     command: echo "" > .host-tags
+  - &debug-info
+    name: Debug Info
+    command: ./.circleci/debug-info.sh
   - &run-sync
     name: Run Sync
     command: ./bin/dot-sync
@@ -24,8 +24,8 @@ jobs:
       - image: circleci/buildpack-deps:bionic
     steps:
       - checkout
-      - run: *debug-info
       - run: *init-host-tags
+      - run: *debug-info
       - run: *run-sync
       - run: *run-setup
 
@@ -35,8 +35,8 @@ jobs:
       - image: circleci/buildpack-deps:disco
     steps:
       - checkout
-      - run: *debug-info
       - run: *init-host-tags
+      - run: *debug-info
       - run: *run-sync
       - run: *run-setup
 
