@@ -1,0 +1,30 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+# sanity-check: is dotfiles in the right place?
+if [ ! -d "${HOME}/dotfiles" ]; then
+  echo "ERROR: ${HOME}/dotfiles does not exist"
+  exit 1
+fi
+
+cd "${HOME}/dotfiles"
+source "bin/common-functions.sh"
+
+# tags from .host-tags
+cat "${HOME}/dotfiles/.host-tags" | grep -v -e '^#.*' | grep -v -e '^\s*$'
+
+# figure out the OS
+if [[ "${OSTYPE}" == *"linux"* ]]; then
+  os_release_name="$(cat /etc/os-release | grep '^NAME=')"
+  if [[ "${os_release_name}" == *"Ubuntu"* ]]; then
+    echo "os=ubuntu"
+  else
+    print_error "Running on Linix, but not Ubuntu"
+    exit 1
+  fi
+elif [[ "${OSTYPE}" == *"darwin"* ]]; then
+  echo "os=macos"
+else
+  print_error "Couldn't detect OS"
+  exit 1
+fi

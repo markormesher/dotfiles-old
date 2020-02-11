@@ -1,0 +1,29 @@
+# dot-link-to {HOME}/.bash_aliases
+# dot-tags os=macos
+
+alias ..='cd ..'
+alias cp='rsync -avz --progress'
+
+# use GNU version of utils
+alias awk='gawk'
+alias date='gdate'
+alias df='gdf'
+alias du='gdu'
+alias find='gfind'
+alias head='ghead'
+alias readlink='greadlink'
+alias sed='gsed'
+alias shuf='gshuf'
+alias split='gsplit'
+alias tail='gtail'
+alias tar='gtar'
+
+# change 'ls' to directories-first
+alias l='gls --color=auto -h --group-directories-first'
+alias ls='gls --color=auto -h --group-directories-first'
+alias ll='gls -la --color=auto -h --group-directories-first'
+
+# colour all the things
+alias grep='ggrep --color=auto'
+alias egrep='gegrep --color=auto'
+command -v colordiff &>/dev/null && alias diff='colordiff -W$(( $(tput cols) - 2 ))'

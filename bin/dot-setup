@@ -1,27 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-function print_info {
-  echo -e '\e[36m[ dotfiles ][ info ]\e[0m  '"${1}"
-}
-
-function print_error {
-  echo -e '\e[31m[ dotfiles ][ error ]\e[0m  '"${1}"
-}
-
 # sanity-check: is dotfiles in the right place?
-
-if [ ! -d "$HOME/dotfiles" ]; then
-  print_error "$HOME/dotfiles does not exist"
+if [ ! -d "${HOME}/dotfiles" ]; then
+  echo "ERROR: ${HOME}/dotfiles does not exist"
   exit 1
 fi
+
+cd "${HOME}/dotfiles"
+source "bin/common-functions.sh"
 
 if ! grep -q 'dotfiles/bootstrap' "$HOME/.bashrc"; then
   print_error "Looks like dot-sync has not been run yet"
   exit 1
 fi
-
-cd "$HOME/dotfiles"
 
 # obtain root powers
 
