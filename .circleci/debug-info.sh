@@ -14,6 +14,10 @@ echo "pwd"
 pwd
 
 echo
+echo "tree"
+tree
+
+echo
 echo "cat /etc/os-release"
 cat /etc/os-release
 
