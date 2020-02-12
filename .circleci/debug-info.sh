@@ -2,6 +2,10 @@
 set -euo pipefail
 
 echo
+echo "env"
+env
+
+echo
 echo "whoami"
 whoami
 
