@@ -2,4 +2,4 @@ node/*npm-tokens.source
 
 .bootstrap
 .host-tags
-.sandbox
+.sandbox/
