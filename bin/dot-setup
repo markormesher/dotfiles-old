@@ -172,10 +172,10 @@ if host_has_tag "os:ubuntu"; then
   print_info "Adding repositories..."
 
   # universe and multiverse packages
-  if ! find /etc/apt/ -name "*.list" -0 | xargs cat | grep '^[[:space:]]*deb' | grep universe > /dev/null; then
+  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep universe > /dev/null; then
     sudo add-apt-repository -y universe
   fi
-  if ! find /etc/apt/ -name "*.list" -0 | xargs cat | grep '^[[:space:]]*deb' | grep multiverse > /dev/null; then
+  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep multiverse > /dev/null; then
     sudo add-apt-repository -y multiverse
   fi
 
