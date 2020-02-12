@@ -10,13 +10,81 @@ fi
 cd "${HOME}/dotfiles"
 source "bin/common-functions.sh"
 
-if ! grep -q 'dotfiles/.bootstrap' "$HOME/.bashrc"; then
+# sanity check: several bits of this script require that dot-sync has been run
+if ! grep -q 'dotfiles/.bootstrap' "${HOME}/.bashrc"; then
   print_error "Looks like dot-sync has not been run yet"
   exit 1
 fi
 
-# obtain root powers
+# multi-platform installer
+function install_package {
+  yum=""
+  brew_tap=""
+  brew_cask=""
+  brew=""
 
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    shift
+    case "${key}" in
+      --common)
+        yum="$1"
+        brew="$1"
+        shift
+        ;;
+
+      --yum)
+        yum="$1"
+        shift
+        ;;
+
+      --brew-tap)
+        brew_tap="$1"
+        shift
+        ;;
+
+      --brew-cask)
+        brew_cask="$1"
+        shift
+        ;;
+
+      --brew)
+        brew="$1"
+        shift
+        ;;
+    esac
+  done
+
+  if host_has_tag "os:ubuntu"; then
+    if [ ! -z "${yum}" ]; then
+      print_info "Installing ${yum}..."
+      if ! dpkg -s "${yum}" &> /dev/null; then
+        sudo apt -y -qq install "${yum}"
+      fi
+    fi
+  fi
+
+  if host_has_tag "os:macos"; then
+    if [ ! -z "${brew_tap}" ]; then
+      print_info "Tapping ${brew_tap}..."
+      brew tap "${brew_tap}"
+    fi
+    if [ ! -z "${brew_cask}" ]; then
+      print_info "Installing ${brew_cask}..."
+      if brew cask info "${brew_cask}" | grep 'Not installed' &> /dev/null; then
+        brew cask install "${brew_cask}"
+      fi
+    fi
+    if [ ! -z "${brew}" ]; then
+      print_info "Installing ${brew}..."
+      if brew info "${brew}" | grep 'Not installed' &> /dev/null; then
+        brew install "${brew}"
+      fi
+    fi
+  fi
+}
+
+# obtain root powers
 print_info "Checking for sudo..."
 if ! command -v sudo > /dev/null; then
   print_error "sudo is not installed"
@@ -27,7 +95,6 @@ print_info "Elevating to root..."
 sudo -v
 
 # set sensible OS defaults
-
 print_info "Setting OS defaults..."
 
 if host_has_tag "os:macos"; then
@@ -101,7 +168,6 @@ if host_has_tag "os:macos"; then
 fi
 
 # update package registries
-
 if host_has_tag "os:ubuntu"; then
   print_info "Adding repositories..."
 
@@ -141,133 +207,134 @@ if host_has_tag "os:macos"; then
   brew upgrade
 fi
 
-# install OS packages
+# install os extras
+install_package --yum ubuntu-restricted-extras
+if host_has_tag "device:desktop"; then
+  install_package --yum gnome-tweak-tool
+fi
+install_package --brew coreutils
 
-common_packages=(
-  # git
-  git
-  git-lfs
+# install tools for extra file systems
+install_package --yum exfat-fuse
+install_package --yum exfat-utils
 
-  # network tools
-  nmap
-  wget
-  curl
+# install network tools
+install_package --ubuntu net-tools
+install_package --common nmap
+install_package --common wget
+install_package --common curl
+install_package --common netcat
 
-  # terminal tools
-  htop
-  tmux
-  pv
+# install terminal tools
+install_package --common htop
+install_package --common pv
+install_package --common tmux
 
-  # photo and video tools
-  exiftool
-  exiv2
-  ffmpeg
+# install compression tools
+install_package --common zip
+install_package --common unzip
+install_package --common gzip
+install_package --common pigz
+install_package --brew xz --yum xz-utils
 
-  # compression
-  gzip
-  zip
-  unzip
+# install misc tools
+install_package --common colordiff
+install_package --common jq
 
-  # better vim
-  neovim
+# install neovim and vim plugins
+install_package --common neovim
 
-  # misc utils
-  colordiff
-  jq
+print_info "Setting up vim-plug..."
+if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
+  curl -fsSL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs
+fi
+nvim +PlugUpgrade +PlugInstall +PlugUpdate +qall
 
-  # gnupg
-  gnupg
-)
+# install fonts
+install_package --yum fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font-lato
 
-ubuntu_packages=(
-  # all extras
-  ubuntu-restricted-extras
-
-  # network tools
-  net-tools
-  netcat
-
-  # compression
-  xz-utils
-
-  # ui tweaking
-  gnome-tweak-tool
-
-  # file systems
-  exfat-fuse
-  exfat-utils
-
-  # fonts
-  fonts-lato
-
-  # syncthing
-  syncthing
-)
-
-brew_packages=(
-  # network tools
-  netcat
-
-  # compression
-  xz
-)
-
-brew_taps=(
-  homebrew/cask-fonts
-)
-
-brew_cask_packages=(
-  # fonts
-  font-lato
-)
-
-if host_has_tag "os:ubuntu"; then
-  for item in "${common_packages[@]}" "${ubuntu_packages[@]}"; do
-    print_info "Installing ${item}..."
-    dpkg -s "${item}" > /dev/null 2>&1 || sudo apt -y -qq install "${item}"
-  done
+# install syncthing
+if host_has_tag "apps:syncthing"; then
+  install_package --yum syncthing
+  if host_has_tag "os:ubuntu" && [[ "${user}" != "root" ]]; then
+    user="$(whoami)"
+    if [[ -d /run/systemd/system ]]; then
+      sudo systemctl enable "syncthing@${user}.service"
+      sudo systemctl start "syncthing@${user}.service"
+    fi
+  fi
 fi
 
+# install photo tools
+if host_has_tag "apps:photos"; then
+  install_package --common exiftool
+  install_package --common exiv2
+fi
+
+# install video tools
+if host_has_tag "apps:videos"; then
+  install_package --common ffmpeg
+fi
+
+# install git and git LFS
+install_package --common git
+install_package --common git-lfs
+print_info "Setting up Git LFS..."
+git lfs install
+
+# install gnupg
+install_package --common gnupg
 if host_has_tag "os:macos"; then
-  for item in "${brew_taps[@]}"; do
-    print_info "Tapping ${item}..."
-    brew tap "${item}"
-  done
-  for item in "${common_packages[@]}" "${brew_packages[@]}"; do
-    print_info "Installing ${item}..."
-    brew info "${item}" | grep --quiet 'Not installed' && brew install "${item}"
-  done
-  for item in "${brew_cask_packages[@]}"; do
-    print_info "Installing ${item}..."
-    brew cask info "${item}" | grep --quiet 'Not installed' && brew cask install "${item}"
-  done
+  print_info "Setting up GNUPG..."
+  brew unlink gnupg && brew link --overwrite gnupg
+  gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
+  echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
 fi
 
-# clean up packages
+# install docker
+if host_has_tag "apps:docker"; then
+  # docker
+  print_info "Installing docker..."
+  if ! command -v docker > /dev/null; then
+    if host_has_tag "os:ubuntu"; then
+      docker_installer=$(mktemp)
+      curl -fsSL https://get.docker.com -o "${docker_installer}"
+      sudo sh "${docker_installer}"
+      rm "${docker_installer}"
+      if [[ -d /run/systemd/system ]]; then
+        sudo systemctl enable docker
+        sudo systemctl start docker
+      fi
+      sudo usermod -aG docker "${USER}"
+    fi
 
-if host_has_tag "os:ubuntu"; then
-  print_info "Running apt autoremove..."
-  sudo apt -qq -y autoremove
-  print_info "Running apt autoclean..."
-  sudo apt -qq -y autoclean
-fi
+    if host_has_tag "os:macos"; then
+      print_warn "Docker must be manually installed on MacOS - downloading the installer now..."
+      wget -P "${HOME}/Downloads/" https://download.docker.com/mac/stable/Docker.dmg
+    fi
+  fi
 
-if host_has_tag "os:macos"; then
-  print_info "Running brew cleanup..."
-  brew cleanup
+  # docker compose
+  print_info "Installing docker compose..."
+  if ! command -v docker-compose > /dev/null; then
+    docker_compose=$(mktemp)
+    curl -fsSL "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" > "${docker_compose}"
+    sudo mv "${docker_compose}" /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+  fi
 fi
 
 # install Node Version Manager and Node versions
 print_info "Installing Node Version Manager..."
-if [ -d "$HOME/.nvm" ]; then
-  export NVM_DIR="$HOME/.nvm" && \. "$NVM_DIR/nvm.sh"
+if [ -d "${HOME}/.nvm" ]; then
+  export NVM_DIR="${HOME}/.nvm" && \. "${NVM_DIR}/nvm.sh"
 else
   set +u
-  export NVM_DIR="$HOME/.nvm" && (
-    git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
-    cd "$NVM_DIR"
+  export NVM_DIR="${HOME}/.nvm" && (
+    git clone https://github.com/nvm-sh/nvm.git "${NVM_DIR}"
+    cd "${NVM_DIR}"
     git checkout $(git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1))
-  ) && \. "$NVM_DIR/nvm.sh"
+  ) && \. "${NVM_DIR}/nvm.sh"
   set -u
 fi
 
@@ -295,72 +362,28 @@ npm install -g \
   fd-find \
   neovim
 
-# install docker
-if host_has_tag "apps:docker"; then
-  # docker
-  print_info "Installing docker..."
-  if ! command -v docker > /dev/null; then
-    if host_has_tag "os:ubuntu"; then
-      docker_installer=$(mktemp)
-      curl -fsSL https://get.docker.com -o "${docker_installer}"
-      sudo sh $docker_installer
-      rm $docker_installer
-      if [[ -d /run/systemd/system ]]; then
-        sudo systemctl enable docker
-        sudo systemctl start docker
-      fi
-      sudo usermod -aG docker $USER
-    fi
-
-    if host_has_tag "os:macos"; then
-      print_warn "Docker must be manually installed on MacOS - downloading the installer now..."
-      wget -P "${HOME}/Downloads/" https://download.docker.com/mac/stable/Docker.dmg
-    fi
-  fi
-
-  # docker compose
-  print_info "Installing docker compose..."
-  if ! command -v docker-compose > /dev/null; then
-    sudo curl -fsSL "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-  fi
-fi
-
 # install SDKMAN (see also the sdk/sdk-manager.source file)
-print_info "Installing SDKMAN..."
-if command -v sdk > /dev/null; then
-  print_info "SDKMAN is already installed"
-else
-  sdkman_installer=$(mktemp)
-  curl -fsSL "https://get.sdkman.io" -o $sdkman_installer
-  bash $sdkman_installer
-  rm $sdkman_installer
-fi
-
-# set up git lfs
-print_info "Setting up Git LFS..."
-git lfs install
-
-# set up vim-plug
-print_info "Setting up vim-plug..."
-curl -qfL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-nvim +PlugUpgrade +PlugInstall +PlugUpdate +qall
-
-# set up gnupg
-if host_has_tag "os:macos"; then
-  print_info "Setting up GNUPG..."
-  brew unlink gnupg && brew link --overwrite gnupg
-  gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
-  echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
-fi
-
-# set up syncthing
-if host_has_tag "os:ubuntu" && host_has_tag "apps:syncthing" && [[ "${user}" != "root" ]]; then
-  user="$(whoami)"
-  if [[ -d /run/systemd/system ]]; then
-    sudo systemctl enable "syncthing@${user}.service"
-    sudo systemctl start "syncthing@${user}.service"
+if host_has_tag "apps:sdkman"; then
+  print_info "Installing SDKMAN..."
+  if [ ! -d "${HOME}/.sdkman" ]; then
+    sdkman_installer=$(mktemp)
+    curl -fsSL "https://get.sdkman.io" -o "${sdkman_installer}"
+    bash "${sdkman_installer}"
+    rm "${sdkman_installer}"
   fi
+fi
+
+# clean up packages
+if host_has_tag "os:ubuntu"; then
+  print_info "Running apt autoremove..."
+  sudo apt -qq -y autoremove
+  print_info "Running apt autoclean..."
+  sudo apt -qq -y autoclean
+fi
+
+if host_has_tag "os:macos"; then
+  print_info "Running brew cleanup..."
+  brew cleanup
 fi
 
 print_info "Done!"
