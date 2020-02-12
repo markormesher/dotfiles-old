@@ -15,14 +15,6 @@
 " file type settings
 autocmd BufRead,BufNewFile *.json set filetype=jsonc
 
-" formatters
-au FileType javascript setlocal formatprg=prettier
-au FileType javascript.jsx setlocal formatprg=prettier
-au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
-au FileType html setlocal formatprg=js-beautify\ --type\ html
-au FileType scss setlocal formatprg=prettier\ --parser\ css
-au FileType css setlocal formatprg=prettier\ --parser\ css
-
 call plug#begin()
 
 " misc vim programs
@@ -84,7 +76,6 @@ let NERDTreeShowHidden=1 " always show dot files
 let NERDTreeQuitOnOpen=1 " quit NERDTree after opening a file
 map <Leader>m :NERDTreeToggle<CR>
 map <Leader>n :NERDTreeFind<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif " close vim if the only window left is NERDTree
 
 " FZF file finder settings
 map <Leader>, :FZF<CR>
@@ -102,7 +93,9 @@ let g:coc_global_extensions = [
 \ 'coc-yaml',
 \ 'coc-eslint',
 \ 'coc-prettier',
-\ 'coc-java'
+\ 'coc-java',
+\ 'coc-sh',
+\ 'coc-diagnostic'
 \ ]
 nmap <silent> g[ <Plug>(coc-diagnostic-prev)
 nmap <silent> g] <Plug>(coc-diagnostic-next)
@@ -113,6 +106,14 @@ nmap <silent> gr <Plug>(coc-references)
 nmap <leader>rn <Plug>(coc-rename)
 nmap <Leader>gt :<C-u>CocList outline<cr>
 map <leader>f :CocFix<CR>
+
+" formatters
+au FileType javascript setlocal formatprg=prettier
+au FileType javascript.jsx setlocal formatprg=prettier
+au FileType typescript setlocal formatprg=prettier\ --parser\ typescript
+au FileType html setlocal formatprg=js-beautify\ --type\ html
+au FileType scss setlocal formatprg=prettier\ --parser\ css
+au FileType css setlocal formatprg=prettier\ --parser\ css
 
 " colour scheme + edits
 let g:dracula_colorterm = 0

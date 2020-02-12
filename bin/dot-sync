@@ -8,26 +8,26 @@ if [ ! -d "${HOME}/dotfiles" ]; then
 fi
 
 cd "${HOME}/dotfiles"
-source bin/common-functions.sh
+source ./bin/common-functions.sh
 
 print_info "Clearing old sandbox directory"
 mkdir -p .sandbox
 rm -rf .sandbox/*
 
 print_info "Setting up symlinks"
-find "${HOME}/dotfiles" -iname "*.symlink" | while read file; do
+find "${HOME}/dotfiles" -iname "*.symlink" | while read -r file; do
   if ! file_matches_host_tags "${file}"; then
     continue
   fi
 
-  link=$(cat "${file}" | (grep " dot-link-to" || :) | cut -d ' ' -f 3 | sed "s#{HOME}#${HOME}#g")
+  link=$( ( ( grep " dot-link-to" || : ) | cut -d ' ' -f 3 | sed "s#{HOME}#${HOME}#g" ) < "${file}" )
   if [ -z "${link}" ]; then
     print_error "No 'dot-link-to' found for ${file}"
     exit 1
   fi
 
-  sandbox_file="${HOME}/dotfiles/.sandbox/$(cat "${file}" | md5sum | cut -d ' ' -f 1)"
-  cat "${file}" | grep -v " dot-link-to " | grep -v " dot-tags " > "${sandbox_file}"
+  sandbox_file="${HOME}/dotfiles/.sandbox/$( ( md5sum | cut -d ' ' -f 1 ) < "${file}" )"
+  ( grep -v " dot-link-to " | grep -v " dot-tags " ) < "${file}" > "${sandbox_file}"
 
   rm "${link}" 2> /dev/null || :
   mkdir -p "$(dirname "${link}")"
@@ -37,7 +37,7 @@ done
 
 print_info "Adding source scripts to bootstrapper"
 echo "" > .bootstrap
-find "${HOME}/dotfiles" -iname "*.source" | while read file; do
+find "${HOME}/dotfiles" -iname "*.source" | while read -r file; do
   if ! file_matches_host_tags "${file}"; then
     continue
   fi

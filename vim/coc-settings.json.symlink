@@ -1,5 +1,8 @@
 // dot-link-to {HOME}/.config/nvim/coc-settings.json
+
 {
+  "https.rejectUnauthorized": false,
+
   "suggest.noselect": false,
   "suggest.enablePreview": true,
 
@@ -14,6 +17,11 @@
   "diagnostic.warningSign": "++",
   "diagnostic.infoSign": "--",
   "diagnostic.hintSign": "--",
+
+  "diagnostic-languageserver.filetypes": {
+    "sh": "shellcheck",
+    "markdown": "markdownlint",
+  },
 
   // eslint
   "eslint.filetypes": [

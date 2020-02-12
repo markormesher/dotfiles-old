@@ -8,14 +8,14 @@ if [ ! -d "${HOME}/dotfiles" ]; then
 fi
 
 cd "${HOME}/dotfiles"
-source "bin/common-functions.sh"
+source ./bin/common-functions.sh
 
 # tags from .host-tags
-cat "${HOME}/dotfiles/.host-tags" | (grep -v -e '^#.*' || :) | (grep -v -e '^\s*$' || :)
+( ( grep -v -e '^#.*' || : ) | ( grep -v -e '^\s*$' || : ) ) < .host-tags
 
 # figure out the OS
 if [[ "${OSTYPE}" == *"linux"* ]]; then
-  os_release_name="$(cat /etc/os-release | grep '^NAME=')"
+  os_release_name="$( grep "^NAME=" < /etc/os-release )"
   if [[ "${os_release_name}" == *"Ubuntu"* ]]; then
     echo "os:ubuntu"
   else
