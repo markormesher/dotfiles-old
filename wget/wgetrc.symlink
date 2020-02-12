@@ -1,0 +1,4 @@
+# dot-link-to {HOME}/.wgetrc
+# dot-tags profile=work
+
+ca-certificate = /etc/ssl/certs/palantir-ca-bundle.crt

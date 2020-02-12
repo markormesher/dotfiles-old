@@ -1,9 +1,22 @@
+TXT_BOLD="`tput bold`"
+TXT_BLACK="`tput setaf 0`"
+TXT_RED="`tput setaf 1`"
+TXT_GREEN="`tput setaf 2`"
+TXT_YELLOW="`tput setaf 3`"
+TXT_MAGENTA="`tput setaf 5`"
+TXT_CYAN="`tput setaf 6`"
+TXT_RESET="`tput sgr0`"
+
 function print_info {
-  echo -e '\e[36m[ dotfiles ][ info ]\e[0m  '"${1}"
+  echo "[ dotfiles ][ ${TXT_CYAN}${TXT_BOLD}INFO${TXT_RESET} ]  ${1}"
+}
+
+function print_warn {
+  echo "[ dotfiles ][ ${TXT_YELLOW}${TXT_BOLD}WARN${TXT_RESET} ]  ${1}"
 }
 
 function print_error {
-  echo -e '\e[31m[ dotfiles ][ error ]\e[0m  '"${1}"
+  echo "[ dotfiles ][ ${TXT_RED}${TXT_BOLD}ERROR${TXT_RESET} ]  ${1}"
 }
 
 # check for the dependencies needed to run the dotfiles project itself
