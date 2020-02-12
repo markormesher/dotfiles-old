@@ -1,3 +1,4 @@
+// dot-link-to {HOME}/.config/nvim/coc-settings.json
 {
   "suggest.noselect": false,
   "suggest.enablePreview": true,

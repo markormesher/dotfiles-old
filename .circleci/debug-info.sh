@@ -2,6 +2,10 @@
 set -euo pipefail
 
 echo
+echo "env"
+env
+
+echo
 echo "whoami"
 whoami
 
@@ -20,3 +24,7 @@ cat /etc/os-release
 echo
 echo "ls -la"
 ls -la
+
+echo
+echo "get-host-tags"
+./bin/get-host-tags

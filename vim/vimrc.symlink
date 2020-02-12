@@ -1,3 +1,5 @@
+" dot-link-to {HOME}/.vimrc
+
 " custom leader key
 :let mapleader=","
 

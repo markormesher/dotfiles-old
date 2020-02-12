@@ -1,18 +1,23 @@
 version: 2
 
 aliases:
+  - &init-host-tags
+    name: Init Host Tags
+    command: echo "" > .host-tags
   - &debug-info
     name: Debug Info
     command: ./.circleci/debug-info.sh
   - &run-sync
     name: Run Sync
-    command: ./bin/dot-sync personal
+    command: ./bin/dot-sync
   - &run-setup
     name: Run Setup
     command: ./bin/dot-setup
 
 defaults: &defaults
   working_directory: ~/dotfiles
+  environment:
+    TERM: dumb
 
 jobs:
   setup-ubuntu-18.04:
@@ -21,6 +26,7 @@ jobs:
       - image: circleci/buildpack-deps:bionic
     steps:
       - checkout
+      - run: *init-host-tags
       - run: *debug-info
       - run: *run-sync
       - run: *run-setup
@@ -31,6 +37,7 @@ jobs:
       - image: circleci/buildpack-deps:disco
     steps:
       - checkout
+      - run: *init-host-tags
       - run: *debug-info
       - run: *run-sync
       - run: *run-setup

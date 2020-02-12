@@ -1,5 +1,5 @@
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
+export NVM_DIR="${HOME}/.nvm"
+[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh" --no-use
 
 function initnode {
   unalias node > /dev/null 2>&1
@@ -15,4 +15,3 @@ function initnode {
 alias node='initnode ; node $@'
 alias npm='initnode ; npm $@'
 alias yarn='initnode ; yarn $@'
-
