@@ -256,12 +256,10 @@ install_package --yum fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font
 # install syncthing
 if host_has_tag "apps:syncthing"; then
   install_package --yum syncthing
-  if host_has_tag "os:ubuntu" && [[ "${user}" != "root" ]]; then
-    user="$(whoami)"
-    if [[ -d /run/systemd/system ]]; then
-      sudo systemctl enable "syncthing@${user}.service"
-      sudo systemctl start "syncthing@${user}.service"
-    fi
+  user="$(whoami)"
+  if host_has_tag "os:ubuntu" && [[ "${user}" != "root" ]] && [[ -d /run/systemd/system ]]; then
+    sudo systemctl enable "syncthing@${user}.service"
+    sudo systemctl start "syncthing@${user}.service"
   fi
 fi
 

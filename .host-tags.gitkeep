@@ -1,16 +1,17 @@
 # Example host tags
 
 # profiles
-profile:work
 profile:personal
+profile:work
 
 # device types
-device:laptop
 device:desktop
+device:laptop
 device:server
 
 # application groups
+apps:borg
 apps:docker
 apps:photos
+apps:sdkman
 apps:syncthing
-apps:borg
