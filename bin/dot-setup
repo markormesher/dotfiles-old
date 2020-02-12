@@ -296,7 +296,7 @@ npm install -g \
   neovim
 
 # install docker
-if host_has_tag "appgroup=docker"; then
+if host_has_tag "apps:docker"; then
   # docker
   print_info "Installing docker..."
   if ! command -v docker > /dev/null; then

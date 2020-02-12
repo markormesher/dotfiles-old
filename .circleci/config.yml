@@ -16,6 +16,8 @@ aliases:
 
 defaults: &defaults
   working_directory: ~/dotfiles
+  environment:
+    TERM: dumb
 
 jobs:
   setup-ubuntu-18.04:

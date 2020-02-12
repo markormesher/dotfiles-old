@@ -1,4 +1,4 @@
-# dot-tags appgroup=docker
+# dot-tags apps:docker
 
 # Docker
 alias dk='docker'
