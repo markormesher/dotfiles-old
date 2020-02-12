@@ -1,38 +1,52 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-flavour="$1"
-if [ "$flavour" = "work" ]; then
-	filterfiles='grep -v .personal'
-elif [ "$flavour" = "personal" ]; then
-	filterfiles='grep -v .work'
-else
-	echo "Usage: dot-sync [personal|work]"
-	exit 1
+# sanity-check: is dotfiles in the right place?
+if [ ! -d "${HOME}/dotfiles" ]; then
+  echo "ERROR: ${HOME}/dotfiles does not exist"
+  exit 1
 fi
 
-if [ ! -d "$HOME/dotfiles" ]; then
-	echo "$HOME/dotfiles does not exist"
-	exit 1
-fi
+cd "${HOME}/dotfiles"
+source bin/common-functions.sh
 
-cd "$HOME/dotfiles"
+print_info "Clearing old sandbox directory"
+mkdir -p .sandbox
+rm -rf .sandbox/*
 
-echo "Setting up symlinks"
-find $(pwd) -iname "*.symlink*" | $filterfiles | while read file; do
-	link="$HOME/"$(echo "$file" | sed "s|^$(pwd)||" | cut -d '/' -f 3- | sed -E 's/\.symlink.*//')
-	real="$file"
-	rm "$link" 2> /dev/null
-	mkdir -p "$(dirname $link)"
-	ln -s "$real" "$link"
-	echo "  $link -> $real"
+print_info "Setting up symlinks"
+find "${HOME}/dotfiles" -iname "*.symlink" | while read file; do
+  if ! file_matches_host_tags "${file}"; then
+    continue
+  fi
+
+  link=$(cat "${file}" | (grep " dot-link-to" || :) | cut -d ' ' -f 3 | sed "s#{HOME}#${HOME}#g")
+  if [ -z "${link}" ]; then
+    print_error "No 'dot-link-to' found for ${file}"
+    exit 1
+  fi
+
+  sandbox_file="${HOME}/dotfiles/.sandbox/$(cat "${file}" | md5sum | cut -d ' ' -f 1)"
+  cat "${file}" | grep -v " dot-link-to " | grep -v " dot-tags " > "${sandbox_file}"
+
+  rm "${link}" 2> /dev/null || :
+  mkdir -p "$(dirname "${link}")"
+  ln -s "${sandbox_file}" "${link}"
+  print_info "${link} -> ${sandbox_file}"
 done
 
-newpath="/bin:/usr/local/bin:/usr/local/sbin:$HOME/dotfiles/bin:$PATH"
-newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"$newpath")"
-echo "PATH=\"$newpath\"" > "bootstrap"
+print_info "Adding source scripts to bootstrapper"
+echo "" > .bootstrap
+find "${HOME}/dotfiles" -iname "*.source" | while read file; do
+  if ! file_matches_host_tags "${file}"; then
+    continue
+  fi
 
-echo "Adding source scripts to bootstrapper"
-find $(pwd) -iname "*.source*" | sort | $filterfiles | while read file; do
-	echo "source \"$file\"" >> "bootstrap"
-	echo "  $file"
+  echo "source \"${file}\"" >> .bootstrap
+  print_info "${file}"
 done
+
+print_info "Setting up \$PATH"
+newpath="/bin:/usr/local/bin:/usr/local/sbin:${HOME}/dotfiles/bin:${PATH}"
+newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"${newpath}")"
+echo "export PATH=${newpath}" >> .bootstrap

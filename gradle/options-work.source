@@ -1,1 +1,3 @@
+# dot-tags profile:work
+
 export GRADLE_OPTS="-Djavax.net.ssl.trustStore=${JAVA_HOME}/jre/lib/security/cacerts -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.keyStore=${JAVA_HOME}/jre/lib/security/cacerts -Djavax.net.ssl.keyStorePassword=changeit"

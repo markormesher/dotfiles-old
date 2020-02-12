@@ -1,3 +1,5 @@
 node/*npm-tokens.source
 
-bootstrap
+.bootstrap
+.host-tags
+.sandbox/

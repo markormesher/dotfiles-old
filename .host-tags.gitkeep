@@ -1,0 +1,17 @@
+# Example host tags
+
+# profiles
+profile:personal
+profile:work
+
+# device types
+device:desktop
+device:laptop
+device:server
+
+# application groups
+apps:borg
+apps:docker
+apps:photos
+apps:sdkman
+apps:syncthing

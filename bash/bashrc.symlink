@@ -1,14 +1,10 @@
-source "$HOME/.bash_aliases"
-source "$HOME/dotfiles/bootstrap"
+# dot-link-to {HOME}/.bashrc
+
+source "${HOME}/.bash_aliases"
+source "${HOME}/dotfiles/.bootstrap"
 
 # Interactive shells only
 [[ $- == *i* ]] || return
-
-# Enable colours (see also .bash_aliases)
-if [[ "$OSTYPE" == *"darwin"* ]]; then
-	export CLICOLOR=1
-	export LSCOLORS=GxFxCxDxBxegedabagaced
-fi
 
 # Don't put duplicate lines or lines starting with space in the history
 HISTCONTROL=ignoreboth
@@ -69,6 +65,3 @@ fi
 export PATH=/usr/local/bin:$PATH
 
 # the SDKMAN installer script looks for the string 'sdkman-init.sh'; if it finds it, it won't touch this file
-
-# intentionally placed at the bottom of the file, after everything else has happened
-source "$HOME/dotfiles/bash/per-host-source"

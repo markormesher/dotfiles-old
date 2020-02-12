@@ -1,6 +1,9 @@
+# dot-link-to {HOME}/.gitconfig
+# dot-tags profile:work
+
 [user]
 	name = Mark Ormesher
-	email = me@markormesher.co.uk
+	email = mormesher@palantir.com
 	signingkey = DE308192D728C145
 [core]
 	autocrlf = input
@@ -14,5 +17,3 @@
 	process = git-lfs filter-process
 [commit]
 	gpgsign = true
-[gpg]
-	program = gpg2
