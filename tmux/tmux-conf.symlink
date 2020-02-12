@@ -1,4 +1,4 @@
-" dot-link-to {HOME}/.tmux.conf.symlink
+" dot-link-to {HOME}/.tmux.conf
 
 # remap prefix from C-b to C-a
 unbind C-b
