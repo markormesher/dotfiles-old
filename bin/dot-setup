@@ -209,7 +209,7 @@ fi
 
 # install os extras
 install_package --yum ubuntu-restricted-extras
-if host_has_tag "device:desktop"; then
+if host_has_tag "device:desktop" || host_has_tag "device:laptop"; then
   install_package --yum gnome-tweak-tool
 fi
 install_package --brew coreutils
