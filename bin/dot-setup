@@ -339,11 +339,16 @@ fi
 
 print_info "Installing Node versions"
 set +u
-nvm install 8
-nvm install 10
-nvm install 12
+nvm install --lts --latest-npm 10
+nvm install --lts --latest-npm 12
 nvm use 10
 nvm alias default 10
+set -u
+
+print_info "Cleaning up old Node versions..."
+set +u
+nvm ls 10 | sed '$ d' | perl -pe 's/\x1b\[[^m]+m//g;' | while read -r version; do nvm uninstall "${version}"; done
+nvm ls 12 | sed '$ d' | perl -pe 's/\x1b\[[^m]+m//g;' | while read -r version; do nvm uninstall "${version}"; done
 set -u
 
 # install global NPM packages
