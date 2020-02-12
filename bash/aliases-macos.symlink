@@ -1,5 +1,5 @@
 # dot-link-to {HOME}/.bash_aliases
-# dot-tags os=macos
+# dot-tags os:macos
 
 alias ..='cd ..'
 alias cp='rsync -avz --progress'

@@ -1,4 +1,4 @@
 # dot-link-to {HOME}/.npmrc
-# dot-tags profile=personal
+# dot-tags profile:personal
 
 packagelock=false

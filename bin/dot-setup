@@ -30,7 +30,7 @@ sudo -v
 
 print_info "Setting OS defaults..."
 
-if host_has_tag "os=macos"; then
+if host_has_tag "os:macos"; then
   # always open everything in Finder's list view
   defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
@@ -102,30 +102,39 @@ fi
 
 # update package registries
 
-if host_has_tag "os=ubuntu"; then
+if host_has_tag "os:ubuntu"; then
   print_info "Adding repositories..."
-  if ! apt-cache search --names-only '^neovim$' | grep neovim > /dev/null; then
-    sudo add-apt-repository -y ppa:neovim-ppa/stable
-  fi
-  if ! apt-key adv --list-public-keys 2> /dev/null | grep syncthing > /dev/null; then
-    curl -s https://syncthing.net/release-key.txt | sudo apt-key add - > /dev/null
-  fi
-  if [ ! -d /etc/apt/sources.list.d/syncthing.list ]; then
-    echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list > /dev/null
-  fi
+
+  # universe and multiverse packages
   if ! find /etc/apt/ -name *.list | xargs cat | grep '^[[:space:]]*deb' | grep universe > /dev/null; then
     sudo add-apt-repository -y universe
   fi
   if ! find /etc/apt/ -name *.list | xargs cat | grep '^[[:space:]]*deb' | grep multiverse > /dev/null; then
     sudo add-apt-repository -y multiverse
   fi
+
+  # neovim
+  if ! apt-cache search --names-only '^neovim$' | grep neovim > /dev/null; then
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
+  fi
+
+  # syncthing
+  if host_has_tag "apps:syncthing"; then
+    if ! apt-key adv --list-public-keys 2> /dev/null | grep syncthing > /dev/null; then
+      curl -s https://syncthing.net/release-key.txt | sudo apt-key add - > /dev/null
+    fi
+    if [ ! -d /etc/apt/sources.list.d/syncthing.list ]; then
+      echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list > /dev/null
+    fi
+  fi
+
   print_info "Running apt update..."
   sudo apt -qq -y update
   print_info "Running apt upgrade..."
   sudo apt -qq -y upgrade
 fi
 
-if host_has_tag "os=macos"; then
+if host_has_tag "os:macos"; then
   print_info "Running brew update..."
   brew update
   print_info "Running brew upgrade..."
@@ -212,14 +221,14 @@ brew_cask_packages=(
   font-lato
 )
 
-if host_has_tag "os=ubuntu"; then
+if host_has_tag "os:ubuntu"; then
   for item in "${common_packages[@]}" "${ubuntu_packages[@]}"; do
     print_info "Installing ${item}..."
     dpkg -s "${item}" > /dev/null 2>&1 || sudo apt -y -qq install "${item}"
   done
 fi
 
-if host_has_tag "os=macos"; then
+if host_has_tag "os:macos"; then
   for item in "${brew_taps[@]}"; do
     print_info "Tapping ${item}..."
     brew tap "${item}"
@@ -236,14 +245,14 @@ fi
 
 # clean up packages
 
-if host_has_tag "os=ubuntu"; then
+if host_has_tag "os:ubuntu"; then
   print_info "Running apt autoremove..."
   sudo apt -qq -y autoremove
   print_info "Running apt autoclean..."
   sudo apt -qq -y autoclean
 fi
 
-if host_has_tag "os=macos"; then
+if host_has_tag "os:macos"; then
   print_info "Running brew cleanup..."
   brew cleanup
 fi
@@ -291,7 +300,7 @@ if host_has_tag "appgroup=docker"; then
   # docker
   print_info "Installing docker..."
   if ! command -v docker > /dev/null; then
-    if host_has_tag "os=ubuntu"; then
+    if host_has_tag "os:ubuntu"; then
       docker_installer=$(mktemp)
       curl -fsSL https://get.docker.com -o "${docker_installer}"
       sudo sh $docker_installer
@@ -303,7 +312,7 @@ if host_has_tag "appgroup=docker"; then
       sudo usermod -aG docker $USER
     fi
 
-    if host_has_tag "os=macos"; then
+    if host_has_tag "os:macos"; then
       print_warn "Docker must be manually installed on MacOS - downloading the installer now..."
       wget -P "${HOME}/Downloads/" https://download.docker.com/mac/stable/Docker.dmg
     fi
@@ -338,7 +347,7 @@ curl -qfL https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -o
 nvim +PlugUpgrade +PlugInstall +PlugUpdate +qall
 
 # set up gnupg
-if host_has_tag "os=macos"; then
+if host_has_tag "os:macos"; then
   print_info "Setting up GNUPG..."
   brew unlink gnupg && brew link --overwrite gnupg
   gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
@@ -346,8 +355,8 @@ if host_has_tag "os=macos"; then
 fi
 
 # set up syncthing
-user="$(whoami)"
-if host_has_tag "os=ubuntu" && [[ "${user}" != "root" ]]; then
+if host_has_tag "os:ubuntu" && host_has_tag "apps:syncthing" && [[ "${user}" != "root" ]]; then
+  user="$(whoami)"
   if [[ -d /run/systemd/system ]]; then
     sudo systemctl enable "syncthing@${user}.service"
     sudo systemctl start "syncthing@${user}.service"

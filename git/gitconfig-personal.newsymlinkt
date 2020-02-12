@@ -1,5 +1,5 @@
 # dot-link-to {HOME}/.gitconfig
-# dot-tags profile=personal
+# dot-tags profile:personal
 
 [user]
 	name = Mark Ormesher

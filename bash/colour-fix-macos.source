@@ -1,4 +1,4 @@
-# dot-tags os=macos
+# dot-tags os:macos
 
 # see also bash aliases
 export CLICOLOR=1

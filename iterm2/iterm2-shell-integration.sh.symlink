@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # dot-link-to {HOME}/.iterm2-shell-integration.sh
-# dot-tags os=macos
+# dot-tags os:macos
 
 # The iTerm2 customizations fall under the following license:
 #
