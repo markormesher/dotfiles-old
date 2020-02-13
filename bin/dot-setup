@@ -23,7 +23,7 @@ set -u
 
 # multi-platform installer
 function install_package {
-  yum=""
+  apt=""
   brew_tap=""
   brew_cask=""
   brew=""
@@ -33,13 +33,13 @@ function install_package {
     shift
     case "${key}" in
       --common)
-        yum="$1"
+        apt="$1"
         brew="$1"
         shift
         ;;
 
-      --yum)
-        yum="$1"
+      --apt)
+        apt="$1"
         shift
         ;;
 
@@ -61,10 +61,10 @@ function install_package {
   done
 
   if host_has_tag "os:ubuntu"; then
-    if [ -n "${yum}" ]; then
-      print_info "Installing ${yum}..."
-      if ! dpkg -s "${yum}" &> /dev/null; then
-        sudo apt -y -qq install "${yum}"
+    if [ -n "${apt}" ]; then
+      print_info "Installing ${apt}..."
+      if ! dpkg -s "${apt}" &> /dev/null; then
+        sudo apt -y -qq install "${apt}"
       fi
     fi
   fi
@@ -86,6 +86,15 @@ function install_package {
         brew install "${brew}"
       fi
     fi
+  fi
+}
+
+function ppa_is_added {
+  search_str="$1"
+  if find /etc/apt/ -name "*.list" -print0 | xargs --null cat | grep '^[[:space:]]*deb' | grep "${search_str}" &> /dev/null; then
+    return 0
+  else
+    return 1
   fi
 }
 
@@ -174,13 +183,19 @@ fi
 
 # update package registries
 if host_has_tag "os:ubuntu"; then
+
+  # make sure we have add-apt-repository
+  print_info "Adding software tools..."
+  sudo apt install software-properties-common
+  sudo apt update
+
   print_info "Adding repositories..."
 
   # universe and multiverse packages
-  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep universe > /dev/null; then
+  if ! ppa_is_added universe; then
     sudo add-apt-repository -y universe
   fi
-  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep multiverse > /dev/null; then
+  if ! ppa_is_added multiverse; then
     sudo add-apt-repository -y multiverse
   fi
 
@@ -194,9 +209,14 @@ if host_has_tag "os:ubuntu"; then
     if ! apt-key adv --list-public-keys 2> /dev/null | grep syncthing > /dev/null; then
       curl -s https://syncthing.net/release-key.txt | sudo apt-key add - > /dev/null
     fi
-    if [ ! -d /etc/apt/sources.list.d/syncthing.list ]; then
+    if ! ppa_is_added syncthing; then
       echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list > /dev/null
     fi
+  fi
+
+  # web server
+  if ! ppa_is_added certbot; then
+    sudo add-apt-repository -y ppa:certbot/certbot
   fi
 
   print_info "Running apt update..."
@@ -213,15 +233,15 @@ if host_has_tag "os:macos"; then
 fi
 
 # install os extras
-install_package --yum ubuntu-restricted-extras
+install_package --apt ubuntu-restricted-extras
 if host_has_tag "device:desktop" || host_has_tag "device:laptop"; then
-  install_package --yum gnome-tweak-tool
+  install_package --apt gnome-tweak-tool
 fi
 install_package --brew coreutils
 
 # install tools for extra file systems
-install_package --yum exfat-fuse
-install_package --yum exfat-utils
+install_package --apt exfat-fuse
+install_package --apt exfat-utils
 
 # install network tools
 install_package --ubuntu net-tools
@@ -240,7 +260,7 @@ install_package --common zip
 install_package --common unzip
 install_package --common gzip
 install_package --common pigz
-install_package --brew xz --yum xz-utils
+install_package --brew xz --apt xz-utils
 
 # install misc tools
 install_package --common colordiff
@@ -257,11 +277,11 @@ fi
 nvim +PlugUpgrade +PlugInstall +PlugUpdate +qall
 
 # install fonts
-install_package --yum fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font-lato
+install_package --apt fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font-lato
 
 # install syncthing
 if host_has_tag "apps:syncthing"; then
-  install_package --yum syncthing
+  install_package --apt syncthing
   user="$(whoami)"
   if host_has_tag "os:ubuntu" && [[ "${user}" != "root" ]] && [[ -d /run/systemd/system ]]; then
     sudo systemctl enable "syncthing@${user}.service"
@@ -293,6 +313,13 @@ if host_has_tag "os:macos"; then
   brew unlink gnupg && brew link --overwrite gnupg
   gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
   echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+fi
+
+# install webserver packages
+if host_has_tag "apps:webserver"; then
+  install_package --apt certbot
+  install_package --apt python-certbot-nginx
+  install_package --apt nginx
 fi
 
 # install docker

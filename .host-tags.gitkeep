@@ -15,3 +15,4 @@ apps:docker
 apps:photos
 apps:sdkman
 apps:syncthing
+apps:webserver
