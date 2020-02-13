@@ -199,6 +199,11 @@ if host_has_tag "os:ubuntu"; then
     fi
   fi
 
+  # web server
+  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep certbot > /dev/null; then
+    sudo add-apt-repository -y ppa:certbot/certbot
+  fi
+
   print_info "Running apt update..."
   sudo apt -qq -y update
   print_info "Running apt upgrade..."
@@ -293,6 +298,12 @@ if host_has_tag "os:macos"; then
   brew unlink gnupg && brew link --overwrite gnupg
   gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
   echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+fi
+
+# install webserver packages
+if host_has_tag "apps:webserver"; then
+  install_package --yum certbot
+  install_package --yum python-certbot-nginx
 fi
 
 # install docker
