@@ -7,4 +7,6 @@ alias dkl='docker logs'
 alias dklf='docker logs -f'
 
 # Docker Compose
-command -v docker-compose &>/dev/null && alias dc='docker-compose'
+if command -v docker-compose &> /dev/null; then
+  alias dc='docker-compose'
+fi

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+shopt -s expand_aliases
 
 # sanity-check: is dotfiles in the right place?
 if [ ! -d "${HOME}/dotfiles" ]; then
@@ -8,13 +9,17 @@ if [ ! -d "${HOME}/dotfiles" ]; then
 fi
 
 cd "${HOME}/dotfiles"
-source "./bin/common-functions.sh"
+source ./bin/common-functions.sh
 
 # sanity check: several bits of this script require that dot-sync has been run
 if ! grep -q 'dotfiles/.bootstrap' "${HOME}/.bashrc"; then
   print_error "Looks like dot-sync has not been run yet"
   exit 1
 fi
+
+set +u
+source ./.bootstrap
+set -u
 
 # multi-platform installer
 function install_package {
@@ -325,6 +330,11 @@ fi
 
 # install Node Version Manager and Node versions
 print_info "Installing Node Version Manager..."
+
+unalias node
+unalias npm
+unalias yarn
+
 if [ -d "${HOME}/.nvm" ]; then
   export NVM_DIR="${HOME}/.nvm" && \. "${NVM_DIR}/nvm.sh"
 else
@@ -347,9 +357,11 @@ set -u
 
 print_info "Cleaning up old Node versions..."
 set +u
-nvm ls 10 | sed '$ d' | perl -pe 's/\x1b\[[^m]+m//g;' | while read -r version; do nvm uninstall "${version}"; done
-nvm ls 12 | sed '$ d' | perl -pe 's/\x1b\[[^m]+m//g;' | while read -r version; do nvm uninstall "${version}"; done
+nvm ls 10 | head -n -1 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | while read -r version; do nvm uninstall "${version}"; done
+nvm ls 12 | head -n -1 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | while read -r version; do nvm uninstall "${version}"; done
 set -u
+
+source ./node/020.node-version-manager.source
 
 # install global NPM packages
 print_info "Installing global NPM packages..."

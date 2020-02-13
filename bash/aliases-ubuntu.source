@@ -1,4 +1,3 @@
-# dot-link-to {HOME}/.bash_aliases
 # dot-tags os:ubuntu
 
 alias ..='cd ..'
