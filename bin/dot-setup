@@ -313,6 +313,7 @@ fi
 if host_has_tag "apps:webserver"; then
   install_package --yum certbot
   install_package --yum python-certbot-nginx
+  install_package --yum nginx
 fi
 
 # install docker
