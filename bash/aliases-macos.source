@@ -16,6 +16,7 @@ alias shuf='gshuf'
 alias split='gsplit'
 alias tail='gtail'
 alias tar='gtar'
+alias xargs='gxargs'
 
 # change 'ls' to directories-first
 alias l='gls --color=auto -h --group-directories-first'

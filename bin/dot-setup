@@ -89,6 +89,15 @@ function install_package {
   fi
 }
 
+function ppa_is_added {
+  search_str="$1"
+  if find /etc/apt/ -name "*.list" -print0 | xargs --null cat | grep '^[[:space:]]*deb' | grep "${search_str}" &> /dev/null; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 # obtain root powers
 print_info "Checking for sudo..."
 if ! command -v sudo > /dev/null; then
@@ -177,10 +186,10 @@ if host_has_tag "os:ubuntu"; then
   print_info "Adding repositories..."
 
   # universe and multiverse packages
-  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep universe > /dev/null; then
+  if ! ppa_is_added universe; then
     sudo add-apt-repository -y universe
   fi
-  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep multiverse > /dev/null; then
+  if ! ppa_is_added multiverse; then
     sudo add-apt-repository -y multiverse
   fi
 
@@ -194,13 +203,13 @@ if host_has_tag "os:ubuntu"; then
     if ! apt-key adv --list-public-keys 2> /dev/null | grep syncthing > /dev/null; then
       curl -s https://syncthing.net/release-key.txt | sudo apt-key add - > /dev/null
     fi
-    if [ ! -d /etc/apt/sources.list.d/syncthing.list ]; then
+    if ! ppa_is_added syncthing; then
       echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list > /dev/null
     fi
   fi
 
   # web server
-  if ! find /etc/apt/ -name "*.list" -print0 | xargs cat | grep '^[[:space:]]*deb' | grep certbot > /dev/null; then
+  if ! ppa_is_added certbot; then
     sudo add-apt-repository -y ppa:certbot/certbot
   fi
 
