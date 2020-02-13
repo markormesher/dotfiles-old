@@ -32,13 +32,6 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
   fi
 fi
 
-# make the dotfiles project work on mac
-if [[ "${OSTYPE}" == "darwin"* ]]; then
-  alias sed="gsed"
-  alias readlink="greadlink"
-  alias grep="ggrep"
-fi
-
 function host_has_tag {
   tag="$1"
   "${HOME}/dotfiles/bin/get-host-tags" | grep -e '^'"${tag}"'$' > /dev/null 2>&1
