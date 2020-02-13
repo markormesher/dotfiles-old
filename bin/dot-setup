@@ -23,7 +23,7 @@ set -u
 
 # multi-platform installer
 function install_package {
-  yum=""
+  apt=""
   brew_tap=""
   brew_cask=""
   brew=""
@@ -33,13 +33,13 @@ function install_package {
     shift
     case "${key}" in
       --common)
-        yum="$1"
+        apt="$1"
         brew="$1"
         shift
         ;;
 
-      --yum)
-        yum="$1"
+      --apt)
+        apt="$1"
         shift
         ;;
 
@@ -61,10 +61,10 @@ function install_package {
   done
 
   if host_has_tag "os:ubuntu"; then
-    if [ -n "${yum}" ]; then
-      print_info "Installing ${yum}..."
-      if ! dpkg -s "${yum}" &> /dev/null; then
-        sudo apt -y -qq install "${yum}"
+    if [ -n "${apt}" ]; then
+      print_info "Installing ${apt}..."
+      if ! dpkg -s "${apt}" &> /dev/null; then
+        sudo apt -y -qq install "${apt}"
       fi
     fi
   fi
@@ -227,15 +227,15 @@ if host_has_tag "os:macos"; then
 fi
 
 # install os extras
-install_package --yum ubuntu-restricted-extras
+install_package --apt ubuntu-restricted-extras
 if host_has_tag "device:desktop" || host_has_tag "device:laptop"; then
-  install_package --yum gnome-tweak-tool
+  install_package --apt gnome-tweak-tool
 fi
 install_package --brew coreutils
 
 # install tools for extra file systems
-install_package --yum exfat-fuse
-install_package --yum exfat-utils
+install_package --apt exfat-fuse
+install_package --apt exfat-utils
 
 # install network tools
 install_package --ubuntu net-tools
@@ -254,7 +254,7 @@ install_package --common zip
 install_package --common unzip
 install_package --common gzip
 install_package --common pigz
-install_package --brew xz --yum xz-utils
+install_package --brew xz --apt xz-utils
 
 # install misc tools
 install_package --common colordiff
@@ -271,11 +271,11 @@ fi
 nvim +PlugUpgrade +PlugInstall +PlugUpdate +qall
 
 # install fonts
-install_package --yum fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font-lato
+install_package --apt fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font-lato
 
 # install syncthing
 if host_has_tag "apps:syncthing"; then
-  install_package --yum syncthing
+  install_package --apt syncthing
   user="$(whoami)"
   if host_has_tag "os:ubuntu" && [[ "${user}" != "root" ]] && [[ -d /run/systemd/system ]]; then
     sudo systemctl enable "syncthing@${user}.service"
@@ -311,9 +311,9 @@ fi
 
 # install webserver packages
 if host_has_tag "apps:webserver"; then
-  install_package --yum certbot
-  install_package --yum python-certbot-nginx
-  install_package --yum nginx
+  install_package --apt certbot
+  install_package --apt python-certbot-nginx
+  install_package --apt nginx
 fi
 
 # install docker
