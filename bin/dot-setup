@@ -183,6 +183,12 @@ fi
 
 # update package registries
 if host_has_tag "os:ubuntu"; then
+
+  # make sure we have add-apt-repository
+  print_info "Adding software tools..."
+  sudo apt install software-properties-common
+  sudo apt update
+
   print_info "Adding repositories..."
 
   # universe and multiverse packages
