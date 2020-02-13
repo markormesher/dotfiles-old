@@ -215,8 +215,10 @@ if host_has_tag "os:ubuntu"; then
   fi
 
   # web server
-  if ! ppa_is_added certbot; then
-    sudo add-apt-repository -y ppa:certbot/certbot
+  if host_has_tag "apps:webserver"; then
+    if ! ppa_is_added certbot; then
+      sudo add-apt-repository -y ppa:certbot/certbot
+    fi
   fi
 
   print_info "Running apt update..."
