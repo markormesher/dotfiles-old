@@ -1,4 +1,4 @@
-if [[ -t 1 ]]; then
+if [[ -t 1 ]] && [[ "${TERM}" != "dumb" ]]; then
   TXT_BOLD="$(tput bold)"
   TXT_BLACK="$(tput setaf 0)"
   TXT_RED="$(tput setaf 1)"
