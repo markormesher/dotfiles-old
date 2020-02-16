@@ -1,11 +1,18 @@
-TXT_BOLD="$(tput bold || :)"
-TXT_BLACK="$(tput setaf 0 || :)"
-TXT_RED="$(tput setaf 1 || :)"
-TXT_GREEN="$(tput setaf 2 || :)"
-TXT_YELLOW="$(tput setaf 3 || :)"
-TXT_MAGENTA="$(tput setaf 5 || :)"
-TXT_CYAN="$(tput setaf 6 || :)"
-TXT_RESET="$(tput sgr0 || :)"
+TXT_BOLD="$(if [[ -t 1 ]]; then tput bold; fi)"
+TXT_BLACK="$(if [[ -t 1 ]]; then tput setaf 0; fi)"
+TXT_RED="$(if [[ -t 1 ]]; then tput setaf 1; fi)"
+TXT_GREEN="$(if [[ -t 1 ]]; then tput setaf 2; fi)"
+TXT_YELLOW="$(if [[ -t 1 ]]; then tput setaf 3; fi)"
+TXT_BLUE="$(if [[ -t 1 ]]; then tput setaf 3; fi)"
+TXT_MAGENTA="$(if [[ -t 1 ]]; then tput setaf 5; fi)"
+TXT_CYAN="$(if [[ -t 1 ]]; then tput setaf 6; fi)"
+TXT_RESET="$(if [[ -t 1 ]]; then tput sgr0; fi)"
+
+function print_debug {
+  if [ ! -z ${DEBUG+x} ]; then
+    echo "[ dotfiles ][ ${TXT_MAGENTA}${TXT_BOLD}DEBUG${TXT_RESET} ]  ${1}"
+  fi
+}
 
 function print_info {
   echo "[ dotfiles ][ ${TXT_CYAN}${TXT_BOLD}INFO${TXT_RESET} ]  ${1}"

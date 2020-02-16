@@ -13,7 +13,7 @@ source ./bin/common-functions.sh
 # tags from .host-tags
 ( ( grep -v -e '^#.*' || : ) | ( grep -v -e '^\s*$' || : ) ) < .host-tags
 
-# figure out the OS
+# tag for the OS
 if [[ "${OSTYPE}" == *"linux"* ]]; then
   os_release_name="$( grep "^NAME=" < /etc/os-release )"
   if [[ "${os_release_name}" == *"Ubuntu"* ]]; then
@@ -28,3 +28,6 @@ else
   print_error "Couldn't detect OS"
   exit 1
 fi
+
+# tag for the hostname
+echo "hostname:$(hostname)"

@@ -32,7 +32,7 @@ find "${HOME}/dotfiles" -iname "*.symlink" | while read -r file; do
   rm "${link}" 2> /dev/null || :
   mkdir -p "$(dirname "${link}")"
   ln -s "${sandbox_file}" "${link}"
-  print_info "${link} -> ${sandbox_file}"
+  print_debug "${link} -> ${sandbox_file}"
 done
 
 print_info "Adding source scripts to bootstrapper"
@@ -43,10 +43,22 @@ find "${HOME}/dotfiles" -iname "*.source" | while read -r file; do
   fi
 
   echo "source \"${file}\"" >> .bootstrap
-  print_info "${file}"
+  print_debug "${file}"
 done
 
 print_info "Setting up \$PATH"
 newpath="/bin:/usr/local/bin:/usr/local/sbin:${HOME}/dotfiles/bin:${PATH}"
 newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"${newpath}")"
 echo "export PATH=${newpath}" >> .bootstrap
+
+print_info "Setting up crontab"
+new_crontab="$(mktemp)"
+find "${HOME}/dotfiles" -iname "*.cron" | while read -r file; do
+  if ! file_matches_host_tags "${file}"; then
+    continue
+  fi
+
+  ( grep -v " dot-tags " | grep -v '^$' ) < "${file}" >> "${new_crontab}"
+  print_debug "${file}"
+done
+crontab "${new_crontab}"

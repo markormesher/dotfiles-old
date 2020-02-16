@@ -1,0 +1,1 @@
+*/15 * * * * bash -l -c "cd ~/dotfiles; ./bin/dot-sync &>> ./dotfiles-meta/.cron-log"
