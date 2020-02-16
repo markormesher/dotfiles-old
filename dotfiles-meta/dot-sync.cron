@@ -1,1 +1,1 @@
-*/15 * * * * bash -l -c "cd ~/dotfiles; ./bin/dot-sync &>> ./dotfiles-meta/.cron-log"
+* * * * * bash -l -c "cd ~/dotfiles; ./dotfiles-meta/self-update.sh &>> ./dotfiles-meta/.cron-log; ./bin/dot-sync &>> ./dotfiles-meta/.cron-log"
