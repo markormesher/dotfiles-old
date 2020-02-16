@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 # sanity-check: is dotfiles in the right place?
 if [ ! -d "${HOME}/dotfiles" ]; then
