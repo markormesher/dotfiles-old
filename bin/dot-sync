@@ -62,3 +62,4 @@ find "${HOME}/dotfiles" -iname "*.cron" | while read -r file; do
   print_debug "${file}"
 done
 crontab "${new_crontab}"
+rm "${new_crontab}"
