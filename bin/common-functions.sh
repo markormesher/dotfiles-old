@@ -1,12 +1,24 @@
-TXT_BOLD="$(if [[ -t 1 ]]; then tput bold; fi)"
-TXT_BLACK="$(if [[ -t 1 ]]; then tput setaf 0; fi)"
-TXT_RED="$(if [[ -t 1 ]]; then tput setaf 1; fi)"
-TXT_GREEN="$(if [[ -t 1 ]]; then tput setaf 2; fi)"
-TXT_YELLOW="$(if [[ -t 1 ]]; then tput setaf 3; fi)"
-TXT_BLUE="$(if [[ -t 1 ]]; then tput setaf 3; fi)"
-TXT_MAGENTA="$(if [[ -t 1 ]]; then tput setaf 5; fi)"
-TXT_CYAN="$(if [[ -t 1 ]]; then tput setaf 6; fi)"
-TXT_RESET="$(if [[ -t 1 ]]; then tput sgr0; fi)"
+if [[ -t 1 ]]; then
+  TXT_BOLD="$(tput bold)"
+  TXT_BLACK="$(tput setaf 0)"
+  TXT_RED="$(tput setaf 1)"
+  TXT_GREEN="$(tput setaf 2)"
+  TXT_YELLOW="$(tput setaf 3)"
+  TXT_BLUE="$(tput setaf 3)"
+  TXT_MAGENTA="$(tput setaf 5)"
+  TXT_CYAN="$(tput setaf 6)"
+  TXT_RESET="$(tput sgr0)"
+else
+  TXT_BOLD=""
+  TXT_BLACK=""
+  TXT_RED=""
+  TXT_GREEN=""
+  TXT_YELLOW=""
+  TXT_BLUE=""
+  TXT_MAGENTA=""
+  TXT_CYAN=""
+  TXT_RESET=""
+fi
 
 function print_debug {
   if [ ! -z ${DEBUG+x} ]; then
