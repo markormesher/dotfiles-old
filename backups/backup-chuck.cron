@@ -1,0 +1,3 @@
+# dot-tags hostname:chuck
+
+20 */2 * * *  bash -l -c "cd ~/backup-scripts; source .secrets; ./backup-chuck-to-morgan.sh >> .log 2>&1"

@@ -1,0 +1,3 @@
+# dot-tags hostname:casey
+
+30 * * * * bash -l -c "initnode; node ~/Pictures/.utils/sync-wallpapers.js"
