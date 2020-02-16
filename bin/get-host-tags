@@ -30,4 +30,8 @@ else
 fi
 
 # tag for the hostname
-echo "hostname:$(hostname)"
+if [ -z ${CIRCLECI+x} ]; then
+  echo "hostname:$(hostname)"
+else
+  echo "hostname:circleci"
+fi
