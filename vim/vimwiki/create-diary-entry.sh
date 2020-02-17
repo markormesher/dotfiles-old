@@ -13,3 +13,6 @@ curr_date=$(date +%Y-%m-%d)
 cp ~/dotfiles/vim/vimwiki/diary-skeleton.md "./${curr_date}.md"
 sed -i "s/{DATE}/${curr_date}/" "./${curr_date}.md"
 echo "Created $(pwd)/${curr_date}.md"
+
+# update links
+nvim ~/vimwiki/diary/diary.md +:VimwikiDiaryGenerateLinks +:q
