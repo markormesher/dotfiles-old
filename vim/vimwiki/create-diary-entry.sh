@@ -10,9 +10,14 @@ done
 
 # create an entry for today
 curr_date=$(date +%Y-%m-%d)
-cp ~/dotfiles/vim/vimwiki/diary-skeleton.md "./${curr_date}.md"
-sed -i "s/{DATE}/${curr_date}/" "./${curr_date}.md"
-echo "Created $(pwd)/${curr_date}.md"
+new_file="$(pwd)/${curr_date}.md"
+if [ ! -f "${new_file}" ]; then
+  cp ~/dotfiles/vim/vimwiki/diary-skeleton.md "${new_file}"
+  sed -i "s/{DATE}/${curr_date}/" "${new_file}"
+  echo "Created ${new_file}"
+else
+  echo "${new_file} already exists"
+fi
 
 # update links
 nvim ~/vimwiki/diary/diary.md +:VimwikiDiaryGenerateLinks +:q
