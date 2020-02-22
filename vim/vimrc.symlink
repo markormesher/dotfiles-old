@@ -29,6 +29,8 @@ Plug 'pgilad/vim-skeletons'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'kshenoy/vim-signature'
+Plug 'camspiers/animate.vim'
+Plug 'camspiers/lens.vim'
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -40,6 +42,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'alvan/vim-closetag'
 Plug 'jiangmiao/auto-pairs'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'unblevable/quick-scope'
 
 " TS language support
 Plug 'leafgarland/typescript-vim'
@@ -121,6 +124,9 @@ let g:dracula_colorterm = 0
 :silent! colorscheme dracula
 
 " colour scheme overrides
+highlight QuickScopePrimary cterm=underline
+highlight QuickScopeSecondary cterm=underline,italic
+
 highlight CocErrorSign ctermfg=DarkRed
 highlight CocErrorVirtualText ctermfg=DarkRed
 highlight CocErrorHighlight cterm=underline
