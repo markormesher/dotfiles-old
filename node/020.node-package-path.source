@@ -4,7 +4,7 @@ if command -v npm &> /dev/null; then
   if [ ! -d "${npm_packages}" ]; then
     mkdir -p "${npm_packages}"
   fi
-  npm config set prefix "${npm_packages}"
+  /usr/bin/npm config set prefix "${npm_packages}"
 fi
 
 export PATH="${PATH}:${npm_packages}/bin"
