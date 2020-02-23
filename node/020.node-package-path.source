@@ -1,6 +1,9 @@
 npm_packages="${HOME}/.npm-packages"
 
 if command -v npm &> /dev/null; then
+  if [ ! -d "${npm_packages}" ]; then
+    mkdir -p "${npm_packages}"
+  fi
   npm config set prefix "${npm_packages}"
 fi
 
