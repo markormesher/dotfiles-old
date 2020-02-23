@@ -1,4 +1,5 @@
 npm_packages="${HOME}/.npm-packages"
+touch -p "${npm_packages}"
 
 if command -v npm &> /dev/null; then
   npm config set prefix "${npm_packages}"
