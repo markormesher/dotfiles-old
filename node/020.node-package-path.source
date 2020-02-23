@@ -1,6 +1,8 @@
 npm_packages="${HOME}/.npm-packages"
 
-npm config set prefix "${npm_packages}"
+if command -v npm &> /dev/null; then
+  npm config set prefix "${npm_packages}"
+fi
 
 export PATH="${PATH}:${npm_packages}/bin"
 export MANPATH="${MANPATH-$(manpath)}:${npm_packages}/share/man"

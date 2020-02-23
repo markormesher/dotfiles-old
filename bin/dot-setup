@@ -258,7 +258,7 @@ install_package --apt exfat-fuse
 install_package --apt exfat-utils
 
 # install network tools
-install_package --ubuntu net-tools
+install_package --apt net-tools
 install_package --common nmap
 install_package --common wget
 install_package --common curl
@@ -277,7 +277,7 @@ install_package --common pigz
 install_package --brew xz --apt xz-utils
 
 # install node
-install_package --ubuntu nodejs --brew node@${NODE_VERSION}
+install_package --apt nodejs --brew node@${NODE_VERSION}
 
 # install misc tools
 install_package --common colordiff
@@ -374,6 +374,7 @@ fi
 
 # install global NPM packages
 print_info "Installing global NPM packages..."
+/usr/bin/npm i -g npm yarn
 npm install -g \
   yarn \
   typescript \
