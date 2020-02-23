@@ -46,6 +46,10 @@ find "${HOME}/dotfiles" -iname "*.source" | while read -r file; do
   print_debug "${file}"
 done
 
+set +u
+source ./.bootstrap
+set -u
+
 print_info "Setting up \$PATH"
 newpath="/bin:/usr/local/bin:/usr/local/sbin:${HOME}/dotfiles/bin:${PATH}"
 newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"${newpath}")"

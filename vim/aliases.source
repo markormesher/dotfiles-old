@@ -1,4 +1,16 @@
-alias v="initnode ; nvim"
-alias vim="initnode ; nvim"
-alias vw="initnode ; nvim +VimwikiIndex"
-alias vd="initnode ; nvim +VimwikiMakeDiaryNote"
+alias v='nvim'
+alias vim='nvim'
+
+function vw {
+  old_path="$(pwd)"
+  cd ~/vimwiki
+  nvim +:VimwikiIndex
+  cd "$old_path"
+}
+
+function vd {
+  old_path="$(pwd)"
+  cd ~/vimwiki
+  nvim +:VimwikiMakeDiaryNote
+  cd "$old_path"
+}

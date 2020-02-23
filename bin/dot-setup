@@ -2,6 +2,9 @@
 set -euo pipefail
 shopt -s expand_aliases
 
+# settings
+NODE_VERSION=12
+
 # sanity-check: is dotfiles in the right place?
 if [ ! -d "${HOME}/dotfiles" ]; then
   echo "ERROR: ${HOME}/dotfiles does not exist"
@@ -221,6 +224,15 @@ if host_has_tag "os:ubuntu"; then
     fi
   fi
 
+  # node
+  if ! apt-key adv --list-public-keys 2> /dev/null | grep nodesource > /dev/null; then
+    curl -sSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add - > /dev/null
+  fi
+  # always re-write the file to pick up updates to $NODE_VERSION
+  sudo rm -f /etc/apt/sources.list.d/nodesource.list
+  echo "deb https://deb.nodesource.com/node_${NODE_VERSION}.x $(lsb_release -s -c) main" | sudo tee /etc/apt/sources.list.d/nodesource.list > /dev/null
+  echo "deb-src https://deb.nodesource.com/node_${NODE_VERSION}.x $(lsb_release -s -c) main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list > /dev/null
+
   print_info "Running apt update..."
   sudo apt -qq -y update
   print_info "Running apt upgrade..."
@@ -263,6 +275,9 @@ install_package --common unzip
 install_package --common gzip
 install_package --common pigz
 install_package --brew xz --apt xz-utils
+
+# install node
+install_package --ubuntu nodejs --brew node@${NODE_VERSION}
 
 # install misc tools
 install_package --common colordiff
@@ -356,41 +371,6 @@ if host_has_tag "apps:docker"; then
     sudo chmod +x /usr/local/bin/docker-compose
   fi
 fi
-
-# install Node Version Manager and Node versions
-print_info "Installing Node Version Manager..."
-
-unalias node
-unalias npm
-unalias yarn
-
-if [ -d "${HOME}/.nvm" ]; then
-  export NVM_DIR="${HOME}/.nvm" && \. "${NVM_DIR}/nvm.sh"
-else
-  set +u
-  export NVM_DIR="${HOME}/.nvm" && (
-    git clone https://github.com/nvm-sh/nvm.git "${NVM_DIR}"
-    cd "${NVM_DIR}"
-    git checkout "$(git describe --abbrev=0 --tags --match "v[0-9]*" "$(git rev-list --tags --max-count=1)")"
-  ) && \. "${NVM_DIR}/nvm.sh"
-  set -u
-fi
-
-print_info "Installing Node versions"
-set +u
-nvm install --lts --latest-npm 10
-nvm install --lts --latest-npm 12
-nvm use 10
-nvm alias default 10
-set -u
-
-print_info "Cleaning up old Node versions..."
-set +u
-nvm ls 10 | head -n -1 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | while read -r version; do nvm uninstall "${version}"; done
-nvm ls 12 | head -n -1 | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" | while read -r version; do nvm uninstall "${version}"; done
-set -u
-
-source ./node/020.node-version-manager.source
 
 # install global NPM packages
 print_info "Installing global NPM packages..."

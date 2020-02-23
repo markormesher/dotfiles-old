@@ -1,21 +1,29 @@
 " dot-link-to {HOME}/.vimrc
 
+set nocompatible
+syntax on
+
 " custom leader key
-:let mapleader=","
+let mapleader=","
 
 " indentation (may be overwritten by vim-sleuth)
-:set expandtab
-:set tabstop=2
-:set softtabstop=2
-:set shiftwidth=2
+set expandtab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 
 " buffer settings
-:set hidden " hide buffers when abandoned
+set hidden " hide buffers when abandoned
 
-" line numbers
-:set number relativenumber
+" gutter settings
+set number relativenumber
+set signcolumn=yes
+
+" gutter settings
+set scrolloff=10
 
 " file type settings
+filetype plugin on
 autocmd BufRead,BufNewFile *.json set filetype=jsonc
 
 call plug#begin()
@@ -34,6 +42,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'kshenoy/vim-signature'
 Plug 'camspiers/animate.vim'
 Plug 'camspiers/lens.vim'
+Plug 'blueyed/vim-diminactive'
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -111,9 +120,9 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-nmap <leader>rn <Plug>(coc-rename)
+nmap <Leader>rn <Plug>(coc-rename)
 nmap <Leader>gt :<C-u>CocList outline<cr>
-map <leader>f :CocFix<CR>
+map <Leader>f :CocFix<CR>
 
 " formatters
 au FileType javascript setlocal formatprg=prettier

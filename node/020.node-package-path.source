@@ -1,0 +1,11 @@
+npm_packages="${HOME}/.npm-packages"
+
+npm config set prefix "${npm_packages}"
+
+export PATH="${PATH}:${npm_packages}/bin"
+export MANPATH="${MANPATH-$(manpath)}:${npm_packages}/share/man"
+
+alias npm='${npm_packages}/bin/npm'
+alias npx='${npm_packages}/bin/npx'
+alias yarn='${npm_packages}/bin/yarn'
+alias yarnpkg='${npm_packages}/bin/yarnpkg'
