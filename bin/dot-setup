@@ -374,6 +374,7 @@ fi
 
 # install global NPM packages
 print_info "Installing global NPM packages..."
+source ./node/020.node-package-path.source
 /usr/bin/npm i -g npm yarn
 npm install -g \
   yarn \
