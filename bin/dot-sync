@@ -46,14 +46,19 @@ find "${HOME}/dotfiles" -iname "*.source" | while read -r file; do
   print_debug "${file}"
 done
 
-set +u
-source ./.bootstrap
-set -u
-
 print_info "Setting up \$PATH"
-newpath="/bin:/usr/local/bin:/usr/local/sbin:${HOME}/dotfiles/bin:${PATH}"
-newpath="$(perl -ne 'print join(":", grep { !$seen{$_}++ } split(/:/))' <<<"${newpath}")"
-echo "export PATH=${newpath}" >> .bootstrap
+new_path_list=$(mktemp)
+find "${HOME}/dotfiles" -iname "*.path" | while read -r file; do
+  if ! file_matches_host_tags "${file}"; then
+    continue
+  fi
+
+  ( grep -v " dot-tags " ) < "${file}" >> "${new_path_list}"
+  print_debug "${file}"
+done
+new_path=$( ( sort | uniq | awk '{ print length, $0 }' | sort -n -s | cut -d ' ' -f 2- ) < "${new_path_list}" | tr '\n' ':' )
+echo "export PATH=${new_path}" >> .bootstrap
+rm "${new_path_list}"
 
 print_info "Setting up crontab"
 new_crontab="$(mktemp)"
