@@ -1,0 +1,2 @@
+alias java='${HOME}/.sdkman/candidates/java/current/bin/java'
+alias javac='${HOME}/.sdkman/candidates/java/current/bin/javac'
