@@ -57,7 +57,6 @@ find "${HOME}/dotfiles" -iname "*.path" | while read -r file; do
   print_debug "${file}"
 done
 new_path=$( ( sed '/^\s*$/d' | sed "s#{HOME}#${HOME}#g" | sort | uniq | awk '{ print length, $0 }' | sort -n -s | cut -d ' ' -f 2- ) < "${new_path_list}" | tr '\n' ':' )
-echo "${new_path}"
 echo "export PATH=${new_path}" >> .bootstrap
 rm "${new_path_list}"
 
