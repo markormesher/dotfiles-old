@@ -12,9 +12,6 @@ if [ -f /usr/bin/npm ]; then
   alias original_npm='/usr/bin/npm'
 fi
 
-export PATH="${PATH}:${npm_packages}/bin"
-export MANPATH="${MANPATH-$(manpath)}:${npm_packages}/share/man"
-
 alias npm='${npm_packages}/bin/npm'
 alias npx='${npm_packages}/bin/npx'
 alias yarn='${npm_packages}/bin/yarn'
