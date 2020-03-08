@@ -306,6 +306,11 @@ if host_has_tag "apps:syncthing"; then
   fi
 fi
 
+# install backup tools
+if host_has_tag "apps:borg"; then
+  install_package --apt borgbackup
+fi
+
 # install photo tools
 if host_has_tag "apps:photos"; then
   install_package --common exiftool
@@ -324,7 +329,7 @@ print_info "Setting up Git LFS..."
 git lfs install
 
 # install gnupg
-install_package --common gnupg
+install_package --apt gnupg2 --brew gnupg
 if host_has_tag "os:macos"; then
   print_info "Setting up GNUPG..."
   brew unlink gnupg && brew link --overwrite gnupg
