@@ -40,7 +40,6 @@ Plug 'pgilad/vim-skeletons'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'kshenoy/vim-signature'
-Plug 'camspiers/animate.vim'
 Plug 'camspiers/lens.vim'
 Plug 'blueyed/vim-diminactive'
 
