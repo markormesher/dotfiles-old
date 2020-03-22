@@ -37,7 +37,7 @@ done
 
 print_info "Adding source scripts to bootstrapper"
 echo "" > .bootstrap
-find "${HOME}/dotfiles" -iname "*.source" | while read -r file; do
+find "${HOME}/dotfiles" -iname "*.source" | sort | while read -r file; do
   if ! file_matches_host_tags "${file}"; then
     continue
   fi
