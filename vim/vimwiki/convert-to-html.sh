@@ -1,17 +1,17 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-# only run on the chuck server
-if [ "$(hostname)" != *chuck* ]; then
+if [[ ! $(hostname) = chuck ]]; then
   exit 0
 fi
 
 vimwiki_dir="${HOME}/vimwiki"
 html_dir="/var/web/wiki.markormesher.co.uk/html"
+script_dir="${HOME}/dotfiles/vim/vimwiki"
 
 # prepare the output directory
 mkdir -p "${html_dir}"
-rm -rf "${html_dir}/*"
+rm -rf "${html_dir}/"*
 
 # copy all media
 cp -r "${vimwiki_dir}/media" "${html_dir}/."
@@ -32,9 +32,10 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
   sed -i 's/\[[.oO]\]/[ ]/g' "${edited_input}"
 
   # convert unlinked urls
-  sed -i 's,(https?://(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)),LINK: \1,g' "${edited_input}"
+  sed -E -i 's|(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*))|[\1](\1)|g' "${edited_input}"
 
   html_output="${html_dir}/${file_no_ext}.html"
+  html_output=$(echo "${html_output}" | sed "s#${vimwiki_dir}/##")
   mkdir -p $(dirname "${html_output}")
 
   pandoc \
@@ -44,9 +45,9 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
     -t html \
     --standalone \
     --metadata "pagetitle=${basename_no_ext}" \
-    --include-in-header ./scripts/include-in-header.html \
-    --include-before-body ./scripts/include-before-body.html \
-    --include-after-body ./scripts/include-after-body.html
+    --include-in-header "${script_dir}/include-in-header.html" \
+    --include-before-body "${script_dir}/include-before-body.html" \
+    --include-after-body "${script_dir}/include-after-body.html"
 
   # update .md links to .html
   sed -i 's/.md"/.html")/g' "${html_output}"
