@@ -20,9 +20,15 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
   file_no_ext=$(echo "${file}" | rev| cut -d '.' -f 2- | rev)
   basename_no_ext=$(basename "${file}" | rev | cut -d '.' -f 2- | rev)
 
-  # we're going to edit the input, so we'll work on a copy of it
+  # we're going to edit some files, so we'll work on a copies of them
   edited_input=$(mktemp)
+  edited_header=$(mktemp)
+  edited_before_body=$(mktemp)
+  edited_after_body=$(mktemp)
   cat "${file}" > "${edited_input}"
+  cat "${script_dir}/include-in-header.html" > "${edited_header}"
+  cat "${script_dir}/include-before-body.html" > "${edited_before_body}"
+  cat "${script_dir}/include-after-body.html" > "${edited_after_body}"
 
   # convert < and > symbols
   sed -i 's/[^^]>/\&gt;/g' "${edited_input}"
@@ -33,6 +39,10 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
 
   # convert unlinked urls
   sed -E -i 's|(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*))|[\1](\1)|g' "${edited_input}"
+
+  # rendered date
+  render_date=$(date +"%Y-%m-%d %H:%M:%S")
+  sed -i "s|{DATE}|${render_date}|" "${edited_after_body}"
 
   html_output="${html_dir}/${file_no_ext}.html"
   html_output=$(echo "${html_output}" | sed "s#${vimwiki_dir}/##")
@@ -45,12 +55,12 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
     -t html \
     --standalone \
     --metadata "pagetitle=${basename_no_ext}" \
-    --include-in-header "${script_dir}/include-in-header.html" \
-    --include-before-body "${script_dir}/include-before-body.html" \
-    --include-after-body "${script_dir}/include-after-body.html"
+    --include-in-header "${edited_header}" \
+    --include-before-body "${edited_before_body}" \
+    --include-after-body "${edited_after_body}"
 
   # update .md links to .html
   sed -i 's/.md"/.html")/g' "${html_output}"
 
-  rm "${edited_input}"
+  rm "${edited_input}" "${edited_header}" "${edited_after_body}" "${edited_before_body}"
 done
