@@ -342,7 +342,20 @@ if host_has_tag "apps:webserver"; then
   install_package --apt certbot
   install_package --apt python-certbot-nginx
   install_package --apt nginx
+  install_package --apt fail2ban
   install_package --apt apache2-utils
+
+  # set up fail2ban
+  sudo mkdir -p /etc/fail2ban
+  sudo rm -f /etc/fail2ban/jail.local
+  sudo ln -s "${HOME}/dotfiles/fail2ban/jail.local" /etc/fail2ban/jail.local
+
+  sudo mkdir -p /etc/fail2ban/filter.d
+  sudo rm -f /etc/fail2ban/filter.d/nginx-http-auth.conf
+  sudo ln -s "${HOME}/dotfiles/fail2ban/nginx-http-auth.conf" /etc/fail2ban/filter.d/nginx-http-auth.conf
+
+  sudo systemctl enable fail2ban
+  sudo systemctl restart fail2ban
 fi
 
 # install docker

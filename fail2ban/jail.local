@@ -1,0 +1,8 @@
+[DEFAULT]
+ignoreip = 127.0.0.1/8
+bantime = 1h
+findtime = 10m
+maxretry = 5
+
+[nginx-http-auth]
+enabled = true
