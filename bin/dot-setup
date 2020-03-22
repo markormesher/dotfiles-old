@@ -342,6 +342,7 @@ if host_has_tag "apps:webserver"; then
   install_package --apt certbot
   install_package --apt python-certbot-nginx
   install_package --apt nginx
+  install_package --apt apache2-utils
 fi
 
 # install docker
