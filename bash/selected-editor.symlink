@@ -1,0 +1,3 @@
+# dot-link-to {HOME}/.selected_editor
+
+SELECTED_EDITOR="/usr/bin/nvim"
