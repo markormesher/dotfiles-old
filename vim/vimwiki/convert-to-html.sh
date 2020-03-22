@@ -38,11 +38,16 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
   sed -i 's/\[[.oO]\]/[ ]/g' "${edited_input}"
 
   # convert unlinked urls
-  sed -E -i 's|(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*))|[\1](\1)|g' "${edited_input}"
+  sed -E -i 's#((https?://[-a-z0-9.]*[-a-z0-9])(/\S*[^?!., ])?)#[\2/~/](\1)#g' "${edited_input}"
 
   # rendered date
   render_date=$(date +"%Y-%m-%d %H:%M:%S")
   sed -i "s|{DATE}|${render_date}|" "${edited_after_body}"
+
+  # remove "back to root" on root page
+  if [[ "${basename_no_ext}" = "index" ]]; then
+    sed -i '/.*Back to Root.*/d' "${edited_before_body}" "${edited_after_body}"
+  fi
 
   html_output="${html_dir}/${file_no_ext}.html"
   html_output=$(echo "${html_output}" | sed "s#${vimwiki_dir}/##")

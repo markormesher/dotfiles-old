@@ -15,10 +15,11 @@ body {
   margin: auto;
   max-width: 42rem;
   background-color: #fefefe;
+  overflow-wrap: break-word;
 }
 
 .header {
-  margin: .5rem 0 1rem;
+  margin: 1rem 0 0;
 }
 
 .footer {
@@ -26,12 +27,16 @@ body {
   color: #bbb;
 }
 
-.footer .left {
+.header .left, .footer .left {
   float: left;
 }
 
-.footer .right {
+.header .right, .footer .right {
   float: right;
+}
+
+.header .clear, .footer .clear {
+  clear: both;
 }
 
 *::selection {
@@ -99,6 +104,7 @@ blockquote {
 }
 
 hr {
+  clear: both;
   display: block;
   height: 0;
   border: none;
