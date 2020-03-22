@@ -41,7 +41,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'kshenoy/vim-signature'
 Plug 'camspiers/lens.vim'
-Plug 'blueyed/vim-diminactive'
+Plug 'ap/vim-css-color'
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }

@@ -2,3 +2,4 @@
 # dot-tags profile:personal
 
 packagelock=false
+//registry.npmjs.org/:_authToken=${NPM_TOKEN}
