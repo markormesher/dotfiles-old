@@ -240,6 +240,10 @@ if host_has_tag "os:ubuntu"; then
 fi
 
 if host_has_tag "os:macos"; then
+  print_info "Adding core homebrew taps..."
+  install_package --brew-tap homebrew/core
+  install_package --brew-tap homebrew/cask
+  install_package --brew-tap homebrew/cask-versions
   print_info "Running brew update..."
   brew update
   print_info "Running brew upgrade..."
