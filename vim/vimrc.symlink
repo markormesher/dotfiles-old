@@ -94,6 +94,7 @@ map <Leader>m :NERDTreeToggle<CR>
 map <Leader>n :NERDTreeFind<CR>
 
 " FZF file finder settings
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 map <Leader>, :FZF<CR>
 
 " closetag settings

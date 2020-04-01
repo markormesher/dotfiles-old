@@ -272,6 +272,7 @@ install_package --common netcat
 install_package --common htop
 install_package --common pv
 install_package --common tmux
+install_package --apt silversearcher-ag --brew the_silver_searcher
 
 # install compression tools
 install_package --common zip
