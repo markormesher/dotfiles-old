@@ -6,54 +6,70 @@ syntax on
 " custom leader key
 let mapleader=","
 
-" indentation (may be overwritten by vim-sleuth)
+" dont re-draw during macros
+set lazyredraw
+
+" highlight changes/replacements using `s` as they're typed (neovim only)
+set inccommand=nosplit
+
+" make searches without caps case-insensitive
+set smartcase
+set ignorecase
+
+" keep undo history even after exiting
+set undofile
+
+" default tab size of 2 spaces (may be overwritten by vim-sleuth)
 set expandtab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 
-" buffer settings
-set hidden " hide buffers when abandoned
+" hide buffers when abandoned
+set hidden
 
-" gutter settings
+" show current line number and relative numbers on other lines
 set number relativenumber
+
+" always show the sign column to avoid janky changes when signs appear/disappear
 set signcolumn=yes
 
-" gutter settings
+" keep the cursor X lines away from the top and bottom of the window (except
+" for the start and end of files)
 set scrolloff=10
 
-" file type settings
+" set file types
 filetype plugin on
 autocmd BufRead,BufNewFile *.json set filetype=jsonc
 
 call plug#begin()
 
-" misc vim programs
+" vimwiki plugin
 Plug 'vimwiki/vimwiki'
 
 " snippets and skeletons
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'pgilad/vim-skeletons'
+Plug 'SirVer/ultisnips' " snippet engine
+Plug 'honza/vim-snippets' " snippet source
+Plug 'pgilad/vim-skeletons' " automatic skeleton for file types
 
 " vim interface
-Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'kshenoy/vim-signature'
-Plug 'camspiers/lens.vim'
-Plug 'ap/vim-css-color'
+Plug 'scrooloose/nerdtree' " file browser
+Plug 'vim-airline/vim-airline' " status line
+Plug 'kshenoy/vim-signature' " show marks in the gutter
+Plug 'camspiers/lens.vim' " resize windows automatically
+Plug 'ap/vim-css-color' " highlight css colour names and hex codes
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 
 " generic typing/coding assistance
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-sleuth'
-Plug 'alvan/vim-closetag'
-Plug 'jiangmiao/auto-pairs'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'unblevable/quick-scope'
+Plug 'tpope/vim-commentary' " gcc to (un-)comment a line, gc to (un-)comment a visual selection
+Plug 'tpope/vim-sleuth' " detect the indentation style for a file and adjust settings accordingly
+Plug 'alvan/vim-closetag' " auto close XML/HTML tags
+Plug 'jiangmiao/auto-pairs' " pairing for quotes, brackets, etc.
+Plug 'ntpeters/vim-better-whitespace' " highlight trailing whitespace and provides :StripWhitespace helper
+Plug 'unblevable/quick-scope' " highlight good options for f and F navigation within a line
 
 " TS language support
 Plug 'leafgarland/typescript-vim'
@@ -62,9 +78,9 @@ Plug 'ianks/vim-tsx'
 " auto-complete and language server support
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
 
-" colour schemes
+" general UI
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'blueyed/vim-diminactive'
+Plug 'blueyed/vim-diminactive' " dim inactive vim windows
 
 call plug#end()
 
@@ -132,11 +148,13 @@ au FileType html setlocal formatprg=js-beautify\ --type\ html
 au FileType scss setlocal formatprg=prettier\ --parser\ css
 au FileType css setlocal formatprg=prettier\ --parser\ css
 
+" auto-format on exit
+:autocmd BufWritePost * :StripWhitespace
+
 " colour scheme + edits
 let g:dracula_colorterm = 0
 :silent! colorscheme dracula
 
-" colour scheme overrides
 highlight QuickScopePrimary cterm=underline
 highlight QuickScopeSecondary cterm=underline,italic
 
