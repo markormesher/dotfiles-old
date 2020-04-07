@@ -10,3 +10,12 @@
     </p>
   </div>
 </div>
+<script type="text/javascript">
+  const allListItems = document.getElementsByTagName("li");
+  for (let i = 0; i < allListItems.length; ++i) {
+    const li = allListItems.item(i);
+    if (li.innerHTML.trim().startsWith("<input type=\"checkbox\" disabled=\"\" checked=\"\">")) {
+      li.className = li.className + " completed";
+    }
+  }
+</script>
