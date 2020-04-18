@@ -299,7 +299,9 @@ fi
 nvim +PlugUpgrade +PlugInstall +PlugUpdate +qall
 
 # install fonts
-install_package --apt fonts-lato --brew-tap homebrew/cask-fonts --brew-cask font-lato
+install_package --brew-tap homebrew/cask-fonts
+install_package --apt fonts-lato --brew-cask font-lato
+install_package --apt fonts-firacode --brew-cask font-fira-code
 
 # install syncthing
 if host_has_tag "apps:syncthing"; then
