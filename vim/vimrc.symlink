@@ -78,8 +78,12 @@ Plug 'ianks/vim-tsx'
 " auto-complete and language server support
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
 
-" general UI
+" colour schemes
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+
+" general UI
 Plug 'blueyed/vim-diminactive' " dim inactive vim windows
 
 call plug#end()
