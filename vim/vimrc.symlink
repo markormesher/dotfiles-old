@@ -58,6 +58,7 @@ Plug 'vim-airline/vim-airline' " status line
 Plug 'kshenoy/vim-signature' " show marks in the gutter
 Plug 'camspiers/lens.vim' " resize windows automatically
 Plug 'ap/vim-css-color' " highlight css colour names and hex codes
+Plug 'junegunn/vim-peekaboo' " register previews
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
