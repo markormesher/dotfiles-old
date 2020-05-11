@@ -189,6 +189,7 @@ if host_has_tag "os:ubuntu"; then
 
   # make sure we have add-apt-repository
   print_info "Adding software tools..."
+  sudo apt update
   sudo apt install software-properties-common
   sudo apt update
 
