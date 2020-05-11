@@ -47,4 +47,4 @@ workflows:
   test:
     jobs:
       - setup-ubuntu-18.04
-      - setup-ubuntu-19.04
+      - setup-ubuntu-20.04
