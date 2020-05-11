@@ -191,7 +191,6 @@ if host_has_tag "os:ubuntu"; then
   print_info "Adding software tools..."
   sudo apt update
   sudo apt install software-properties-common
-  sudo apt update
 
   print_info "Adding repositories..."
 
