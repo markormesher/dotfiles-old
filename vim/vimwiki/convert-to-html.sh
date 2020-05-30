@@ -56,7 +56,7 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
   pandoc \
     -i "${edited_input}" \
     -o "${html_output}" \
-    -f markdown \
+    -f markdown+multiline_tables \
     -t html \
     --standalone \
     --metadata "pagetitle=${basename_no_ext}" \
