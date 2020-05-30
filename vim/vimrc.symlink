@@ -58,6 +58,8 @@ Plug 'vim-airline/vim-airline' " status line
 Plug 'kshenoy/vim-signature' " show marks in the gutter
 Plug 'camspiers/lens.vim' " resize windows automatically
 Plug 'ap/vim-css-color' " highlight css colour names and hex codes
+Plug 'junegunn/vim-peekaboo' " register previews
+Plug 'voldikss/vim-floaterm' " floating terminal
 
 " fzf file search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -116,6 +118,11 @@ map <Leader>n :NERDTreeFind<CR>
 " FZF file finder settings
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 map <Leader>, :FZF<CR>
+
+" shortcut for floaterm
+nnoremap <silent> <C-Space> :FloatermToggle<CR>
+tnoremap <silent> <C-Space> <C-\><C-n>:FloatermToggle<CR>
+let g:floaterm_autoclose = 2 " close the terminal when the shell exits
 
 " closetag settings
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.jsx,*.tsx'
