@@ -139,7 +139,8 @@ let g:coc_global_extensions = [
 \ 'coc-prettier',
 \ 'coc-java',
 \ 'coc-sh',
-\ 'coc-diagnostic'
+\ 'coc-diagnostic',
+\ 'coc-spell-checker'
 \ ]
 nmap <silent> g[ <Plug>(coc-diagnostic-prev)
 nmap <silent> g] <Plug>(coc-diagnostic-next)
