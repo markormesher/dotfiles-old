@@ -47,5 +47,21 @@
   // spell-check behaviour
   "cSpell.language": "en-GB",
   "cSpell.minWordLength": 2,
-  "cSpell.enabledLanguageIds": ["markdown", "plaintext"]
+  "cSpell.enabledLanguageIds": [
+    "markdown",
+    "plaintext",
+    "vimwiki"
+  ],
+  "cSpell.userWords": [
+    "Ana",
+    "Ana's",
+    "Pimlico",
+    "coronavirus",
+    "deadlift",
+    "deadlifts",
+    "hackathon",
+    "hackathons",
+    "lockdown",
+    "wishlist"
+  ]
 }
