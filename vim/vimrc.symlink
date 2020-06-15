@@ -117,7 +117,8 @@ map <Leader>n :NERDTreeFind<CR>
 
 " FZF file finder settings
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
-map <Leader>, :FZF<CR>
+map <Leader>, :Files<CR>
+map <Leader>. :Ag<CR>
 
 " shortcut for floaterm
 nnoremap <silent> <C-Space> :FloatermToggle<CR>
