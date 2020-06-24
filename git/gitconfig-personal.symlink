@@ -8,6 +8,8 @@
 [core]
 	autocrlf = input
 	safecrlf = false
+[pull]
+	ebase = false
 [push]
 	default = current
 [filter "lfs"]
