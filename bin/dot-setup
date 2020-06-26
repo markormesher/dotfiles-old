@@ -412,7 +412,6 @@ npm install -g \
   @typescript-eslint/eslint-plugin \
   javascript-typescript-langserver \
   js-beautify \
-  fd-find \
   neovim \
   bash-language-server \
   markdownlint
