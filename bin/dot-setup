@@ -3,7 +3,8 @@ set -euo pipefail
 shopt -s expand_aliases
 
 # settings
-NODE_VERSION=14
+NODE_VERSION=14 # don't forget to update node/node-macos.path
+PYTHON_VERSION=3.8.3
 
 # sanity-check: is dotfiles in the right place?
 if [ ! -d "${HOME}/dotfiles" ]; then
@@ -118,8 +119,8 @@ if host_has_tag "os:macos"; then
   # always open everything in Finder's list view
   defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
-  # show the ~/Library folder
-  chflags nohidden ~/Library
+  # show the ${HOME}/Library folder
+  chflags nohidden "${HOME}/Library"
 
   # set standby delay to 24 hours (default is 1 hour)
   sudo pmset -a standbydelay 86400
@@ -284,6 +285,19 @@ install_package --brew xz --apt xz-utils
 # install node
 install_package --apt nodejs --brew node@${NODE_VERSION}
 
+# install python environment manager
+print_info "Installing pyenv..."
+if [ -d "${HOME}/.pyenv" ]; then
+  curr_dir=$(pwd)
+  cd "${HOME}/.pyenv"
+  git pull
+  cd "$curr_dir"
+else
+  git clone https://github.com/pyenv/pyenv.git "${HOME}/.pyenv"
+fi
+"${HOME}/.pyenv/bin/pyenv" install ${PYTHON_VERSION}
+"${HOME}/.pyenv/bin/pyenv" global ${PYTHON_VERSION}
+
 # install misc tools
 install_package --common colordiff
 install_package --common jq
@@ -340,8 +354,8 @@ install_package --apt gnupg2 --brew gnupg
 if host_has_tag "os:macos"; then
   print_info "Setting up GNUPG..."
   brew unlink gnupg && brew link --overwrite gnupg
-  gsed -i '/^pinentry-program/d' ~/.gnupg/gpg-agent.conf
-  echo "pinentry-program /usr/local/bin/pinentry-mac" >> ~/.gnupg/gpg-agent.conf
+  gsed -i '/^pinentry-program/d' "${HOME}/.gnupg/gpg-agent.conf"
+  echo "pinentry-program /usr/local/bin/pinentry-mac" >> "${HOME}/.gnupg/gpg-agent.conf"
 fi
 
 # install webserver packages
@@ -415,6 +429,11 @@ npm install -g \
   neovim \
   bash-language-server \
   markdownlint
+
+# install global Python packages
+source ./python/pyenv.source
+pip install -U pip
+pip install pynvim neovim-remote
 
 # install SDKMAN (see also the sdk/sdk-manager.source file)
 if host_has_tag "apps:sdkman"; then
