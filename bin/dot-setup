@@ -76,7 +76,7 @@ function install_package {
   if host_has_tag "os:macos"; then
     if [ -n "${brew_tap}" ]; then
       print_info "Tapping ${brew_tap}..."
-      brew tap "${brew_tap}"
+      HOMEBREW_NO_AUTO_UPDATE=1 brew tap "${brew_tap}"
     fi
     if [ -n "${brew_cask}" ]; then
       print_info "Installing ${brew_cask}..."
@@ -295,7 +295,9 @@ if [ -d "${HOME}/.pyenv" ]; then
 else
   git clone https://github.com/pyenv/pyenv.git "${HOME}/.pyenv"
 fi
-"${HOME}/.pyenv/bin/pyenv" install ${PYTHON_VERSION}
+if [ ! -d "${HOME}/.pyenv/versions/${PYTHON_VERSION}" ]; then
+  "${HOME}/.pyenv/bin/pyenv" install ${PYTHON_VERSION}
+fi
 "${HOME}/.pyenv/bin/pyenv" global ${PYTHON_VERSION}
 
 # install misc tools
@@ -431,6 +433,7 @@ npm install -g \
   markdownlint
 
 # install global Python packages
+print_info "Installing global Python packages..."
 source ./python/pyenv.source
 pip install -U pip
 pip install pynvim neovim-remote
