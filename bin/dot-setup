@@ -3,7 +3,7 @@ set -euo pipefail
 shopt -s expand_aliases
 
 # settings
-NODE_VERSION=12
+NODE_VERSION=14
 
 # sanity-check: is dotfiles in the right place?
 if [ ! -d "${HOME}/dotfiles" ]; then
