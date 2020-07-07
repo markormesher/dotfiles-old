@@ -1,6 +1,6 @@
-/bin
-/sbin
-/usr/bin
-/usr/sbin
-/usr/local/bin
-/usr/local/sbin
+9000#/bin
+9000#/sbin
+9000#/usr/bin
+9000#/usr/sbin
+9000#/usr/local/bin
+9000#/usr/local/sbin
