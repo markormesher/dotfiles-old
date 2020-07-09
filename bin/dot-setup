@@ -3,7 +3,7 @@ set -euo pipefail
 shopt -s expand_aliases
 
 # settings
-NODE_VERSION=14 # don't forget to update node/node-macos.path
+NODE_VERSION=14 # don't forget to look for references for node@VERSION elsewhere
 PYTHON_VERSION=3.8.3
 
 # sanity-check: is dotfiles in the right place?

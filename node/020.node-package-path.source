@@ -3,13 +3,17 @@ if [ ! -d "${npm_packages}" ]; then
   mkdir -p "${npm_packages}"
 fi
 
-if [ -f /usr/local/opt/node@12/bin/npm ]; then
-  /usr/local/opt/node@12/bin/npm config set prefix "${npm_packages}"
-  alias original_npm='/usr/local/opt/node@12/bin/npm'
+if [ -f /bin/npm ]; then
+  /bin/npm config set prefix "${npm_packages}"
+  alias original_npm='/bin/npm'
 fi
 if [ -f /usr/bin/npm ]; then
   /usr/bin/npm config set prefix "${npm_packages}"
   alias original_npm='/usr/bin/npm'
+fi
+if [ -f /usr/local/opt/node@14/bin/npm ]; then
+  /usr/local/opt/node@14/bin/npm config set prefix "${npm_packages}"
+  alias original_npm='/usr/local/opt/node@14/bin/npm'
 fi
 
 alias npm='${npm_packages}/bin/npm'
