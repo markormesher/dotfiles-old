@@ -1,6 +1,17 @@
 // dot-link-to {HOME}/.config/nvim/coc-settings.json
 
 {
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "js",
+    "jsx",
+    "markdown",
+    "sass",
+    "scss",
+    "ts",
+    "tsx"
+  ],
+
   "https.rejectUnauthorized": false,
 
   "suggest.noselect": false,
