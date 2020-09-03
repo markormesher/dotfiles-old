@@ -56,7 +56,6 @@ Plug 'pgilad/vim-skeletons' " automatic skeleton for file types
 Plug 'scrooloose/nerdtree' " file browser
 Plug 'vim-airline/vim-airline' " status line
 Plug 'kshenoy/vim-signature' " show marks in the gutter
-Plug 'camspiers/lens.vim' " resize windows automatically
 Plug 'ap/vim-css-color' " highlight css colour names and hex codes
 Plug 'junegunn/vim-peekaboo' " register previews
 Plug 'voldikss/vim-floaterm' " floating terminal
