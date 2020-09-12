@@ -56,7 +56,6 @@ Plug 'pgilad/vim-skeletons' " automatic skeleton for file types
 Plug 'scrooloose/nerdtree' " file browser
 Plug 'vim-airline/vim-airline' " status line
 Plug 'kshenoy/vim-signature' " show marks in the gutter
-Plug 'ap/vim-css-color' " highlight css colour names and hex codes
 Plug 'junegunn/vim-peekaboo' " register previews
 Plug 'voldikss/vim-floaterm' " floating terminal
 
@@ -146,7 +145,6 @@ nmap <silent> g[ <Plug>(coc-diagnostic-prev)
 nmap <silent> g] <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <Leader>rn <Plug>(coc-rename)
 nmap <Leader>gt :<C-u>CocList outline<cr>
