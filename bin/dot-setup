@@ -258,6 +258,15 @@ if host_has_tag "device:desktop" || host_has_tag "device:laptop"; then
 fi
 install_package --brew coreutils
 
+# install compiler tools and libs
+install_package --apt build-essential
+install_package --apt libbz2-dev
+install_package --apt libffi-dev
+install_package --apt libreadline-dev
+install_package --apt libssl-dev
+install_package --apt zlib1g-dev
+install_package --apt zlib1g-dev
+
 # install tools for extra file systems
 install_package --apt exfat-fuse
 install_package --apt exfat-utils
