@@ -11,6 +11,7 @@
   </div>
 </div>
 <script type="text/javascript">
+  // add classes to completed checkbox items
   const allListItems = document.getElementsByTagName("li");
   for (let i = 0; i < allListItems.length; ++i) {
     const li = allListItems.item(i);
@@ -19,11 +20,17 @@
     }
   }
 
+  // add classes to tag links
   const links = document.getElementsByTagName("a");
   for (let i = 0; i < links.length; ++i) {
     const link = links.item(i);
     if (link.innerHTML.startsWith("@")) {
       link.className = link.className + " tag-link";
     }
+  }
+
+  // update style of homepage (short-term hack until I do the homepage properly)
+  if (document.location.href.endsWith("/")) {
+    document.getElementsByTagName("p").item(0).style = "text-align: center";
   }
 </script>
