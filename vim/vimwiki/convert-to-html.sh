@@ -9,6 +9,10 @@ vimwiki_dir="${HOME}/vimwiki"
 html_dir="/var/web/wiki.markormesher.co.uk/html"
 script_dir="${HOME}/dotfiles/vim/vimwiki"
 
+pandoc_format="markdown"
+pandoc_format="${pandoc_format}+multiline_tables"
+pandoc_format="${pandoc_format}-citations" # Pandoc's citation format conflicts with @tags
+
 # prepare the output directory
 mkdir -p "${html_dir}"
 rm -rf "${html_dir}/"*
@@ -40,6 +44,24 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
   # convert unlinked urls
   sed -E -i 's#((https?://[-a-z0-9.]*[-a-z0-9])(/\S*[^?!., ])?)#[\2/~/](\1)#g' "${edited_input}"
 
+  # move document tags into their slot in the header
+  if head -n 1 "${edited_input}"  | grep -v '#' | grep '@' > /dev/null; then
+    tag_links=$(head -n 1 "${edited_input}" | grep -o -E '@[a-z\-]+' | xargs | sed 's/ / \\\&bull; /g')
+    sed -i "s/{TAG_LINKS}/${tag_links}/" "${edited_before_body}"
+
+    # remove original tags
+    sed -i '1d' "${edited_input}"
+  else
+    # this document has no tags
+    sed -i '/.*TAG_LINKS.*/d' "${edited_before_body}"
+  fi
+
+  # convert tags into links
+  if [[ "${file}" != *"/tag"/* ]]; then
+    sed -i -E 's|@([a-z\-]+)|<a href="/tag/\1">@\1</a>|g' "${edited_before_body}"
+    sed -i -E 's|@([a-z\-]+)|[@\1](/tag/\1)|g' "${edited_input}"
+  fi
+
   # rendered date
   render_date=$(date +"%Y-%m-%d %H:%M:%S")
   sed -i "s|{DATE}|${render_date}|" "${edited_after_body}"
@@ -56,7 +78,7 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
   pandoc \
     -i "${edited_input}" \
     -o "${html_output}" \
-    -f markdown+multiline_tables \
+    -f "${pandoc_format}" \
     -t html \
     --standalone \
     --metadata "pagetitle=${basename_no_ext}" \
@@ -65,7 +87,7 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
     --include-after-body "${edited_after_body}"
 
   # update .md links to .html
-  sed -i 's/.md"/.html")/g' "${html_output}"
+  sed -i 's/.md"/.html"/g' "${html_output}"
 
   rm "${edited_input}" "${edited_header}" "${edited_after_body}" "${edited_before_body}"
 done

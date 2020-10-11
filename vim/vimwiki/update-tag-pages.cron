@@ -1,0 +1,3 @@
+# dot-tags hostname:chuck
+
+2/5 * * * * bash -l -c "cd ~/dotfiles; ./vim/vimwiki/update-tag-pages.sh"
