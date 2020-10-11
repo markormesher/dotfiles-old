@@ -18,4 +18,12 @@
       li.className = li.className + " completed";
     }
   }
+
+  const links = document.getElementsByTagName("a");
+  for (let i = 0; i < links.length; ++i) {
+    const link = links.item(i);
+    if (link.innerHTML.startsWith("@")) {
+      link.className = link.className + " tag-link";
+    }
+  }
 </script>

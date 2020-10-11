@@ -36,12 +36,14 @@ find "${vimwiki_dir}" -type f -name '*.md' -not -path '*/tag/*' | while read fil
   if head -n 1 "${file}" | grep '@' > /dev/null; then
     head -n 1 "${file}" | grep -o -E '@[a-z\-]+' | while read tag; do
       echo "${file}" >> "${work_dir}/tagged-${tag}"
+      echo "${tag}" >> "${work_dir}/all-tags"
     done
   fi
 
   # find tags on later lines and track the mentioning files
-  tail -n +2 "${file}" | (grep -o -E '@[a-z\-]+' || :) | while read tag; do
+  tail -n +2 "${file}" | (grep -o -E '(^| )@[a-z\-]+' || :) | while read tag; do
     echo "${file}" >> "${work_dir}/mentioning-${tag}"
+      echo "${tag}" >> "${work_dir}/all-tags"
   done
 done
 
@@ -73,4 +75,13 @@ find "${work_dir}" -name 'mentioning-*' | while read file; do
     echo "- [${title}](${link})" >> "${tag_page}"
   done
   echo "" >> "${tag_page}"
+done
+
+# update the index file
+echo "# Mark's VimWiki" > "${vimwiki_dir}/index.md"
+echo "" >> "${vimwiki_dir}/index.md"
+echo "## Tags" >> "${vimwiki_dir}/index.md"
+echo "" >> "${vimwiki_dir}/index.md"
+cat "${work_dir}/all-tags" | sort | uniq | while read tag; do
+  echo "[${tag}](/tag/${tag/@/})" >> "${vimwiki_dir}/index.md"
 done

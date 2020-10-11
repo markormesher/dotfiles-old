@@ -17,6 +17,9 @@ pandoc_format="${pandoc_format}-citations" # Pandoc's citation format conflicts 
 mkdir -p "${html_dir}"
 rm -rf "${html_dir}/"*
 
+# temp state dir for tracking tags, pages, etc.
+state_dir=$(mktemp)
+
 # copy all media
 cp -r "${vimwiki_dir}/media" "${html_dir}/."
 
@@ -46,7 +49,7 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
 
   # move document tags into their slot in the header
   if head -n 1 "${edited_input}"  | grep -v '#' | grep '@' > /dev/null; then
-    tag_links=$(head -n 1 "${edited_input}" | grep -o -E '@[a-z\-]+' | xargs | sed 's/ / \\\&bull; /g')
+    tag_links=$(head -n 1 "${edited_input}" | grep -o -E '@[a-z\-]+' | xargs)
     sed -i "s/{TAG_LINKS}/${tag_links}/" "${edited_before_body}"
 
     # remove original tags
@@ -58,8 +61,8 @@ find "${vimwiki_dir}" -type f -name '*.md' | while read file; do
 
   # convert tags into links
   if [[ "${file}" != *"/tag"/* ]]; then
-    sed -i -E 's|@([a-z\-]+)|<a href="/tag/\1">@\1</a>|g' "${edited_before_body}"
-    sed -i -E 's|@([a-z\-]+)|[@\1](/tag/\1)|g' "${edited_input}"
+    sed -i -E 's#@([a-z\-]+)#<a href="/tag/\1">@\1</a>#g' "${edited_before_body}"
+    sed -i -E 's#(^|\s)@([a-z\-]+)#\1[@\2](/tag/\2)#g' "${edited_input}"
   fi
 
   # rendered date
