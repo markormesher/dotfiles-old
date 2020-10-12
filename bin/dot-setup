@@ -341,6 +341,7 @@ fi
 # install backup tools
 if host_has_tag "apps:borg"; then
   install_package --apt borgbackup
+  install_package --apt rclone
 fi
 
 # install photo tools
