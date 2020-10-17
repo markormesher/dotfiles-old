@@ -4,3 +4,5 @@
 00 3 * * * bash -l -c "~/backup-scripts/prune-borg-backups.sh >> ~/backup-scripts/.log 2>&1"
 00 5 * * * bash -l -c "~/backup-scripts/sync-borg-to-b2.sh >> ~/backup-scripts/.log 2>&1"
 00 7 * * * bash -l -c "~/backup-scripts/send-backup-report.sh >> ~/backup-scripts/.log 2>&1"
+
+50 */2 * * *  bash -l -c "~/backup-scripts/backup-chuck-to-borg-via-borg.sh >> ~/backup-scripts/.log 2>&1"
