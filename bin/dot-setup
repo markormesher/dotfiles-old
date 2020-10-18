@@ -2,6 +2,10 @@
 set -euo pipefail
 shopt -s expand_aliases
 
+if [ ! -z ${SET_X+x} ]; then
+  set -x
+fi
+
 # settings
 NODE_VERSION=14 # don't forget to look for references for node@VERSION elsewhere
 PYTHON_VERSION=3.8.3

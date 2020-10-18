@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ ! -z ${SET_X+x} ]; then
+  set -x
+fi
+
 # sanity-check: is dotfiles in the right place?
 if [ ! -d "${HOME}/dotfiles" ]; then
   echo "ERROR: ${HOME}/dotfiles does not exist"

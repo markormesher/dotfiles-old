@@ -9,10 +9,10 @@ aliases:
     command: ./.circleci/debug-info.sh
   - &run-sync
     name: Run Sync
-    command: ./bin/dot-sync
+    command: DEBUG=y SET_X=y ./bin/dot-sync
   - &run-setup
     name: Run Setup
-    command: ./bin/dot-setup
+    command: DEBUG=y SET_X=t ./bin/dot-setup
 
 defaults: &defaults
   working_directory: ~/dotfiles
