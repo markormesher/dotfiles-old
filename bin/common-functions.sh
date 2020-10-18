@@ -66,3 +66,8 @@ function file_matches_host_tags {
   done
   return 0
 }
+
+function rm_head_tail_blank_lines() {
+  # intended to be used as a pipe
+  sed -e :a -e '/[^\t ]/,$!d; /^[\n\t ]*$/{ $d; N; ba' -e '}'
+}
