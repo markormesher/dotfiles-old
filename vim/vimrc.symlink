@@ -75,6 +75,9 @@ Plug 'unblevable/quick-scope' " highlight good options for f and F navigation wi
 Plug 'leafgarland/typescript-vim'
 Plug 'ianks/vim-tsx'
 
+" openhab syntax highlighting
+Plug 'cyberkov/openhab-vim'
+
 " auto-complete and language server support
 Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': { -> coc#util#install() } }
 
