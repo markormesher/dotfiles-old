@@ -319,7 +319,7 @@ install_package --common jq
 
 # install neovim and vim plugins
 install_package --common neovim
-install_package --commond shellcheck
+install_package --common shellcheck
 
 print_info "Setting up vim-plug..."
 if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
@@ -381,8 +381,10 @@ if host_has_tag "apps:webserver"; then
   install_package --apt nginx
   install_package --apt fail2ban
   install_package --apt apache2-utils
+fi
 
-  # set up fail2ban
+# install and setup fail2ban
+if host_has_tag "apps:fail2ban"; then
   sudo mkdir -p /etc/fail2ban
   sudo rm -f /etc/fail2ban/jail.local
   sudo ln -s "${HOME}/dotfiles/fail2ban/jail.local" /etc/fail2ban/jail.local
