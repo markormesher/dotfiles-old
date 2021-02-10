@@ -400,7 +400,7 @@ fi
 # install global NPM packages
 print_info "Installing global NPM packages..."
 source ./node/020.node-package-path.source
-original_npm i -g npm yarn
+original_npm install -g npm yarn
 npm install -g \
   yarn \
   typescript \
@@ -419,7 +419,7 @@ npm install -g \
 print_info "Installing global Python packages..."
 source ./python/pyenv.source
 pip -q install --upgrade pip
-pip -q install --upgrde pynvim neovim-remote
+pip -q install --upgrade pynvim neovim-remote
 
 # install SDKMAN (see also the sdk/sdk-manager.source file)
 if host_has_tag "apps:sdkman"; then
