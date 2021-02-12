@@ -1,3 +1,3 @@
 # dot-tags hostname:chuck
 
-20 */2 * * *  bash -l -c "~/backup-scripts/backup-chuck-to-borg.sh >> ~/backup-scripts/.log 2>&1"
+20 */2 * * *  bash -l -c "~/backup-scripts/backup-chuck.sh >> ~/backup-scripts/.log 2>&1"
