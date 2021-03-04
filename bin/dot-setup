@@ -192,21 +192,6 @@ fi
 # update package registries
 if host_has_tag "os:ubuntu"; then
 
-  # make sure we have add-apt-repository
-  print_info "Adding software tools..."
-  sudo apt update
-  sudo apt install software-properties-common
-
-  print_info "Adding repositories..."
-
-  # universe and multiverse packages
-  if ! ppa_is_added universe; then
-    sudo add-apt-repository -y universe
-  fi
-  if ! ppa_is_added multiverse; then
-    sudo add-apt-repository -y multiverse
-  fi
-
   # neovim
   if ! apt-cache search --names-only '^neovim$' | grep neovim > /dev/null; then
     sudo add-apt-repository -y ppa:neovim-ppa/stable
@@ -320,14 +305,7 @@ if host_has_tag "apps:videos"; then
   install_package --common ffmpeg
 fi
 
-# install git and git LFS
-install_package --common git
-install_package --common git-lfs
-print_info "Setting up Git LFS..."
-git lfs install
-
 # install gnupg
-install_package --apt gnupg2 --brew gnupg
 if host_has_tag "os:macos"; then
   print_info "Setting up GNUPG..."
   brew unlink gnupg && brew link --overwrite gnupg
@@ -391,38 +369,6 @@ if host_has_tag "apps:sdkman"; then
     bash "${sdkman_installer}"
     rm "${sdkman_installer}"
   fi
-fi
-
-# install docker
-if host_has_tag "apps:docker"; then
-  # docker
-  print_info "Installing docker..."
-  if ! command -v docker > /dev/null; then
-    if host_has_tag "os:ubuntu"; then
-      docker_installer=$(mktemp)
-      curl -fsSL https://get.docker.com -o "${docker_installer}"
-      sudo sh "${docker_installer}"
-      rm "${docker_installer}"
-      if [[ -d /run/systemd/system ]]; then
-        sudo systemctl enable docker
-        sudo systemctl start docker
-      fi
-      sudo usermod -aG docker "${USER}"
-    fi
-
-    if host_has_tag "os:macos"; then
-      print_warn "Docker must be manually installed on MacOS - downloading the installer now..."
-      wget -P "${HOME}/Downloads/" https://download.docker.com/mac/stable/Docker.dmg
-    fi
-  fi
-
-  # docker compose
-  print_info "Installing docker compose..."
-  if [[ -f /usr/local/bin/docker-compose ]]; then
-    sudo rm /usr/local/bin/docker-compose
-  fi
-
-  pip -q install --upgrade docker-compose
 fi
 
 # clean up packages
