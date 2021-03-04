@@ -275,47 +275,8 @@ install_package --apt zlib1g-dev
 install_package --apt exfat-fuse
 install_package --apt exfat-utils
 
-# install network tools
-install_package --apt net-tools
-install_package --common nmap
-install_package --common wget
-install_package --common curl
-install_package --common netcat
-
-# install terminal tools
-install_package --common htop
-install_package --common pv
-install_package --common tmux
-install_package --apt silversearcher-ag --brew the_silver_searcher
-
-# install compression tools
-install_package --common zip
-install_package --common unzip
-install_package --common gzip
-install_package --common pigz
-install_package --brew xz --apt xz-utils
-
 # install node
 install_package --apt nodejs --brew node@${NODE_VERSION}
-
-# install python environment manager
-print_info "Installing pyenv..."
-if [ -d "${HOME}/.pyenv" ]; then
-  curr_dir=$(pwd)
-  cd "${HOME}/.pyenv"
-  git pull
-  cd "$curr_dir"
-else
-  git clone https://github.com/pyenv/pyenv.git "${HOME}/.pyenv"
-fi
-if [ ! -d "${HOME}/.pyenv/versions/${PYTHON_VERSION}" ]; then
-  "${HOME}/.pyenv/bin/pyenv" install ${PYTHON_VERSION}
-fi
-"${HOME}/.pyenv/bin/pyenv" global ${PYTHON_VERSION}
-
-# install misc tools
-install_package --common colordiff
-install_package --common jq
 
 # install neovim and vim plugins
 install_package --common neovim

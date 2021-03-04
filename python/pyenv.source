@@ -1,6 +1,0 @@
-pyenv_root="${HOME}/.pyenv"
-export PYENV_ROOT="${pyenv_root}"
-
-if [ -f "${pyenv_root}/bin/pyenv" ]; then
-  eval "$("${pyenv_root}/bin/pyenv" init -)"
-fi

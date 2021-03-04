@@ -1,8 +1,16 @@
+[INCLUDES]
+before = paths-debian.conf
+
 [DEFAULT]
 ignoreip = 127.0.0.1/8
 bantime = 1h
+bantime.rndtime = 60
+bantime.overalljails = true
 findtime = 10m
-maxretry = 5
+maxretry = 3
+
+[sshd]
+enabled = true
 
 [nginx-http-auth]
 enabled = true
