@@ -45,17 +45,6 @@ find "${HOME}/dotfiles" -iname "*.symlink" | while read -r file; do
   print_debug "Linking ${link} -> ${sandbox_file}"
 done
 
-print_info "Adding source scripts to bootstrapper"
-echo "" > .bootstrap
-find "${HOME}/dotfiles" -iname "*.source" | sort | while read -r file; do
-  if ! file_matches_host_tags "${file}"; then
-    continue
-  fi
-
-  echo "source \"${file}\"" >> .bootstrap
-  print_debug "Adding source for ${file}"
-done
-
 print_info "Setting up \$PATH"
 new_path_list=$(mktemp)
 find "${HOME}/dotfiles" -iname "*.path" | while read -r file; do
@@ -81,8 +70,18 @@ $sed -i -r 's/[0-9]+#//' "${new_path_list}"
 
 # concat lines with : and set path
 new_path=$( tr '\n' ':' < "${new_path_list}" )
-echo "export PATH=${new_path}" >> .bootstrap
+echo "export PATH=${new_path}" > .bootstrap
 rm "${new_path_list}"
+
+print_info "Adding source scripts to bootstrapper"
+find "${HOME}/dotfiles" -iname "*.source" | sort | while read -r file; do
+  if ! file_matches_host_tags "${file}"; then
+    continue
+  fi
+
+  echo "source \"${file}\"" >> .bootstrap
+  print_debug "Adding source for ${file}"
+done
 
 print_info "Setting up crontab"
 new_crontab="$(mktemp)"

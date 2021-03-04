@@ -3,10 +3,10 @@
 # Docker
 alias dk='docker'
 alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
-alias dkl='docker logs'
-alias dklf='docker logs -f'
 
 # Docker Compose
 if command -v docker-compose &> /dev/null; then
   alias dc='docker-compose'
+else
+  echo "docker-compose is not on the path yet"
 fi

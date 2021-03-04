@@ -358,6 +358,41 @@ if host_has_tag "apps:fail2ban"; then
   sudo systemctl restart fail2ban
 fi
 
+# install global NPM packages
+print_info "Installing global NPM packages..."
+source ./node/020.node-package-path.source
+original_npm install -g npm yarn
+npm install -g \
+  yarn \
+  typescript \
+  prettier \
+  eslint \
+  @typescript-eslint/parser \
+  @typescript-eslint/typescript-estree \
+  @typescript-eslint/eslint-plugin \
+  javascript-typescript-langserver \
+  js-beautify \
+  neovim \
+  bash-language-server \
+  markdownlint
+
+# install global Python packages
+print_info "Installing global Python packages..."
+source ./python/pyenv.source
+pip -q install --upgrade pip
+pip -q install --upgrade pynvim neovim-remote
+
+# install SDKMAN (see also the sdk/sdk-manager.source file)
+if host_has_tag "apps:sdkman"; then
+  print_info "Installing SDKMAN..."
+  if [ ! -d "${HOME}/.sdkman" ]; then
+    sdkman_installer=$(mktemp)
+    curl -fsSL "https://get.sdkman.io" -o "${sdkman_installer}"
+    bash "${sdkman_installer}"
+    rm "${sdkman_installer}"
+  fi
+fi
+
 # install docker
 if host_has_tag "apps:docker"; then
   # docker
@@ -383,47 +418,11 @@ if host_has_tag "apps:docker"; then
 
   # docker compose
   print_info "Installing docker compose..."
-  if ! command -v docker-compose > /dev/null; then
-    docker_compose=$(mktemp)
-    curl -fsSL "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" > "${docker_compose}"
-    sudo mv "${docker_compose}" /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
+  if [[ -f /usr/local/bin/docker-compose ]]; then
+    sudo rm /usr/local/bin/docker-compose
   fi
-fi
 
-# install global NPM packages
-print_info "Installing global NPM packages..."
-source ./node/020.node-package-path.source
-original_npm i -g npm yarn
-npm install -g \
-  yarn \
-  typescript \
-  prettier \
-  eslint \
-  @typescript-eslint/parser \
-  @typescript-eslint/typescript-estree \
-  @typescript-eslint/eslint-plugin \
-  javascript-typescript-langserver \
-  js-beautify \
-  neovim \
-  bash-language-server \
-  markdownlint
-
-# install global Python packages
-print_info "Installing global Python packages..."
-source ./python/pyenv.source
-pip install -U pip
-pip install pynvim neovim-remote
-
-# install SDKMAN (see also the sdk/sdk-manager.source file)
-if host_has_tag "apps:sdkman"; then
-  print_info "Installing SDKMAN..."
-  if [ ! -d "${HOME}/.sdkman" ]; then
-    sdkman_installer=$(mktemp)
-    curl -fsSL "https://get.sdkman.io" -o "${sdkman_installer}"
-    bash "${sdkman_installer}"
-    rm "${sdkman_installer}"
-  fi
+  pip -q install --upgrade docker-compose
 fi
 
 # clean up packages
