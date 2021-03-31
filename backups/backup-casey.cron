@@ -1,3 +1,0 @@
-# dot-tags hostname:casey
-
-10 */2 * * * bash -l -c "~/backup-scripts/backup-casey.sh >> ~/backup-scripts/.log 2>&1"
