@@ -95,39 +95,3 @@ find "${HOME}/dotfiles" -iname "*.cron" | while read -r file; do
 done
 crontab "${new_crontab}"
 rm "${new_crontab}"
-
-print_info "Setting up public keys"
-managed_keys="$(mktemp)"
-find "${HOME}/dotfiles/pubkeys" -iname "*.rsa" | while read -r file; do
-  if ! file_matches_host_tags "${file}"; then
-    continue
-  fi
-
-  ( grep -v " dot-tags " | grep -v '^$' ) < "${file}" >> "${managed_keys}"
-  print_debug "Adding public key from ${file}"
-done
-
-# set up the new file (without clobbering non-managed entries)
-if [ ! -f "${HOME}/.ssh/authorized_keys" ]; then
-  mkdir -p "${HOME}/.ssh"
-  touch "${HOME}/.ssh/authorized_keys"
-fi
-
-new_authed_keys=$(mktemp)
-if grep "managed by dotfiles" "${HOME}/.ssh/authorized_keys" > /dev/null; then
-  # we've already modified this file so we need to remove dupes and trim our old content
-  print_debug "authorized_keys has been touched before"
-  trim_below_line=$(grep -n "managed by dotfiles" "${HOME}/.ssh/authorized_keys" | cut -d ':' -f 1 | head -n 1)
-  head -n $(( trim_below_line - 1 )) "${HOME}/.ssh/authorized_keys" | (grep -v -F -f "${managed_keys}" || :) | rm_head_tail_blank_lines > "${new_authed_keys}"
-else
-  # we've not touched this file before so we only need to remove dupes
-  print_debug "authorized_keys is new to us"
-  cat "${HOME}/.ssh/authorized_keys" | (grep -v -F -f "${managed_keys}" || :) | rm_head_tail_blank_lines > "${new_authed_keys}"
-fi
-
-echo "" >> "${new_authed_keys}"
-echo "# keys below managed by dotfiles" >> "${new_authed_keys}"
-cat "${managed_keys}" >> "${new_authed_keys}"
-
-cat "${new_authed_keys}" | rm_head_tail_blank_lines > "${HOME}/.ssh/authorized_keys"
-rm "${managed_keys}" "${new_authed_keys}"
