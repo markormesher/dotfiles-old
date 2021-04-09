@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
 if [ ! -z ${SET_X+x} ]; then
@@ -82,16 +83,3 @@ find "${HOME}/dotfiles" -iname "*.source" | sort | while read -r file; do
   echo "source \"${file}\"" >> .bootstrap
   print_debug "Adding source for ${file}"
 done
-
-print_info "Setting up crontab"
-new_crontab="$(mktemp)"
-find "${HOME}/dotfiles" -iname "*.cron" | while read -r file; do
-  if ! file_matches_host_tags "${file}"; then
-    continue
-  fi
-
-  ( grep -v " dot-tags " | grep -v '^$' ) < "${file}" >> "${new_crontab}"
-  print_debug "Adding cron from ${file}"
-done
-crontab "${new_crontab}"
-rm "${new_crontab}"
